@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <title>Navi Framework Testbed</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+<script type="text/javascript" src="js/paper.js"></script>
+<script type="text/javascript" src="js/naviFramework_UI.js"></script>
+</head>
+<body>
+
+<canvas id="testCanvas" resize></canvas>
+
+<script type="text/javascript">
+	//window.onload = function() {
+		var fw = new naviFramework_UI();
+		fw.init("testCanvas");
+		
+		fw.drawTile(100,100,100,100);
+		fw.drawBackgroundItem();
+	//}
+</script>
+</body>
+</html>
