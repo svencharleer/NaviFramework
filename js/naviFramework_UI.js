@@ -7,35 +7,116 @@ function naviFramework_UI()
         strokeColor: '#4d4d4d',
         strokeWidth: 10 
     };
-    this.tileSymbol = "";
+    
     this.bgItemSymbol = "";
     this.layers;
+    this.tool;
     
+    
+    
+    //------------
+    // EVENTS
+    //------------
+
+    this.onMouseDown = function(event)
+    {
+        with(this.naviFramework.paper)
+        {
+            console.log("CLICK X: " + event.point.x + "- Y: " + event.point.y);
+            
+            var hitResult = this.naviFramework.layers[1].hitTest(event.point);
+            if(hitResult != null)
+            {
+                if(hitResult.item.mouseDownEvent != null)
+                {
+                    hitResult.item.mouseDownEvent(event);
+                }
+            }
+        }
+    }
+
+    this.onMouseDrag = function(event)
+    {
+        with(this.naviFramework.paper)
+        {
+            var hitResult = this.naviFramework.layers[1].hitTest(event.point);
+            if(hitResult != null)
+            {
+                if(hitResult.item.mouseDragEvent != null)
+                {
+                    hitResult.item.mouseDragEvent(event);
+                }
+            }
+        }
+    }
+
+    this.onMouseUp = function(event)
+    {
+        with(this.naviFramework.paper)
+        {
+            var hitResult = this.naviFramework.layers[1].hitTest(event.point);
+            if(hitResult != null)
+            {
+                if(hitResult.item.mouseUpEvent != null)
+                {
+                    hitResult.item.mouseUpEvent(event);
+                }
+            }
+        }
+    }
+
+    this.onFingerHits = function(point)
+    {
+        with(this.paper)
+        {
+            
+            console.log("FINGER X: " + point.x + "- Y: " + point.y);
+            var hitPoint = new Point(point.x, point.y);
+            var hitResult = this.layers[1].hitTest(hitPoint);
+            if(hitResult != null)
+            {
+                if(hitResult.item.fingerEvent != null)
+                {
+                    hitResult.item.fingerEvent(point);
+                }
+            }
+        }   
+    }
+
+
     this.init = function(canvas)
     {
         this.paper = paper.setup(canvas);
+
         with(this.paper)
         {
+            this.tool = tool;
             this.layers = [new Layer(), new Layer()];
+            tool.onMouseDown = this.onMouseDown;
+            //tool.onMouseUp = this.onMouseUp;
+            //tool.onMouseDrag = this.onMouseDrag;
+            tool.naviFramework = this;
         }
     }
-    
+
+    //------------
+    // DRAW FUNCTIONS
+    //------------
    
-    this.drawTile = function(x,y, width, height)
+    this.drawTile = function(x,y, width, height, name, mouseDownEvent, mouseDragEvent, mouseUpEvent, fingerEvent)
     {
         with(this.paper)
         {
-            //create symbol in case it hasn't been created yet
-            if(this.tileSymbol == "")
-            {
-                
-                var rect = new Rectangle(new Point(0,0), new Size(width,height));
-                var rectangle = new Path.Rectangle(rect);
-                rectangle.style = this.generalStyle;
-                this.tileSymbol = new Symbol(rectangle);
-            }
             this.layers[1].activate();
-            var placed = this.tileSymbol.place(new Point(x,y));
+            var rect = new Rectangle(new Point(x,y), new Size(width,height));
+            var rectangle = new Path.Rectangle(rect);
+            rectangle.style = this.generalStyle;
+            rectangle.name = name; 
+            rectangle.mouseDownEvent = mouseDownEvent;
+            rectangle.mouseDragEvent = mouseDragEvent;
+            rectangle.mouseUpEvent = mouseUpEvent;
+            rectangle.fingerEvent = fingerEvent;
+           
         }
     }
 
@@ -43,6 +124,8 @@ function naviFramework_UI()
     {
         with(this.paper)
         {
+            //create symbol in case it hasn't been created yet
+            //moet prolly null zijn
             if(this.bgItemSymbol == "")
             {
                 var circle = new Path.Circle(new Point(0,0),10);

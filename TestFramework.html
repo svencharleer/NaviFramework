@@ -3,19 +3,89 @@
     <title>Navi Framework Testbed</title>
     <meta name="viewport" content="width=device-width, user-scalable=no">
 <script type="text/javascript" src="js/paper.js"></script>
+<script type="text/javascript" src="js/tuio.js"></script>
 <script type="text/javascript" src="js/naviFramework_UI.js"></script>
+<script type="text/javascript">
+var fw;
+var canvas;
+var ctx;
+var w = 0;
+var h = 0;
+
+var timer;
+var updateStarted = false;
+
+function update() {
+	if (updateStarted) return;
+	updateStarted = true;
+
+	var nw = window.innerWidth;
+	var nh = window.innerHeight;
+
+	if ((w != nw) || (h != nh)) {
+		w = nw;
+		h = nh;
+	
+	}
+
+	var i, len = tuio.cursors.length;
+	for (i=0; i<len; i++) {
+		var obj = tuio.cursors[i];
+		var x = obj.x;
+		var y = obj.y;
+		var px = Math.floor(x * canvas.width);
+		var py = Math.floor(y * canvas.height);
+
+		ctx.beginPath();
+		ctx.arc(px, py, 20, 0, 2*Math.PI, true);
+
+		ctx.fillStyle = "rgba(0, 0, 200, 0.2)";
+		ctx.fill();
+
+		ctx.lineWidth = 2.0;
+		ctx.strokeStyle = "rgba(0, 0, 200, 0.8)";
+		ctx.stroke();
+	
+		//try hitting all the boxes
+		var tmp = {x:px, y:py};
+		
+		fw.onFingerHits(tmp);
+	}
+
+	updateStarted = false;
+}
+
+function ol() {
+	canvas = document.getElementById('testCanvas');
+	ctx = canvas.getContext('2d');
+	
+	fw = new naviFramework_UI();
+	fw.init("testCanvas");
+	var mde = function(event)
+    {
+        this.position = event.point;
+    };
+    var fe = function(point)
+    {
+    	this.position = point;
+    };
+	fw.drawTile(100,100,100,100, "tile1", mde, mde, mde, fe);
+	fw.drawTile(200,200,100,100, "tile2", mde, mde, mde, fe);
+	fw.drawBackgroundItem();
+
+	timer = setInterval(update, 15);
+};
+
+</script>
+
 </head>
-<body>
+<body onload="ol()">
 
 <canvas id="testCanvas" resize></canvas>
-
+<object id="tuio" type="application/x-tuio">Plugin FAILED to load</object>
 <script type="text/javascript">
 	//window.onload = function() {
-		var fw = new naviFramework_UI();
-		fw.init("testCanvas");
 		
-		fw.drawTile(100,100,100,100);
-		fw.drawBackgroundItem();
 	//}
 </script>
 </body>
