@@ -3,7 +3,7 @@
     <title>Navi Framework Testbed</title>
     <meta name="viewport" content="width=device-width, user-scalable=no">
 <script type="text/javascript" src="js/paper.js"></script>
-<script type="text/javascript" src="js/tuio.js"></script>
+<script type="text/javascript" src="js/magictouch.js"></script>
 <script type="text/javascript" src="js/naviFramework_UI.js"></script>
 <script type="text/javascript">
 var fw;
@@ -14,28 +14,18 @@ var h = 0;
 
 var timer;
 var updateStarted = false;
+var touches = [];
 
 function update() {
 	if (updateStarted) return;
 	updateStarted = true;
 
-	var nw = window.innerWidth;
-	var nh = window.innerHeight;
-
-	if ((w != nw) || (h != nh)) {
-		w = nw;
-		h = nh;
-	
-	}
-
-	var i, len = tuio.cursors.length;
+	var i, len = touches.length;
 	for (i=0; i<len; i++) {
-		var obj = tuio.cursors[i];
-		var x = obj.x;
-		var y = obj.y;
-		var px = Math.floor(x * canvas.width);
-		var py = Math.floor(y * canvas.height);
-
+		var touch = touches[i];
+		var px = touch.pageX;
+		var py = touch.pageY;
+		
 		ctx.beginPath();
 		ctx.arc(px, py, 20, 0, 2*Math.PI, true);
 
@@ -48,7 +38,6 @@ function update() {
 	
 		//try hitting all the boxes
 		var tmp = {x:px, y:py};
-		
 		fw.onFingerHits(tmp);
 	}
 
@@ -61,19 +50,28 @@ function ol() {
 	
 	fw = new naviFramework_UI();
 	fw.init("testCanvas");
-	var mde = function(event)
-    {
-        this.position = event.point;
-    };
+
     var fe = function(point)
     {
     	this.position = point;
     };
-	fw.drawTile(100,100,100,100, "tile1", mde, mde, mde, fe);
-	fw.drawTile(200,200,100,100, "tile2", mde, mde, mde, fe);
+	fw.drawTile(100,100,100,100, "tile1", fe, fe, fe, fe);
+	fw.drawTile(200,200,100,100, "tile2", fe, fe, fe, fe);
 	fw.drawBackgroundItem();
 
 	timer = setInterval(update, 15);
+	canvas.addEventListener('touchend', function() {
+	ctx.clearRect(0, 0, w, h);
+	});
+
+	canvas.addEventListener('touchmove', function(event) {
+	  event.preventDefault();
+	  touches = event.touches;
+	});
+
+	canvas.addEventListener('touchstart', function(event) {
+	  console.log('start');
+	});
 };
 
 </script>

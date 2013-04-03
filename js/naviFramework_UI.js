@@ -22,14 +22,14 @@ function naviFramework_UI()
     {
         with(this.naviFramework.paper)
         {
-            console.log("CLICK X: " + event.point.x + "- Y: " + event.point.y);
+            //console.log("CLICK X: " + event.point.x + "- Y: " + event.point.y);
             
             var hitResult = this.naviFramework.layers[1].hitTest(event.point);
             if(hitResult != null)
             {
                 if(hitResult.item.mouseDownEvent != null)
                 {
-                    hitResult.item.mouseDownEvent(event);
+                    hitResult.item.mouseDownEvent(event.point);
                 }
             }
         }
@@ -44,7 +44,7 @@ function naviFramework_UI()
             {
                 if(hitResult.item.mouseDragEvent != null)
                 {
-                    hitResult.item.mouseDragEvent(event);
+                    hitResult.item.mouseDragEvent(event.point);
                 }
             }
         }
@@ -59,7 +59,7 @@ function naviFramework_UI()
             {
                 if(hitResult.item.mouseUpEvent != null)
                 {
-                    hitResult.item.mouseUpEvent(event);
+                    hitResult.item.mouseUpEvent(event.point);
                 }
             }
         }
@@ -70,7 +70,7 @@ function naviFramework_UI()
         with(this.paper)
         {
             
-            console.log("FINGER X: " + point.x + "- Y: " + point.y);
+            //console.log("FINGER X: " + point.x + "- Y: " + point.y);
             var hitPoint = new Point(point.x, point.y);
             var hitResult = this.layers[1].hitTest(hitPoint);
             if(hitResult != null)
@@ -93,8 +93,8 @@ function naviFramework_UI()
             this.tool = tool;
             this.layers = [new Layer(), new Layer()];
             tool.onMouseDown = this.onMouseDown;
-            //tool.onMouseUp = this.onMouseUp;
-            //tool.onMouseDrag = this.onMouseDrag;
+            tool.onMouseUp = this.onMouseUp;
+            tool.onMouseDrag = this.onMouseDrag;
             tool.naviFramework = this;
         }
     }
