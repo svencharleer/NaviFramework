@@ -1,3 +1,4 @@
+var fw;
 
 function naviFramework_UI()
 {
@@ -20,11 +21,11 @@ function naviFramework_UI()
 
     this.onMouseDown = function(event)
     {
-        with(this.naviFramework.paper)
+        with(fw.paper)
         {
             //console.log("CLICK X: " + event.point.x + "- Y: " + event.point.y);
             
-            var hitResult = this.naviFramework.layers[1].hitTest(event.point);
+            var hitResult = fw.layers[1].hitTest(event.point);
             if(hitResult != null)
             {
                 if(hitResult.item.mouseDownEvent != null)
@@ -37,9 +38,9 @@ function naviFramework_UI()
 
     this.onMouseDrag = function(event)
     {
-        with(this.naviFramework.paper)
+        with(fw.paper)
         {
-            var hitResult = this.naviFramework.layers[1].hitTest(event.point);
+            var hitResult = fw.layers[1].hitTest(event.point);
             if(hitResult != null)
             {
                 if(hitResult.item.mouseDragEvent != null)
@@ -52,9 +53,9 @@ function naviFramework_UI()
 
     this.onMouseUp = function(event)
     {
-        with(this.naviFramework.paper)
+        with(fw.paper)
         {
-            var hitResult = this.naviFramework.layers[1].hitTest(event.point);
+            var hitResult = fw.layers[1].hitTest(event.point);
             if(hitResult != null)
             {
                 if(hitResult.item.mouseUpEvent != null)
@@ -72,7 +73,7 @@ function naviFramework_UI()
             
             //console.log("FINGER X: " + point.x + "- Y: " + point.y);
             var hitPoint = new Point(point.x, point.y);
-            var hitResult = this.layers[1].hitTest(hitPoint);
+            var hitResult = fw.layers[1].hitTest(hitPoint);
             if(hitResult != null)
             {
                 if(hitResult.item.fingerEvent != null)
@@ -81,6 +82,21 @@ function naviFramework_UI()
                 }
             }
         }   
+    }
+
+    this.onFrame = function(event)
+    {
+        with(paper)
+        {
+            var children = fw.layers[1].children;
+            for(var i=0;i < children.length; i++)
+            {
+                if(children[i].animationLoop != null)
+                {
+                    children[i].animationLoop(event);
+                }
+            }
+        }
     }
 
 
@@ -95,27 +111,29 @@ function naviFramework_UI()
             tool.onMouseDown = this.onMouseDown;
             tool.onMouseUp = this.onMouseUp;
             tool.onMouseDrag = this.onMouseDrag;
-            tool.naviFramework = this;
+            view.onFrame = this.onFrame;
         }
+        return this;
     }
 
     //------------
     // DRAW FUNCTIONS
     //------------
    
-    this.drawTile = function(x,y, width, height, name, mouseDownEvent, mouseDragEvent, mouseUpEvent, fingerEvent)
+    this.drawTile = function(tile)
     {
         with(this.paper)
         {
             this.layers[1].activate();
-            var rect = new Rectangle(new Point(x,y), new Size(width,height));
+            var rect = new Rectangle(new Point(tile.x,tile.y), new Size(tile.width,tile.height));
             var rectangle = new Path.Rectangle(rect);
             rectangle.style = this.generalStyle;
-            rectangle.name = name; 
-            rectangle.mouseDownEvent = mouseDownEvent;
-            rectangle.mouseDragEvent = mouseDragEvent;
-            rectangle.mouseUpEvent = mouseUpEvent;
-            rectangle.fingerEvent = fingerEvent;
+            rectangle.name = tile.name; 
+            rectangle.mouseDownEvent = tile.mouseDownEvent;
+            rectangle.mouseDragEvent = tile.mouseDownEvent;
+            rectangle.mouseUpEvent = tile.mouseDownEvent;
+            rectangle.fingerEvent = tile.mouseDownEvent;
+            rectangle.animationLoop = tile.animationLoop;
            
         }
     }
@@ -134,7 +152,7 @@ function naviFramework_UI()
             }
             this.layers[0].activate();
             
-            var count = 150;
+            var count = 10;
             for (var i = 0; i < count; i++) {
                 // The center position is a random point in the view:
                 var center = Point.random().multiply([view.size.width, view.size.height]);
@@ -148,3 +166,5 @@ function naviFramework_UI()
     }
 
 }
+
+fw = new naviFramework_UI();

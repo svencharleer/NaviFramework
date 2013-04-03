@@ -5,12 +5,9 @@
 <script type="text/javascript" src="js/paper.js"></script>
 <script type="text/javascript" src="js/magictouch.js"></script>
 <script type="text/javascript" src="js/naviFramework_UI.js"></script>
+<script type="text/javascript" src="js/naviObjects.js"></script>
 <script type="text/javascript">
-var fw;
-var canvas;
-var ctx;
-var w = 0;
-var h = 0;
+
 
 var timer;
 var updateStarted = false;
@@ -25,50 +22,31 @@ function update() {
 		var touch = touches[i];
 		var px = touch.pageX;
 		var py = touch.pageY;
-		
-		ctx.beginPath();
-		ctx.arc(px, py, 20, 0, 2*Math.PI, true);
-
-		ctx.fillStyle = "rgba(0, 0, 200, 0.2)";
-		ctx.fill();
-
-		ctx.lineWidth = 2.0;
-		ctx.strokeStyle = "rgba(0, 0, 200, 0.8)";
-		ctx.stroke();
 	
-		//try hitting all the boxes
-		var tmp = {x:px, y:py};
-		fw.onFingerHits(tmp);
+		var hitPoint = {x:px, y:py};
+		fw.onFingerHits(hitPoint);
 	}
 
 	updateStarted = false;
 }
 
 function ol() {
-	canvas = document.getElementById('testCanvas');
-	ctx = canvas.getContext('2d');
-	
-	fw = new naviFramework_UI();
+	var canvas = document.getElementById('testCanvas');
 	fw.init("testCanvas");
 
-    var fe = function(point)
-    {
-    	this.position = point;
-    };
-	fw.drawTile(100,100,100,100, "tile1", fe, fe, fe, fe);
-	fw.drawTile(200,200,100,100, "tile2", fe, fe, fe, fe);
+	fw.drawTile(tile1);
+	fw.drawTile(tile2);
 	fw.drawBackgroundItem();
 
 	timer = setInterval(update, 15);
-	canvas.addEventListener('touchend', function() {
-	ctx.clearRect(0, 0, w, h);
-	});
 
+	canvas.addEventListener('touchend', function() {
+		
+	});
 	canvas.addEventListener('touchmove', function(event) {
 	  event.preventDefault();
 	  touches = event.touches;
 	});
-
 	canvas.addEventListener('touchstart', function(event) {
 	  console.log('start');
 	});
@@ -81,10 +59,5 @@ function ol() {
 
 <canvas id="testCanvas" resize></canvas>
 <object id="tuio" type="application/x-tuio">Plugin FAILED to load</object>
-<script type="text/javascript">
-	//window.onload = function() {
-		
-	//}
-</script>
 </body>
 </html>
