@@ -2,7 +2,8 @@ var fw;
 
 function naviFramework_UI()
 {
-    this.paper = "";
+    this.paper;
+    this.view;
     this.generalStyle = {
         fillColor: '#FFFFFF',
         strokeColor: '#4d4d4d',
@@ -28,9 +29,9 @@ function naviFramework_UI()
             var hitResult = fw.layers[1].hitTest(event.point);
             if(hitResult != null)
             {
-                if(hitResult.item.mouseDownEvent != null)
+                if(hitResult.item.raw != null && hitResult.item.raw.mouseDownEvent != null)
                 {
-                    hitResult.item.mouseDownEvent(event.point);
+                    hitResult.item.raw.mouseDownEvent(event.point, hitResult.item);
                 }
             }
         }
@@ -43,9 +44,9 @@ function naviFramework_UI()
             var hitResult = fw.layers[1].hitTest(event.point);
             if(hitResult != null)
             {
-                if(hitResult.item.mouseDragEvent != null)
+                if(hitResult.item.raw != null && hitResult.item.raw.mouseDragEvent != null)
                 {
-                    hitResult.item.mouseDragEvent(event.point);
+                    hitResult.item.mouseDragEvent(event.point, hitResult.item);
                 }
             }
         }
@@ -58,9 +59,9 @@ function naviFramework_UI()
             var hitResult = fw.layers[1].hitTest(event.point);
             if(hitResult != null)
             {
-                if(hitResult.item.mouseUpEvent != null)
+                if(hitResult.item.raw != null && hitResult.item.raw.mouseUpEvent != null)
                 {
-                    hitResult.item.mouseUpEvent(event.point);
+                    hitResult.item.mouseUpEvent(event.point, hitResult.item);
                 }
             }
         }
@@ -70,15 +71,14 @@ function naviFramework_UI()
     {
         with(this.paper)
         {
-            
             //console.log("FINGER X: " + point.x + "- Y: " + point.y);
             var hitPoint = new Point(point.x, point.y);
             var hitResult = fw.layers[1].hitTest(hitPoint);
             if(hitResult != null)
             {
-                if(hitResult.item.fingerEvent != null)
+                if(hitResult.item.raw.fingerEvent != null)
                 {
-                    hitResult.item.fingerEvent(point);
+                    hitResult.item.raw.fingerEvent(point);
                 }
             }
         }   
@@ -91,9 +91,9 @@ function naviFramework_UI()
             var children = fw.layers[1].children;
             for(var i=0;i < children.length; i++)
             {
-                if(children[i].animationLoop != null)
+                if(children[i].raw.animationLoop != null)
                 {
-                    children[i].animationLoop(event);
+                    children[i].raw.animationLoop(event, children[i]);
                 }
             }
         }
@@ -103,10 +103,10 @@ function naviFramework_UI()
     this.init = function(canvas)
     {
         this.paper = paper.setup(canvas);
-
         with(this.paper)
         {
             this.tool = tool;
+            this.view = view;
             this.layers = [new Layer(), new Layer()];
             tool.onMouseDown = this.onMouseDown;
             tool.onMouseUp = this.onMouseUp;
@@ -125,15 +125,12 @@ function naviFramework_UI()
         with(this.paper)
         {
             this.layers[1].activate();
-            var rect = new Rectangle(new Point(tile.x,tile.y), new Size(tile.width,tile.height));
+            var rect = new Rectangle(new Point(tile.x,tile.y), new Size(tile.width(),tile.height()));
             var rectangle = new Path.Rectangle(rect);
             rectangle.style = this.generalStyle;
             rectangle.name = tile.name; 
-            rectangle.mouseDownEvent = tile.mouseDownEvent;
-            rectangle.mouseDragEvent = tile.mouseDownEvent;
-            rectangle.mouseUpEvent = tile.mouseDownEvent;
-            rectangle.fingerEvent = tile.mouseDownEvent;
-            rectangle.animationLoop = tile.animationLoop;
+            rectangle.raw = tile;
+
            
         }
     }
