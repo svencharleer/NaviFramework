@@ -33,9 +33,9 @@ function update() {
 function ol() {
 	var canvas = document.getElementById('testCanvas');
 	fw.init("testCanvas");
-
-	fw.drawTile(tile1);
-	fw.drawTile(tile2);
+	var objects = [tile1, tile2];
+	fw.draw(objects);
+	
 	fw.drawBackgroundItem();
 
 	timer = setInterval(update, 15);

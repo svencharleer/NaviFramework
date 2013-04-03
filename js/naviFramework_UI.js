@@ -120,6 +120,21 @@ function naviFramework_UI()
     // DRAW FUNCTIONS
     //------------
    
+    this.draw = function(objects)
+    {
+        
+            for(var i=0; i < objects.length; i++)
+            {
+                if(objects[i].type == "square")
+                    this.drawTile(objects[i]);
+                else if(objects[i].type == "text")
+                    this.drawText(objects[i]);
+                if(objects[i].subItems != null)
+                    this.draw(objects[i].subItems);
+            }
+
+    }
+
     this.drawTile = function(tile)
     {
         with(this.paper)
@@ -127,11 +142,28 @@ function naviFramework_UI()
             this.layers[1].activate();
             var rect = new Rectangle(new Point(tile.x,tile.y), new Size(tile.width(),tile.height()));
             var rectangle = new Path.Rectangle(rect);
-            rectangle.style = this.generalStyle;
+            if(tile.style != null)
+                rectangle.style = tile.style;
+            else
+                rectangle.style = this.generalStyle;
             rectangle.name = tile.name; 
             rectangle.raw = tile;
 
            
+        }
+    }
+
+    this.drawText = function(text)
+    {
+        with(this.paper)
+        {
+            this.layers[1].activate();
+            var textD = new PointText(new Point(text.x, text.y));
+            textD.content = text.text;
+            textD.characterStyle = text.style;
+            if(text.visible == false)
+                textD.visible = false;
+            textD.raw = text;
         }
     }
 
