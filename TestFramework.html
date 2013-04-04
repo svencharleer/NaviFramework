@@ -2,11 +2,12 @@
   <head>
     <title>Navi Framework Testbed</title>
     <meta name="viewport" content="width=device-width, user-scalable=no">
-<script type="text/javascript" src="js/paper.js"></script>
-<script type="text/javascript" src="js/magictouch.js"></script>
-<script type="text/javascript" src="js/naviFramework_UI.js"></script>
-<script type="text/javascript" src="js/naviObjects.js"></script>
-<script type="text/javascript">
+    <link rel="stylesheet" href="css/naviFramework.css">
+	<script type="text/javascript" src="js/paper.js"></script>
+	<script type="text/javascript" src="js/magictouch.js"></script>
+	<script type="text/javascript" src="js/naviFramework_UI.js"></script>
+	<script type="text/javascript" src="js/naviObjects.js"></script>
+	<script type="text/javascript">
 
 
 var timer;
@@ -33,8 +34,8 @@ function update() {
 function ol() {
 	var canvas = document.getElementById('testCanvas');
 	fw.init("testCanvas");
-	var objects = [tile1, tile2];
-	fw.draw(objects);
+	var objects = [menu, tile2];
+	fw.drawAll(objects);
 	
 	fw.drawBackgroundItem();
 

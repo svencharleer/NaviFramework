@@ -84,6 +84,24 @@ function naviFramework_UI()
         }   
     }
 
+    this.handleFrameItem = function(event, item)
+    {
+        //check children first
+        if(item.hasChildren())
+        {
+            var children = item.children;
+            for(var i=0;i < children.length; i++)
+            {
+                this.handleFrameItem(event, children[i]);
+            }
+        }
+        //then animate the item
+        if(item.raw != null && item.raw.animationLoop != null)
+        {
+            item.raw.animationLoop(event,item);
+        }
+    }
+
     this.onFrame = function(event)
     {
         with(paper)
@@ -91,10 +109,7 @@ function naviFramework_UI()
             var children = fw.layers[1].children;
             for(var i=0;i < children.length; i++)
             {
-                if(children[i].raw.animationLoop != null)
-                {
-                    children[i].raw.animationLoop(event, children[i]);
-                }
+                fw.handleFrameItem(event, children[i]);
             }
         }
     }
@@ -120,18 +135,38 @@ function naviFramework_UI()
     // DRAW FUNCTIONS
     //------------
    
-    this.draw = function(objects)
+    this.draw = function(object)
     {
-        
-            for(var i=0; i < objects.length; i++)
+        with(this.paper)
+        {
+            if(object.type == "group")
             {
-                if(objects[i].type == "square")
-                    this.drawTile(objects[i]);
-                else if(objects[i].type == "text")
-                    this.drawText(objects[i]);
-                if(objects[i].subItems != null)
-                    this.draw(objects[i].subItems);
+                var group = new Group();
+                group.position = new Point(object.x, object.y);
+                group.raw = object;
+                //don't draw, just add to group
+                for(var j=0; j < object.subItems.length;j++)
+                {
+                    var child = this.draw(object.subItems[j]);
+                    group.addChild(child);
+                }
             }
+            else if(object.type == "square")
+                return this.drawTile(object);
+            else if(object.type == "text")
+                return this.drawText(object);
+        }
+
+    }
+
+    this.drawAll = function(objects)
+    {
+        //if there's a parent, add the children to a group and attach them to the parent
+
+        for(var i=0; i < objects.length; i++)
+        {
+            this.draw(objects[i]);
+        }
 
     }
 
@@ -148,8 +183,7 @@ function naviFramework_UI()
                 rectangle.style = this.generalStyle;
             rectangle.name = tile.name; 
             rectangle.raw = tile;
-
-           
+            return rectangle; 
         }
     }
 
@@ -164,6 +198,8 @@ function naviFramework_UI()
             if(text.visible == false)
                 textD.visible = false;
             textD.raw = text;
+            textD.name = text.name;
+            return textD;
         }
     }
 
