@@ -5,11 +5,13 @@
     <link rel="stylesheet" href="css/naviFramework.css">
 	<script type="text/javascript" src="js/paper.js"></script>
 	<script type="text/javascript" src="js/magictouch.js"></script>
+	<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+	
 	<script type="text/javascript" src="js/naviFramework_UI.js"></script>
 	<script type="text/javascript" src="js/naviObjects.js"></script>
 	<script type="text/javascript">
 
-
+var badgeData;
 var timer;
 var updateStarted = false;
 var touches = [];
@@ -51,6 +53,8 @@ function ol() {
 	canvas.addEventListener('touchstart', function(event) {
 	  console.log('start');
 	});
+
+	$.getJSON('http://localhost:8888/REST/getBadges?callback=', function(data) { badgeData = data; alert(data); }, "json");
 };
 
 </script>
