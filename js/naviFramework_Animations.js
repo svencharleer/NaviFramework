@@ -43,25 +43,8 @@ function animation_Fade(startValue, endValue, caller)
 	this.endValue = endValue;
 	
 	
-	this.trigger = function()
-	{
-						switch(this.animationState)
-						{
-							case -1:
-								this.animate = this.fade;
-								this.animationState = 0;
-								break;
-							case 0:
-								this.animate = null;
-	    						this.animationTime = null;
-	    						this.animationState = -1;
-	    						caller.afterAnimation();
-	    						break;
-							default:
-						}
-	}
 
-	this.fade = function(event, obj)
+	this.defaultAnimation = function(event, obj)
 	{
     					//total seconds for animation
     					var totalSeconds = .2;
@@ -99,25 +82,8 @@ function animation_TweenPosition(startPosition, endPosition, totalTime, caller)
 	this.endPosition = endPosition;
 	this.totalTime = totalTime;
 	
-	this.trigger = function()
-	{
-						switch(this.animationState)
-						{
-							case -1:
-								this.animate = this.tweenPosition;
-								this.animationState = 0;
-								break;
-							case 0:
-								this.animate = null;
-	    						this.animationTime = null;
-	    						this.animationState = -1;
-	    						caller.afterAnimation();
-	    						break;
-							default:
-						}
-	}
 
-    this.tweenPosition = function(event, obj) 
+    this.defaultAnimation = function(event, obj) 
     {
     					
     					if(this.animationTime == null)
