@@ -96,9 +96,14 @@ function naviFramework_UI()
             }
         }
         //then animate the item
-        if(item.raw != null && item.raw.animationLoop != null)
+        if(item.raw != null && item.raw.activeAnimations != null && item.raw.activeAnimations.length > 0)
         {
-            item.raw.animationLoop(event,item);
+
+            $.each(item.raw.activeAnimations, 
+                function(i, animationObject){ 
+                    if(animationObject.animate != null) 
+                        animationObject.animate(event, item)
+                });
         }
     }
 
@@ -144,6 +149,7 @@ function naviFramework_UI()
                 var group = new Group();
                 group.position = new Point(object.x, object.y);
                 group.raw = object;
+                object.paperObject = group;
                 //don't draw, just add to group
                 for(var j=0; j < object.subItems.length;j++)
                 {
@@ -175,7 +181,7 @@ function naviFramework_UI()
         with(this.paper)
         {
             this.layers[tile.layer].activate();
-            var rect = new Rectangle(new Point(tile.x,tile.y), new Size(tile.width(),tile.height()));
+            var rect = new Rectangle(new Point(tile.x,tile.y), new Size(tile.width,tile.height));
             var rectangle = new Path.Rectangle(rect);
             if(tile.style != null)
                 rectangle.style = tile.style;

@@ -1,143 +1,67 @@
-//fw is loaded before this file. so you can access fw.
-//fw is loaded before this file. so you can access fw.
 
-//SUB ITEMS
-//---------
-var text1 = 
+function Menu(name, position, menuItems)
 {
-	type: "text",
-	name: "menuBadges",
-	text: "Badges",
-	layer: 2,
-	x: 15,
-	y: 50,
-	mouseDownEvent: function(point, obj)
-	{
-						badgeData.reload();
-	},
-
-	animation: animation_FadeInOut,
-	showHideText: animation.trigger,
-
-	style: {
-				fillColor:'#4d4d4d',
-				fontSize:30,
-				font: 'Helvetica'
-			},
-	visible: false
-}
-
-var text2 = 
-{
-	type: "text",
-	name: "menuStudents",
-	text: "Students",
-	layer: 2,
-	x: 15,
-	y: 100,
+	//general
+	this.type ="group";
+	this.name = name;
+	this.layer = 2;
+	this.paperObject = null;
 	
-	animation: animation_FadeInOut,
-	showHideText: animation.trigger,
-
-	style: {
-
-				fillColor:'#4d4d4d',
-				fontSize:30,
-				font: 'Helvetica'
-			},
-	visible: false
-}
-
-
-var menuRedBar = 
-{
-	type: "square",
-	name: "menuRedBar",
-	layer: 1,
-	x:190,
-	y: -10,
-	width: function() { return 10;},
-	height: function() { return fw.view.size.height+20;},
-	mouseDownEvent: function(point, obj)
+	//group
+	this.subItems = [
+		new Tile("menuBackground",1,{x:0,y:-10},{w:200,h:fw.view.size.height+20},{fillColor: '#ffffff', strokeWidth: 0},{}),
+		new Tile("menuRedBar",1,{x:200, y:-10},{w:10, h:fw.view.size.height+20},{fillColor: '#fe5f66', strokeWidth:0},
+			{
+				mouseDownEvent: function(point, obj)
 					{
 						obj.parent.raw.showHideMenu();
-					},
-	mouseUpEvent: null,
-	mouseDragEvent: null,
-	fingerEvent: null,
-	style: {
-        fillColor: '#efefef',
-        strokeColor: '#fe5f66',
-        strokeWidth: 20
-    }
-};
+					}
+			})
+		]
+ 
+	var length = this.subItems.length;
+	for(var i = 0; i < length; i++)
+	{
+		this.subItems.push(new Text(menuItems[i].name, menuItems[i].text, {x:15,y:(50+i*50)}, menuItems[i].events));
+	}
 
-var menuBackground = 
-{
-	type: "square",
-	name: "menuBackground",
-	layer: 1,
-	x:0,
-	y: -10,
-	width: function() { return 200;},
-	height: function() { return fw.view.size.height+20;},
-	mouseUpEvent: null,
-	mouseDragEvent: null,
-	fingerEvent: null,
-	style: {
-        fillColor: '#ffffff',
-        strokeColor: '#fe5f66',
-        strokeWidth: 0
-    }
-};
+	//object state
+	this.x = position.x;
+	this.y = position.y;
+	this.state = "hidden";
 
-var tile2 = 
-{
-	type: "square",
-	name: "tile1",
-	layer: 2,
-	x: 200,
-	y: 200,
-	width: function() { return 50;},
-	height: function() { return 50;},
-	mouseDownEvent: genericTouchEvents.mouseDownEvent,
-	mouseUpEvent: null,
-	mouseDragEvent: null,
-	fingerEvent: null,
-    animationLoop: function(event,obj)
-    				{
-    					obj.rotate(3);
-    				}
-};
+	//animation related
+	//-----------------
+	this.activeAnimations = [];
+	var anim1 = new animation_TweenPosition({x: this.x, y:this.y}, {x: this.x +190, y:this.y}, .2, this);
+	var anim2 = new animation_TweenPosition({x: this.x +190, y:this.y}, {x: this.x, y:this.y}, .2, this);
+	this.animations = [anim1, anim2];
 
-
-//ACTUAL ITEM
-
-var menu =
-{
-	type: "group",
-	name: "menu",
-	layer: 2,
-	subItems: [menuBackground, menuRedBar, text1, text2],
-	x: -200,
-	y: 0,
-	
-	animations: [
-			new animation_TweenPosition({x: this.x, y:this.y}, {x: this.x +190, y:this.y}, .2, this),
-			new animation_TweenPosition({x: this.x +190, y:this.y}, {x: this.x, y:this.y}, .2, this)
-				]
-
-	afterAnimation: function(obj)
+	this.afterAnimation = function()
 					{
+						if(this.state == "becoming_visible") this.state = "visible";
+						if(this.state == "becoming_hidden") this.state = "hidden";
+						this.subItems[2].showHideText();
+    					this.subItems[3].showHideText();
 						
-						obj.children["menuBadges"].raw.showHideText();
-    					obj.children["menuStudents"].raw.showHideText();
+					},
+	//methods
+	this.showHideMenu = function()
+					{
+						if(this.state == "hidden")
+						{
+							this.activeAnimations = [this.animations[0]];
+							this.state = "becoming_visible";
+							this.activeAnimations[0].trigger();
+						}
+						else if(this.state == "visible")
+						{
+							this.activeAnimations = [this.animations[1]];
+							this.state = "becoming_hidden";
+							this.activeAnimations[0].trigger();
+						}
 						
 					}
-	showHideMenu: function()
-					{
-						this.animation.trigger();
-					},
 }
 
 
