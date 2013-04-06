@@ -14,6 +14,7 @@
 	<script type="text/javascript" src="js/naviObjects_Text.js"></script>
 	<script type="text/javascript" src="js/naviObjects_Menu.js"></script>
 	<script type="text/javascript" src="js/naviObjects_BadgeData.js"></script>
+	<script type="text/javascript" src="js/navi_CustomTests.js"></script>
 	<script type="text/javascript">
 
 var badgeData;
@@ -43,7 +44,7 @@ function ol() {
 	fw.init("testCanvas");
 
 
-	var menuItems = [{name:"menuBadges", text:"Badges", events:{mouseDownEvent: function(point, obj){badgeData.reload();}}}, {name:"menuStudents", text:"Students", events:{}}];
+	var menuItems = [{name:"menuBadges", text:"Badges", events:{mouseDownEvent: function(point, obj){badgeData.reload();}}}, {name:"menuStudents", text:"Students", events:{}},{name:"menuSettings", text:"Settings", events:{}}];
 	var objects = [new Menu("menu", {x:-200, y:0}, menuItems), tile1, tile2];
 	fw.drawAll(objects);
 	

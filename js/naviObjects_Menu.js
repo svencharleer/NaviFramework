@@ -18,8 +18,11 @@ function Menu(name, position, menuItems)
 					}
 			})
 		]
- 
-	var length = this.subItems.length;
+
+	var firstMenuItemIndex = this.subItems.length; //need this to iterate over menuitems
+	var length = menuItems.length;
+
+	
 	for(var i = 0; i < length; i++)
 	{
 		this.subItems.push(new Text(menuItems[i].name, menuItems[i].text, {x:15,y:(50+i*50)}, menuItems[i].events));
@@ -41,8 +44,9 @@ function Menu(name, position, menuItems)
 					{
 						if(this.state == "becoming_visible") this.state = "visible";
 						if(this.state == "becoming_hidden") this.state = "hidden";
-						this.subItems[2].showHideText();
-    					this.subItems[3].showHideText();
+						for(var i = firstMenuItemIndex; i < this.subItems.length;i++)
+							this.subItems[i].showHideText();
+    					
 						
 					},
 	//methods
