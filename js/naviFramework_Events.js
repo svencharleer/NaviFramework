@@ -5,3 +5,4 @@ var genericTouchEvents =
     					obj.position = point;
     				}
  };
+

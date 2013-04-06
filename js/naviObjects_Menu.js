@@ -8,32 +8,16 @@ var text1 =
 	type: "text",
 	name: "menuBadges",
 	text: "Badges",
+	layer: 2,
 	x: 15,
 	y: 50,
 	mouseDownEvent: function(point, obj)
 	{
 						badgeData.reload();
 	},
-	animationTime: null,
-	animationState: 0,
-	animationLoop: null,
-	animationLoop1: genericAnimation.fadeIn,
-	animationLoop2: genericAnimation.fadeOut,
-	showHideText: function()
-	{
-						switch(this.animationState)
-						{
-							case 0:
-								this.animationLoop = this.animationLoop1;
-								this.animationState = -1;
-								break;
-							case 1:
-								this.animationLoop = this.animationLoop2;
-								this.animationState = -1;
-								break;
-							default:
-						}
-	},
+
+	animation: animation_FadeInOut,
+	showHideText: animation.trigger,
 
 	style: {
 				fillColor:'#4d4d4d',
@@ -48,28 +32,13 @@ var text2 =
 	type: "text",
 	name: "menuStudents",
 	text: "Students",
+	layer: 2,
 	x: 15,
 	y: 100,
-	animationTime: null,
-	animationState: 0,
-	animationLoop: null,
-	animationLoop1: genericAnimation.fadeIn,
-	animationLoop2: genericAnimation.fadeOut,
-	showHideText: function()
-	{
-						switch(this.animationState)
-						{
-							case 0:
-								this.animationLoop = this.animationLoop1;
-								this.animationState = -1;
-								break;
-							case 1:
-								this.animationLoop = this.animationLoop2;
-								this.animationState = -1;
-								break;
-							default:
-						}
-	},
+	
+	animation: animation_FadeInOut,
+	showHideText: animation.trigger,
+
 	style: {
 
 				fillColor:'#4d4d4d',
@@ -84,7 +53,7 @@ var menuRedBar =
 {
 	type: "square",
 	name: "menuRedBar",
-	
+	layer: 1,
 	x:190,
 	y: -10,
 	width: function() { return 10;},
@@ -96,9 +65,6 @@ var menuRedBar =
 	mouseUpEvent: null,
 	mouseDragEvent: null,
 	fingerEvent: null,
-	animationTime: null,
-	animationState: 0,
-	animationLoop: null,
 	style: {
         fillColor: '#efefef',
         strokeColor: '#fe5f66',
@@ -110,7 +76,7 @@ var menuBackground =
 {
 	type: "square",
 	name: "menuBackground",
-	
+	layer: 1,
 	x:0,
 	y: -10,
 	width: function() { return 200;},
@@ -118,9 +84,6 @@ var menuBackground =
 	mouseUpEvent: null,
 	mouseDragEvent: null,
 	fingerEvent: null,
-	animationTime: null,
-	animationState: 0,
-	animationLoop: null,
 	style: {
         fillColor: '#ffffff',
         strokeColor: '#fe5f66',
@@ -132,6 +95,7 @@ var tile2 =
 {
 	type: "square",
 	name: "tile1",
+	layer: 2,
 	x: 200,
 	y: 200,
 	width: function() { return 50;},
@@ -153,61 +117,26 @@ var menu =
 {
 	type: "group",
 	name: "menu",
+	layer: 2,
 	subItems: [menuBackground, menuRedBar, text1, text2],
 	x: -200,
 	y: 0,
-	animationTime: null,
-	animationState: 0,
-	animationLoop: null,
-	animationLoop: null,
-	animationLoop1:function(event, obj)
-    				{
-    					var startPosition = {x: this.x, y:this.y};
-						var endPosition = {x: this.x + 190, y: this.y};
-    					//total seconds for animation
-    					var totalTime = .2;
-    					var result = genericAnimation.tweenPosition(event, obj, startPosition, endPosition, this.animationTime, totalTime);
-    					this.animationTime = result.time;
-    					if(result.done)
-    					{
-    						obj.children["menuBadges"].raw.showHideText();
-	    					obj.children["menuStudents"].raw.showHideText();
-	    					this.animationLoop = null;
-	    					this.animationTime = null;
-	    					this.animationState = 1;
-	    				}
-    				},
-	animationLoop2:function(event, obj)
-    				{
-    					var startPosition = {x: this.x + 190, y:this.y};
-						var endPosition = {x: this.x, y: this.y};
-    					//total seconds for animation
-    					var totalTime = .2;
-    					var result = genericAnimation.tweenPosition(event, obj, startPosition, endPosition, this.animationTime, totalTime);
-    					this.animationTime = result.time;
-    					if(result.done)
-    					{	
-    						obj.children["menuBadges"].raw.showHideText();
-    						obj.children["menuStudents"].raw.showHideText();
-	    					this.animationLoop = null;
-	    					this.animationTime = null;
-	    					this.animationState = 0;
-	    				}
-    				},
+	
+	animations: [
+			new animation_TweenPosition({x: this.x, y:this.y}, {x: this.x +190, y:this.y}, .2, this),
+			new animation_TweenPosition({x: this.x +190, y:this.y}, {x: this.x, y:this.y}, .2, this)
+				]
+
+	afterAnimation: function(obj)
+					{
+						
+						obj.children["menuBadges"].raw.showHideText();
+    					obj.children["menuStudents"].raw.showHideText();
+						
+					}
 	showHideMenu: function()
 					{
-						switch(this.animationState)
-						{
-							case 0:
-								this.animationLoop = this.animationLoop1;
-								this.animationState = -1;
-								break;
-							case 1:
-								this.animationLoop = this.animationLoop2;
-								this.animationState = -1;
-								break;
-							default:
-						}
+						this.animation.trigger();
 					},
 }
 

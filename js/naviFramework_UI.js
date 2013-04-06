@@ -26,7 +26,7 @@ function naviFramework_UI()
         {
             //console.log("CLICK X: " + event.point.x + "- Y: " + event.point.y);
             
-            var hitResult = fw.layers[1].hitTest(event.point);
+            var hitResult = fw.layers[2].hitTest(event.point);
             if(hitResult != null)
             {
                 if(hitResult.item.raw != null && hitResult.item.raw.mouseDownEvent != null)
@@ -41,7 +41,7 @@ function naviFramework_UI()
     {
         with(fw.paper)
         {
-            var hitResult = fw.layers[1].hitTest(event.point);
+            var hitResult = fw.layers[2].hitTest(event.point);
             if(hitResult != null)
             {
                 if(hitResult.item.raw != null && hitResult.item.raw.mouseDragEvent != null)
@@ -56,7 +56,7 @@ function naviFramework_UI()
     {
         with(fw.paper)
         {
-            var hitResult = fw.layers[1].hitTest(event.point);
+            var hitResult = fw.layers[2].hitTest(event.point);
             if(hitResult != null)
             {
                 if(hitResult.item.raw != null && hitResult.item.raw.mouseUpEvent != null)
@@ -73,7 +73,7 @@ function naviFramework_UI()
         {
             //console.log("FINGER X: " + point.x + "- Y: " + point.y);
             var hitPoint = new Point(point.x, point.y);
-            var hitResult = fw.layers[1].hitTest(hitPoint);
+            var hitResult = fw.layers[2].hitTest(hitPoint);
             if(hitResult != null)
             {
                 if(hitResult.item.raw.fingerEvent != null)
@@ -106,7 +106,7 @@ function naviFramework_UI()
     {
         with(paper)
         {
-            var children = fw.layers[1].children;
+            var children = fw.layers[2].children;
             for(var i=0;i < children.length; i++)
             {
                 fw.handleFrameItem(event, children[i]);
@@ -122,7 +122,7 @@ function naviFramework_UI()
         {
             this.tool = tool;
             this.view = view;
-            this.layers = [new Layer(), new Layer()];
+            this.layers = [new Layer(), new Layer(), new Layer()];
             tool.onMouseDown = this.onMouseDown;
             tool.onMouseUp = this.onMouseUp;
             tool.onMouseDrag = this.onMouseDrag;
@@ -174,7 +174,7 @@ function naviFramework_UI()
     {
         with(this.paper)
         {
-            this.layers[1].activate();
+            this.layers[tile.layer].activate();
             var rect = new Rectangle(new Point(tile.x,tile.y), new Size(tile.width(),tile.height()));
             var rectangle = new Path.Rectangle(rect);
             if(tile.style != null)
@@ -191,7 +191,7 @@ function naviFramework_UI()
     {
         with(this.paper)
         {
-            this.layers[1].activate();
+            this.layers[text.layer].activate();
             var textD = new PointText(new Point(text.x, text.y));
             textD.content = text.text;
             textD.characterStyle = text.style;

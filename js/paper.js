@@ -6715,6 +6715,12 @@ var TextItem = this.TextItem = Item.extend({
 var PointText = this.PointText = TextItem.extend({
 	_type: 'PointText',
 
+	_hitTest: function(point) {
+			var res =  new HitResult('pointtext', this);
+			res.item = this;
+			return res;
+	},
+
 	clone: function() {
 		return this._clone(new PointText());
 	},

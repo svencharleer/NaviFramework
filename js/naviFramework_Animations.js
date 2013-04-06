@@ -1,8 +1,34 @@
-var genericAnimation = 
- {
- 	//fade in for items / no specific arguments so replace original anim
-    fadeIn: function(event, obj)
-    				{
+/*
+	animation objects
+	- trigger: method to call to trigger the animation
+	- animationLoop: current animation loop (set to null if not animating)
+	- other methods: animation loops
+*/
+
+var animation_FadeInOut =
+{
+	animationTime: null,
+	animationState: -1,
+	animate: null;
+	
+	trigger: function()
+	{
+						switch(this.animationState)
+						{
+							case 0:
+								this.animate = this.fadeIn;
+								this.animationState = -1;
+								break;
+							case 1:
+								this.animate = this.fadeOut;
+								this.animationState = -1;
+								break;
+							default:
+						}
+	},
+
+	fadeIn: function(event, obj)
+	{
     					//total seconds for animation
     					var totalSeconds = .2;
     					if(this.animationTime == null)
@@ -22,14 +48,13 @@ var genericAnimation =
 	    				{
 	    					obj.visible = true;
     						obj.opacity = 1.0;
-	    					this.animationLoop = null;
+	    					this.animate = null;
 	    					this.animationTime = null;
 	    					this.animationState = 1;
 	    				}
-    				},
-    //fade in for items / no specific arguments so replace original anim
+	},
     fadeOut: function(event, obj)
-    				{
+	{
     					//total seconds for animation
     					var totalSeconds = .2;
     					if(this.animationTime == null)
@@ -48,35 +73,68 @@ var genericAnimation =
 	    				else 
 	    				{
 	    					obj.visible = false;
-	    					this.animationLoop = null;
+	    					this.animate = null;
 	    					this.animationTime = null;
 	    					this.animationState = 0;
 	    				}
-    				},
-    //tween for item. return true when finished
-    tweenPosition: function(event, obj, startPosition, endPosition, time, totalTime) 
+	},
+
+}
+
+
+
+
+function animation_TweenPosition(startPosition, endPosition, totalTime, caller) 
+{
+	var startPosition = startPosition;
+	var endPosition = endPosition;
+	var totalTime = totalTime;
+	var animationTime = null;
+	var animationState = -1;
+	var animate = null;
+	var caller = caller;
+	this.trigger = function()
+	{
+						switch(this.animationState)
+						{
+							case 0:
+								this.animate = this.fadeIn;
+								this.animationState = -1;
+								break;
+							case 1:
+								this.animate = this.fadeOut;
+								this.animationState = -1;
+								break;
+							default:
+						}
+	};
+
+    this.tweenPosition = function(event, obj) 
     {
     					
-    					if(time == null)
-    						time = 0;
+    					if(this.animationTime == null)
+    						this.animationTime = 0;
 
-    					if(time < totalTime)
+    					if(this.animationTime < totalTime)
     					{
-    						time = time + event.delta;
-	    					var t = time / totalTime;
+    						this.animationTime = this.animationTime + event.delta;
+	    					var t = this.animationTime / totalTime;
 	    					if(t < 1.0)
 	    					{
 	    						
 	    						obj.bounds.x = ((1.0 - t) * startPosition.x + t * endPosition.x);
 	    						obj.bounds.y = ((1.0 - t) * startPosition.y + t * endPosition.y);
 	    					}
-	    					return {time: time, done: false};
+	    					
 	    				}
 	    				else
 	    				{
 	    					obj.bounds.x = endPosition.x;
 	    					obj.bounds.y = endPosition.y;
-	    					return {time: time, done: true};
+	    					this.animate = null;
+	    					this.animationTime = null;
+	    					this.animationState = 0;
+	    					caller.afterAnimation(obj);
 	    				}	
     }
 };

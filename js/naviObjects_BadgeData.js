@@ -5,7 +5,7 @@ var badgeData =
 	reload: function()
 	{
 		loadDone = false;
-		$.getJSON('http://localhost:8888/REST/getBadges?callback=', function(json) { data = data; loadDone = true; alert("Loaded!"); }, "json");
+		$.getJSON('http://localhost:8888/REST/getBadges?callback=', function(json) { this.data = json; loadDone = true; alert("Loaded!"); }, "json");
 	}
 
 }
