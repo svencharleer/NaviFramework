@@ -13,11 +13,12 @@
 	<script type="text/javascript" src="js/naviObjects_Tile.js"></script>
 	<script type="text/javascript" src="js/naviObjects_Text.js"></script>
 	<script type="text/javascript" src="js/naviObjects_Menu.js"></script>
-	<script type="text/javascript" src="js/naviObjects_BadgeData.js"></script>
+	<script type="text/javascript" src="js/naviObjects_Image.js"></script>
+	<script type="text/javascript" src="js/naviScene_Badges.js"></script>
 	<script type="text/javascript" src="js/navi_CustomTests.js"></script>
 	<script type="text/javascript">
 
-var badgeData;
+
 var timer;
 var updateStarted = false;
 var touches = [];
@@ -44,7 +45,7 @@ function ol() {
 	fw.init("testCanvas");
 
 
-	var menuItems = [{name:"menuBadges", text:"Badges", events:{mouseDownEvent: function(point, obj){badgeData.reload();}}}, {name:"menuStudents", text:"Students", events:{}},{name:"menuSettings", text:"Settings", events:{}}];
+	var menuItems = [{name:"menuBadges", text:"Badges", events:{mouseDownEvent: function(point, obj){scene_Badges.init();}}}, {name:"menuStudents", text:"Students", events:{}},{name:"menuSettings", text:"Settings", events:{}}];
 	var objects = [new Menu("menu", {x:-200, y:0}, menuItems), tile1, tile2];
 	fw.drawAll(objects);
 	
@@ -73,5 +74,6 @@ function ol() {
 
 <canvas id="testCanvas" resize></canvas>
 <object id="tuio" type="application/x-tuio">Plugin FAILED to load</object>
+<div id="imageStore" style="display:none"></div>
 </body>
 </html>

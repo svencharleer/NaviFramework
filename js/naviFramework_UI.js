@@ -159,6 +159,8 @@ function naviFramework_UI()
             }
             else if(object.type == "square")
                 return this.drawTile(object);
+            else if(object.type == "image")
+                return this.drawImage(object);
             else if(object.type == "text")
                 return this.drawText(object);
         }
@@ -190,6 +192,21 @@ function naviFramework_UI()
             rectangle.name = tile.name; 
             rectangle.raw = tile;
             return rectangle; 
+        }
+    }
+
+    this.drawImage = function(image)
+    {
+        with(this.paper)
+        {
+            this.layers[image.layer].activate();
+            var raster = new Raster(image.name);
+            raster.position = new Point(image.x,image.y);
+            raster.scale(image.width/raster.size.width,image.height/raster.size.height);
+    
+            raster.name = image.name; 
+            raster.raw = image;
+            return raster; 
         }
     }
 
