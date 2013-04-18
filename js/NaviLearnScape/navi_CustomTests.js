@@ -10,7 +10,7 @@ function customAnimation_Rotate(caller)
 
 function customEvent_MouseDown(point, obj)
 {
-	obj.raw.activeAnimations[0].trigger();
+	obj.raw.animatable.idle();
 };
 
 
@@ -19,8 +19,8 @@ function customEvent_MouseDown(point, obj)
 function RotatingTile(name, layer, position, size, style, events)
 {
 	Tile.call(this, name, layer, position, size, style, events);
-	this.activeAnimations = [new customAnimation_Rotate(this)];
-	this.activeAnimations[0].trigger();
+	this.animatable = new NCAnimatable([new customAnimation_Rotate(this)]);
+	this.animatable.switchToAnimation(0);
 }
 
 RotatingTile.prototype = Object.create(Tile.prototype);
