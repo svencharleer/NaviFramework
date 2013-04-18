@@ -1,6 +1,6 @@
 function BadgeScene()
 {
-	NOScene.call(this,"BadgeScene");
+	NOScene.call(this,"BadgeScene", 2);
 	this.callBack = function(json)
 	{	 
 		alert("Loaded!");
@@ -21,17 +21,22 @@ function BadgeScene()
 	};
 	this.update = function()
 	{
+		//loading state
 		if($("#imageStore").attr("loaded") == "true")
 		{
 			var imageStore = $("#imageStore")[0];
 			var children = imageStore.childNodes;
 			for(var i = 0; i < children.length; i ++)
 			{
-				this.objects.push(new Badge(children[i].id, {x: i * 50, y : 100}, {w:50,h:50},2, {},children[i].id, {}));
+				this.group.objects.push(new Badge(children[i].id, {x: i * 50, y : 100}, {w:50,h:50},2, {},children[i].id, {}));
 			}
 			$("#imageStore").attr("loaded","false");
 			this.status = "entering";
 			this.entering();
+		}
+		else
+		{
+
 		}
 	}
 }

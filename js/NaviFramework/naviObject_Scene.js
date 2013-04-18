@@ -1,7 +1,7 @@
-function NOScene(name)
+function NOScene(name, layer)
 {
 	this.name = name;
-	this.objects = [];
+	this.group = new NCGroup(layer, []);
 	this.status = "not loaded"; // "loaded" "entering" "exiting"
 	this.init = function()
 	{
@@ -26,14 +26,14 @@ function NOScene(name)
 	this.entering = function()
 	{
 		//a scene will maybe animate into place
-		fw.addObjectsToCanvas(this.objects);
+		fw.addObjectsToCanvas([this]);
 		this.status = "loaded";
 	}
 	this.exiting = function()
 	{
 		// a scene might animate out of screen
 		
-		fw.removeObjectsFromCanvas(this.objects);
+		fw.removeObjectsFromCanvas([this]);
 		this.status = "not loaded";
 	}
 }

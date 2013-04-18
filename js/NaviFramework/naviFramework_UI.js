@@ -16,6 +16,7 @@ function naviFramework_UI()
 
     this.scenes = [];
     
+
     
     
     //------------
@@ -136,7 +137,7 @@ function naviFramework_UI()
         {
             this.tool = tool;
             this.view = view;
-            this.layers = [new Layer(), new Layer(), new Layer()];
+            this.layers = [new Layer(), new Layer(), new Layer(), new Layer()];
             tool.onMouseDown = this.onMouseDown;
             tool.onMouseUp = this.onMouseUp;
             tool.onMouseDrag = this.onMouseDrag;
@@ -154,15 +155,19 @@ function naviFramework_UI()
     {
         this.scenes.push(scene);
     }
+    
     this.addObjectToCanvas = function(object)
     {
         with(this.paper)
         {
             if(object.group != null)
             {
+                this.layers[object.group.layer].activate();
                 var group = new Group();
+                group.name = object.name;
                 group.position = new Point(object.x, object.y);
                 group.raw = object;
+                
                 object.paperObject = group;
                 //don't draw, just add to group
                 for(var j=0; j < object.group.objects.length;j++)
