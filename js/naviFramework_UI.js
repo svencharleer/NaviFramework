@@ -121,7 +121,7 @@ function naviFramework_UI()
             }
         }
         //run updates on top scene
-        if(fw.scenes != null)
+        if(fw.scenes != null && fw.scenes.length > 0)
         {
             fw.scenes[fw.scenes.length-1].update.call(fw.scenes[fw.scenes.length-1]);
         }
@@ -181,6 +181,15 @@ function naviFramework_UI()
 
     }
 
+    this.removeObjecToCanvas = function(object)
+    {
+        with(this.paper)
+        {
+            this.layers[object.layer].children[object.name].remove();
+        }
+
+    }
+
     this.addObjectsToCanvas = function(objects)
     {
         //if there's a parent, add the children to a group and attach them to the parent
@@ -190,6 +199,14 @@ function naviFramework_UI()
             this.addObjecToCanvas(objects[i]);
         }
 
+    }
+
+    this.removeObjectsFromCanvas = function(objects)
+    {
+        for(var i=0; i < objects.length; i++)
+        {
+            this.removeObjecToCanvas(objects[i]);
+        }
     }
 
     this.addTile = function(tile)

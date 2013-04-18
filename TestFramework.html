@@ -45,8 +45,8 @@ function ol() {
 	var canvas = document.getElementById('testCanvas');
 	fw.init("testCanvas");
 
-
-	var menuItems = [{name:"menuBadges", text:"Badges", events:{mouseDownEvent: function(point, obj){scene_Badges.init();}}}, {name:"menuStudents", text:"Students", events:{}},{name:"menuSettings", text:"Settings", events:{}}];
+	var scene;
+	var menuItems = [{name:"menuBadges", text:"Badges", events:{mouseDownEvent: function(point, obj){scene = new BadgeScene();scene.init();}}}, {name:"menuStudents", text:"Students", events:{mouseDownEvent: function(point, obj){scene.exit();}}},{name:"menuSettings", text:"Settings", events:{}}];
 	var objects = [new Menu("menu", {x:-200, y:0}, menuItems), tile1, tile2];
 	fw.addObjectsToCanvas(objects);
 	

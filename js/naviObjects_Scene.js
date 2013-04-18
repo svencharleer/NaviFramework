@@ -6,8 +6,15 @@ function naviScene(name)
 	this.init = function()
 	{
 		fw.pushScene(this);
+		this.status = "entering";
+		this.entering();
 		// load everything that is needed
 	};
+	this.exit = function()
+	{
+		this.status = "exiting";
+		this.exiting();
+	}
 	this.update = function()
 	{
 		// every frame we check if there's any action that needs to be performed
@@ -16,17 +23,16 @@ function naviScene(name)
 	{
 		// custom animtations for entire scene
 	};
-	this.enter = function()
+	this.entering = function()
 	{
 		//a scene will maybe animate into place
-		this.status = "entering";
 		fw.addObjectsToCanvas(this.renderables);
 		this.status = "loaded";
 	}
-	this.exit = function()
+	this.exiting = function()
 	{
 		// a scene might animate out of screen
-		this.status = "exiting";
+		
 		fw.removeObjectsFromCanvas(this.renderables);
 		this.status = "not loaded";
 	}

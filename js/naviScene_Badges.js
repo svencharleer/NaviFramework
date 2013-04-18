@@ -9,6 +9,7 @@ function BadgeScene()
 			$("#imageStore").append("<img src='"+ json[i].imageUrl +"' id='"+ json[i].GUID +"'' />");
 		};
 		$("#imageStore").attr("loaded", "true");
+
 	};
 	this.init = function()
 	{
@@ -28,12 +29,13 @@ function BadgeScene()
 			{
 				this.renderables.push(new naviImage(children[i].id,2, {x: i * 50, y : 100}, {w:50,h:50}, {}, {}));
 			}
-			this.enter();
 			$("#imageStore").attr("loaded","false");
+			this.status = "entering";
+			this.entering();
 		}
 	}
 }
 
 BadgeScene.prototype = Object.create(naviScene.prototype);
-var scene = new BadgeScene();
-scene.init();
+
+
