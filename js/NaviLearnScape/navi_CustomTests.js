@@ -8,7 +8,7 @@ function customAnimation_Rotate(caller)
     }
 };
 
-function customEvent_MouseDown(point, obj)
+function customEvent_MouseDown(event, obj)
 {
 	obj.raw.animatable.idle();
 };
@@ -25,9 +25,9 @@ function RotatingTile(name, layer, position, size, style, events)
 
 RotatingTile.prototype = Object.create(Tile.prototype);
 
-var tile1 = new Tile("tile1", 2, {x: 400, y:200}, {w:50, h:50}, {fillColor: '#FFFFFF',strokeColor: '#4d4d4d', strokeWidth: 10}, {mouseDownEvent: genericTouchEvents.mouseDownEvent})
+var tile1 = new Tile("tile1", 2, {x: 400, y:200}, {w:50, h:50}, {fillColor: '#FFFFFF',strokeColor: '#4d4d4d', strokeWidth: 10}, {mouseDownEvent: genericTouchEvents.dragging_mouseDown, mouseDragEvent: genericTouchEvents.dragging_mouseDrag, mouseUpEvent: genericTouchEvents.dragging_mouseUp,fingerEvent: genericTouchEvents.fingerEvent})
 
-var tile2 = new RotatingTile("tile2", 2, {x: 200, y:200}, {w:50, h:50}, {fillColor: '#FFFFFF',strokeColor: '#4d4d4d', strokeWidth: 10}, {mouseDownEvent: customEvent_MouseDown})
+var tile2 = new RotatingTile("tile2", 2, {x: 200, y:200}, {w:50, h:50}, {fillColor: '#FFFFFF',strokeColor: '#4d4d4d', strokeWidth: 10}, {mouseDownEvent: customEvent_MouseDown, fingerEvent: genericTouchEvents.fingerEvent})
 
 
 

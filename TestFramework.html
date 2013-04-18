@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <link rel="stylesheet" href="css/naviFramework.css">
 	<script type="text/javascript" src="js/3rdParty/paper.js"></script>
-	<script type="text/javascript" src="js/3rdParty/magictouch.js"></script>
 	<script type="text/javascript" src="js/3rdParty/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="js/magictouch.js"></script>
 	
 	<script type="text/javascript" src="js/NaviFramework/naviFramework_UI.js"></script>
 	<script type="text/javascript" src="js/NaviFramework/naviFramework_Events.js"></script>
@@ -26,6 +26,7 @@
 
 	<script type="text/javascript" src="js/NaviLearnScape/navi_CustomTests.js"></script>
 
+
 	<script type="text/javascript">
 
 
@@ -44,7 +45,7 @@ function update() {
 		var py = touch.pageY;
 	
 		var hitPoint = {x:px, y:py};
-		fw.onFingerHits(hitPoint);
+		fw.onFingerHits(hitPoint, touch.identifier);
 	}
 
 	updateStarted = false;

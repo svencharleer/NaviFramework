@@ -34,7 +34,7 @@ function naviFramework_UI()
             {
                 if(hitResult.item.raw != null && hitResult.item.raw.touchable != null && hitResult.item.raw.touchable.mouseDownEvent != null)
                 {
-                    hitResult.item.raw.touchable.mouseDownEvent(event.point, hitResult.item);
+                    hitResult.item.raw.touchable.mouseDownEvent(event, hitResult.item);
                 }
             }
         }
@@ -49,7 +49,7 @@ function naviFramework_UI()
             {
                 if(hitResult.item.raw != null && hitResult.item.raw.touchable != null && hitResult.item.raw.touchable.mouseDragEvent != null)
                 {
-                    hitResult.item.raw.touchable.mouseDragEvent(event.point, hitResult.item);
+                    hitResult.item.raw.touchable.mouseDragEvent(event, hitResult.item);
                 }
             }
         }
@@ -64,24 +64,31 @@ function naviFramework_UI()
             {
                 if(hitResult.item.raw != null && hitResult.item.raw.touchable != null && hitResult.item.raw.touchable.mouseUpEvent != null)
                 {
-                    hitResult.item.raw.touchable.mouseUpEvent(event.point, hitResult.item);
+                    hitResult.item.raw.touchable.mouseUpEvent(event, hitResult.item);
                 }
             }
         }
     }
 
-    this.onFingerHits = function(point)
+    this.fingerToObjects = {};
+    this.onFingerHits = function(point, identifier)
     {
         with(this.paper)
         {
+            var hitResult = null;
             //console.log("FINGER X: " + point.x + "- Y: " + point.y);
-            var hitPoint = new Point(point.x, point.y);
-            var hitResult = fw.layers[2].hitTest(hitPoint);
+            if(this.fingerToObjects[identifier] != null)
+                hitResult = this.fingerToObjects[identifier];
+            else
+            {
+                var hitPoint = new Point(point.x, point.y);
+                hitResult = fw.layers[2].hitTest(hitPoint);
+            }
             if(hitResult != null)
             {
                 if(hitResult.item.raw != null && hitResult.item.raw.touchable != null && hitResult.item.raw.touchable.fingerEvent != null)
                 {
-                    hitResult.item.raw.touchable.fingerEvent(point);
+                    hitResult.item.raw.touchable.fingerEvent(point, hitResult.item);
                 }
             }
         }   
@@ -155,7 +162,7 @@ function naviFramework_UI()
     {
         this.scenes.push(scene);
     }
-    
+
     this.addObjectToCanvas = function(object)
     {
         with(this.paper)

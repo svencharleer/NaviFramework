@@ -10,7 +10,7 @@ function Menu(name, position, menuItems)
 		new Tile("menuBackground",1,{x:0,y:-10},{w:200,h:fw.view.size.height+20},{fillColor: '#ffffff', strokeWidth: 0},{}),
 		new Tile("menuRedBar",2,{x:200, y:-10},{w:10, h:fw.view.size.height+20},{fillColor: '#fe5f66', strokeWidth:0},
 			{
-				mouseDownEvent: function(point, obj)
+				mouseDownEvent: function(event, obj)
 					{
 						obj.parent.raw.showHideMenu();
 					}

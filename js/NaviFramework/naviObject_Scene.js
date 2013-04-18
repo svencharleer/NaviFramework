@@ -1,6 +1,8 @@
-function NOScene(name, layer)
+function NOScene(name, layer, offset)
 {
 	this.name = name;
+	this.x = offset.x;
+	this.y = offset.y;
 	this.group = new NCGroup(layer, []);
 	this.status = "not loaded"; // "loaded" "entering" "exiting"
 	this.init = function()
