@@ -1,61 +1,39 @@
-//imagestore is actually a div that will be created in the html page as paper.js needs it
-	var BadgeData =
-	{
-		data: null,
-		loadDone: false,
-		imageStore: null,
-		sceneCallBack: null,
-
-		callBack: function(json)
-		{
-			BadgeData.data = json; 
-			BadgeData.loadDone = true; 
-			alert("Loaded!");
-			for(var i = 0; i < BadgeData.data.length; i++)
-			{
-				$("#" + BadgeData.imageStore).append("<img src='"+ BadgeData.data[i].imageUrl +"' id='"+ BadgeData.data[i].GUID +"'' />");
-			};
-			BadgeData.sceneCallBack.callBack();
-		},
-
-		reload: function(imageStore, callBack)
-		{
-			this.sceneCallBack = callBack;
-			this.loadDone = false;
-			this.imageStore = imageStore;
-			$.getJSON('http://localhost:8888/REST/getBadges?callback=', this.callBack, "json");
-		},
-	};
-
-/* 
-	a scene needs:
-		- data
-*/
-var scene_Badges =
+function BadgeScene()
 {
-	data: BadgeData,
-	init: function()
-	{
-		this.data.reload("imageStore", scene_Badges);
-	},
-	callBack: function()
-	{
-		scene_Badges.drawBadges();
-	},
-	drawBadges: function()
-	{
-		var badgeImages = [];
-		var imageStore = $("#imageStore")[0];
-		var children = imageStore.childNodes;
-		for(var i = 0; i < children.length; i ++)
+	naviScene.call(this,"BadgeScene");
+	this.callBack = function(json)
+	{	 
+		alert("Loaded!");
+		for(var i = 0; i < json.length; i++)
 		{
-			badgeImages.push(new naviImage(children[i].id,2, {x: i * 50, y : 100}, {w:50,h:50}, {}, {}));
-		}
+			$("#imageStore").append("<img src='"+ json[i].imageUrl +"' id='"+ json[i].GUID +"'' />");
+		};
+		$("#imageStore").attr("loaded", "true");
+	};
+	this.init = function()
+	{
+		fw.pushScene(this);
 		
-			
-		fw.drawAll(badgeImages);
+		$("#imageStore").attr("loaded", "false");
+		$.getJSON('http://localhost:8888/REST/getBadges?callback=', this.callBack, "json");
+
+	};
+	this.update = function()
+	{
+		if($("#imageStore").attr("loaded") == "true")
+		{
+			var imageStore = $("#imageStore")[0];
+			var children = imageStore.childNodes;
+			for(var i = 0; i < children.length; i ++)
+			{
+				this.renderables.push(new naviImage(children[i].id,2, {x: i * 50, y : 100}, {w:50,h:50}, {}, {}));
+			}
+			this.enter();
+			$("#imageStore").attr("loaded","false");
+		}
 	}
+}
 
-	
-
-};
+BadgeScene.prototype = Object.create(naviScene.prototype);
+var scene = new BadgeScene();
+scene.init();

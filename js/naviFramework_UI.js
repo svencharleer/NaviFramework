@@ -13,6 +13,8 @@ function naviFramework_UI()
     this.bgItemSymbol = "";
     this.layers;
     this.tool;
+
+    this.scenes = [];
     
     
     
@@ -109,6 +111,7 @@ function naviFramework_UI()
 
     this.onFrame = function(event)
     {
+        //take care of animations
         with(paper)
         {
             var children = fw.layers[2].children;
@@ -117,6 +120,12 @@ function naviFramework_UI()
                 fw.handleFrameItem(event, children[i]);
             }
         }
+        //run updates on top scene
+        if(fw.scenes != null)
+        {
+            fw.scenes[fw.scenes.length-1].update.call(fw.scenes[fw.scenes.length-1]);
+        }
+
     }
 
 
@@ -140,7 +149,12 @@ function naviFramework_UI()
     // DRAW FUNCTIONS
     //------------
    
-    this.draw = function(object)
+
+    this.pushScene = function(scene)
+    {
+        this.scenes.push(scene);
+    }
+    this.addObjecToCanvas = function(object)
     {
         with(this.paper)
         {
@@ -153,32 +167,32 @@ function naviFramework_UI()
                 //don't draw, just add to group
                 for(var j=0; j < object.subItems.length;j++)
                 {
-                    var child = this.draw(object.subItems[j]);
+                    var child = this.addObjecToCanvas(object.subItems[j]);
                     group.addChild(child);
                 }
             }
             else if(object.type == "square")
-                return this.drawTile(object);
+                return this.addTile(object);
             else if(object.type == "image")
-                return this.drawImage(object);
+                return this.addImage(object);
             else if(object.type == "text")
-                return this.drawText(object);
+                return this.addText(object);
         }
 
     }
 
-    this.drawAll = function(objects)
+    this.addObjectsToCanvas = function(objects)
     {
         //if there's a parent, add the children to a group and attach them to the parent
 
         for(var i=0; i < objects.length; i++)
         {
-            this.draw(objects[i]);
+            this.addObjecToCanvas(objects[i]);
         }
 
     }
 
-    this.drawTile = function(tile)
+    this.addTile = function(tile)
     {
         with(this.paper)
         {
@@ -195,7 +209,7 @@ function naviFramework_UI()
         }
     }
 
-    this.drawImage = function(image)
+    this.addImage = function(image)
     {
         with(this.paper)
         {
@@ -210,7 +224,7 @@ function naviFramework_UI()
         }
     }
 
-    this.drawText = function(text)
+    this.addText = function(text)
     {
         with(this.paper)
         {
