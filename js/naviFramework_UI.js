@@ -188,7 +188,12 @@ function naviFramework_UI()
     {
         with(this.paper)
         {
-            this.layers[object.layer].children[object.name].remove();
+            var layer = 0;
+            if(object.renderable != null)
+                layer = object.renderable.layer;
+            if(object.group != null)
+                layer = object.group.layer;
+            this.layers[layer].children[object.name].remove();
         }
 
     }
