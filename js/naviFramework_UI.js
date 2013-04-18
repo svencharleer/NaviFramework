@@ -31,9 +31,9 @@ function naviFramework_UI()
             var hitResult = fw.layers[2].hitTest(event.point);
             if(hitResult != null)
             {
-                if(hitResult.item.raw != null && hitResult.item.raw.mouseDownEvent != null)
+                if(hitResult.item.raw != null && hitResult.item.raw.touchable != null && hitResult.item.raw.touchable.mouseDownEvent != null)
                 {
-                    hitResult.item.raw.mouseDownEvent(event.point, hitResult.item);
+                    hitResult.item.raw.touchable.mouseDownEvent(event.point, hitResult.item);
                 }
             }
         }
@@ -46,9 +46,9 @@ function naviFramework_UI()
             var hitResult = fw.layers[2].hitTest(event.point);
             if(hitResult != null)
             {
-                if(hitResult.item.raw != null && hitResult.item.raw.mouseDragEvent != null)
+                if(hitResult.item.raw != null && hitResult.item.raw.touchable != null && hitResult.item.raw.touchable.mouseDragEvent != null)
                 {
-                    hitResult.item.mouseDragEvent(event.point, hitResult.item);
+                    hitResult.item.raw.touchable.mouseDragEvent(event.point, hitResult.item);
                 }
             }
         }
@@ -61,9 +61,9 @@ function naviFramework_UI()
             var hitResult = fw.layers[2].hitTest(event.point);
             if(hitResult != null)
             {
-                if(hitResult.item.raw != null && hitResult.item.raw.mouseUpEvent != null)
+                if(hitResult.item.raw != null && hitResult.item.raw.touchable != null && hitResult.item.raw.touchable.mouseUpEvent != null)
                 {
-                    hitResult.item.mouseUpEvent(event.point, hitResult.item);
+                    hitResult.item.raw.touchable.mouseUpEvent(event.point, hitResult.item);
                 }
             }
         }
@@ -78,9 +78,9 @@ function naviFramework_UI()
             var hitResult = fw.layers[2].hitTest(hitPoint);
             if(hitResult != null)
             {
-                if(hitResult.item.raw.fingerEvent != null)
+                if(hitResult.item.raw != null && hitResult.item.raw.touchable != null && hitResult.item.raw.touchable.fingerEvent != null)
                 {
-                    hitResult.item.raw.fingerEvent(point);
+                    hitResult.item.raw.touchable.fingerEvent(point);
                 }
             }
         }   
@@ -98,10 +98,10 @@ function naviFramework_UI()
             }
         }
         //then animate the item
-        if(item.raw != null && item.raw.activeAnimations != null && item.raw.activeAnimations.length > 0)
+        if(item.raw != null && item.raw.animatable != null && item.raw.animatable.activeAnimations != null && item.raw.animatable.activeAnimations.length > 0)
         {
 
-            $.each(item.raw.activeAnimations, 
+            $.each(item.raw.animatable.activeAnimations, 
                 function(i, animationObject){ 
                     if(animationObject.animate != null) 
                         animationObject.animate(event, item)
@@ -154,34 +154,37 @@ function naviFramework_UI()
     {
         this.scenes.push(scene);
     }
-    this.addObjecToCanvas = function(object)
+    this.addObjectToCanvas = function(object)
     {
         with(this.paper)
         {
-            if(object.type == "group")
+            if(object.group != null)
             {
                 var group = new Group();
                 group.position = new Point(object.x, object.y);
                 group.raw = object;
                 object.paperObject = group;
                 //don't draw, just add to group
-                for(var j=0; j < object.subItems.length;j++)
+                for(var j=0; j < object.group.objects.length;j++)
                 {
-                    var child = this.addObjecToCanvas(object.subItems[j]);
+                    var child = this.addObjectToCanvas(object.group.objects[j]);
                     group.addChild(child);
                 }
             }
-            else if(object.type == "square")
-                return this.addTile(object);
-            else if(object.type == "image")
-                return this.addImage(object);
-            else if(object.type == "text")
-                return this.addText(object);
+            if(object.renderable != null)
+            {
+                if(object.renderable.type == "square")
+                    return this.addSquare(object);
+                else if(object.renderable.type == "image")
+                    return this.addImage(object);
+                else if(object.renderable.type == "text")
+                    return this.addText(object);
+            }
         }
 
     }
 
-    this.removeObjecToCanvas = function(object)
+    this.removeObjectFromCanvas = function(object)
     {
         with(this.paper)
         {
@@ -196,7 +199,7 @@ function naviFramework_UI()
 
         for(var i=0; i < objects.length; i++)
         {
-            this.addObjecToCanvas(objects[i]);
+            this.addObjectToCanvas(objects[i]);
         }
 
     }
@@ -205,23 +208,20 @@ function naviFramework_UI()
     {
         for(var i=0; i < objects.length; i++)
         {
-            this.removeObjecToCanvas(objects[i]);
+            this.removeObjectFromCanvas(objects[i]);
         }
     }
 
-    this.addTile = function(tile)
+    this.addSquare = function(square)
     {
         with(this.paper)
         {
-            this.layers[tile.layer].activate();
-            var rect = new Rectangle(new Point(tile.x,tile.y), new Size(tile.width,tile.height));
+            this.layers[square.renderable.layer].activate();
+            var rect = new Rectangle(new Point(square.x,square.y), new Size(square.width,square.height));
             var rectangle = new Path.Rectangle(rect);
-            if(tile.style != null)
-                rectangle.style = tile.style;
-            else
-                rectangle.style = this.generalStyle;
-            rectangle.name = tile.name; 
-            rectangle.raw = tile;
+                rectangle.style = square.renderable.style;
+            rectangle.name = square.name; 
+            rectangle.raw = square;
             return rectangle; 
         }
     }
@@ -230,8 +230,8 @@ function naviFramework_UI()
     {
         with(this.paper)
         {
-            this.layers[image.layer].activate();
-            var raster = new Raster(image.name);
+            this.layers[image.renderable.layer].activate();
+            var raster = new Raster(image.renderable.filename);
             raster.position = new Point(image.x,image.y);
             raster.scale(image.width/raster.size.width,image.height/raster.size.height);
     
@@ -245,12 +245,10 @@ function naviFramework_UI()
     {
         with(this.paper)
         {
-            this.layers[text.layer].activate();
+            this.layers[text.renderable.layer].activate();
             var textD = new PointText(new Point(text.x, text.y));
-            textD.content = text.text;
-            textD.characterStyle = text.style;
-            if(text.visible == false)
-                textD.visible = false;
+            textD.content = text.renderable.text;
+            textD.characterStyle = text.renderable.style;
             textD.raw = text;
             textD.name = text.name;
             return textD;

@@ -10,13 +10,20 @@
 	<script type="text/javascript" src="js/naviFramework_UI.js"></script>
 	<script type="text/javascript" src="js/naviFramework_Events.js"></script>
 	<script type="text/javascript" src="js/naviFramework_Animations.js"></script>
-	<script type="text/javascript" src="js/naviObjects_Tile.js"></script>
-	<script type="text/javascript" src="js/naviObjects_Text.js"></script>
-	<script type="text/javascript" src="js/naviObjects_Menu.js"></script>
-	<script type="text/javascript" src="js/naviObjects_Image.js"></script>
-	<script type="text/javascript" src="js/naviObjects_Scene.js"></script>
-	<script type="text/javascript" src="js/naviScene_Badges.js"></script>
-	<script type="text/javascript" src="js/navi_CustomTests.js"></script>
+	<script type="text/javascript" src="js/naviComponent_Animatable.js"></script>
+	<script type="text/javascript" src="js/naviComponent_Group.js"></script>
+	<script type="text/javascript" src="js/naviComponent_Renderable.js"></script>
+	<script type="text/javascript" src="js/naviComponent_Renderable_Image.js"></script>
+	<script type="text/javascript" src="js/naviComponent_Renderable_Square.js"></script>
+	<script type="text/javascript" src="js/naviComponent_Renderable_Text.js"></script>
+	<script type="text/javascript" src="js/naviComponent_Touchable.js"></script>
+	<script type="text/javascript" src="js/naviObject_Scene.js"></script>
+	<script type="text/javascript" src="js/navi_CustomBadge.js"></script>
+	<script type="text/javascript" src="js/navi_CustomMenuItem.js"></script>
+	<script type="text/javascript" src="js/navi_CustomMenu.js"></script>
+	<script type="text/javascript" src="js/navi_CustomScene_Badges.js"></script>
+	<script type="text/javascript" src="js/navi_CustomTile.js"></script>
+
 	<script type="text/javascript">
 
 
@@ -47,7 +54,7 @@ function ol() {
 
 	var scene;
 	var menuItems = [{name:"menuBadges", text:"Badges", events:{mouseDownEvent: function(point, obj){scene = new BadgeScene();scene.init();}}}, {name:"menuStudents", text:"Students", events:{mouseDownEvent: function(point, obj){scene.exit();}}},{name:"menuSettings", text:"Settings", events:{}}];
-	var objects = [new Menu("menu", {x:-200, y:0}, menuItems), tile1, tile2];
+	var objects = [new Menu("menu", {x:-200, y:0}, menuItems)/*, tile1, tile2*/];
 	fw.addObjectsToCanvas(objects);
 	
 	fw.drawBackgroundItem();

@@ -1,7 +1,7 @@
-function naviScene(name)
+function NOScene(name)
 {
 	this.name = name;
-	this.renderables = [];
+	this.objects = [];
 	this.status = "not loaded"; // "loaded" "entering" "exiting"
 	this.init = function()
 	{
@@ -26,14 +26,14 @@ function naviScene(name)
 	this.entering = function()
 	{
 		//a scene will maybe animate into place
-		fw.addObjectsToCanvas(this.renderables);
+		fw.addObjectsToCanvas(this.objects);
 		this.status = "loaded";
 	}
 	this.exiting = function()
 	{
 		// a scene might animate out of screen
 		
-		fw.removeObjectsFromCanvas(this.renderables);
+		fw.removeObjectsFromCanvas(this.objects);
 		this.status = "not loaded";
 	}
 }

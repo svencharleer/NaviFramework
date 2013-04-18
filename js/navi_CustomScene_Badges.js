@@ -1,6 +1,6 @@
 function BadgeScene()
 {
-	naviScene.call(this,"BadgeScene");
+	NOScene.call(this,"BadgeScene");
 	this.callBack = function(json)
 	{	 
 		alert("Loaded!");
@@ -27,7 +27,7 @@ function BadgeScene()
 			var children = imageStore.childNodes;
 			for(var i = 0; i < children.length; i ++)
 			{
-				this.renderables.push(new naviImage(children[i].id,2, {x: i * 50, y : 100}, {w:50,h:50}, {}, {}));
+				this.objects.push(new Badge(children[i].id, {x: i * 50, y : 100}, {w:50,h:50},2, {},children[i].id, {}));
 			}
 			$("#imageStore").attr("loaded","false");
 			this.status = "entering";
@@ -36,6 +36,6 @@ function BadgeScene()
 	}
 }
 
-BadgeScene.prototype = Object.create(naviScene.prototype);
+BadgeScene.prototype = Object.create(NOScene.prototype);
 
 
