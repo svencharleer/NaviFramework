@@ -1,4 +1,4 @@
-function Badge(name, position, size, layer, style, filename, events)
+function Badge(name, position, size, layer, style, filename)
 {
 	this.name = name;
 	this.x = position.x;
@@ -6,7 +6,7 @@ function Badge(name, position, size, layer, style, filename, events)
 	this.width = size.w;
 	this.height = size.h;
 	this.renderable = new NCRImage(layer, style, filename);
-	this.touchable = new NCTouchable(events);
+	this.touchable = new NCTouchable({fingerEvent: genericTouchEvents.fingerEvent});
 	this.animatable = null;
 }
 

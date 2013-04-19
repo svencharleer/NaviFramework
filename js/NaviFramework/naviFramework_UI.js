@@ -81,7 +81,7 @@ function naviFramework_UI()
             var hitPoint = new Point(point.x, point.y);
             //draw indicators of where we touch (interesting when testing on mbp)
             //(could also be useful to make touch pretty :P particles?)
-            
+            this.layers[0].activate();
             var circle = new Path.Circle(hitPoint, 5);
             circle.style = {
                 fillColor: "#99FF99",
@@ -102,8 +102,10 @@ function naviFramework_UI()
     }
     this.onFingerLetGo = function(identifier)
     {   
-        this.fingerToCursors[identifier].remove();
-        this.fingerToCursors[identifier] = null;
+        if(this.fingerToCursors[identifier] != null)
+        {    this.fingerToCursors[identifier].remove();
+            this.fingerToCursors[identifier] = null;
+        }
         this.fingerToObjects[identifier] = null;
     }
 
