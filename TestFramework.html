@@ -32,23 +32,48 @@
 
 var timer;
 var updateStarted = false;
+var updateLetGoStarted = false;
+var updateMovedStarted = false;
 var touches = [];
+var touchesLetGo = [];
+var touchesMoved = [];
 
 function update() {
 	if (updateStarted) return;
 	updateStarted = true;
-
 	var i, len = touches.length;
 	for (i=0; i<len; i++) {
-		var touch = touches[i];
-		var px = touch.pageX;
-		var py = touch.pageY;
-	
-		var hitPoint = {x:px, y:py};
-		fw.onFingerHits(hitPoint, touch.identifier);
+		fw.onFingerHits({x:touches[i].pageX, y:touches[i].pageY}, touches[i].identifier);
 	}
-
+	updateMoved();
+	updateLetGo();
+	touches = [];
 	updateStarted = false;
+}
+
+function updateMoved() {
+	if(updateMovedStarted) return;
+	updateMovedStarted = true;
+	var finger = touchesMoved.shift();
+	while(finger != null)
+	{
+
+			fw.onFingerMoved({x:finger.pageX, y:finger.pageY}, finger.identifier);
+			finger = touchesMoved.shift();
+	}
+	updateMovedStarted = false;
+}
+
+function updateLetGo() {
+	if(updateLetGoStarted) return;
+	updateLetGoStarted = true;
+	var finger = touchesLetGo.shift();
+	while(finger != null)
+	{
+			fw.onFingerLetGo(finger.identifier);
+			finger = touchesLetGo.shift();
+	}
+	updateLetGoStarted = false;
 }
 
 function ol() {
@@ -65,15 +90,19 @@ function ol() {
 	timer = setInterval(update, 15);
 
 	canvas.addEventListener('touchend', function() {
+		touchesLetGo = touchesLetGo.concat(event.changedTouches);	
 		
 	});
 	canvas.addEventListener('touchmove', function(event) {
-	  event.preventDefault();
-	  touches = event.touches;
+	  	event.preventDefault();
+	  	touchesMoved = event.changedTouches;
+
 	});
 	canvas.addEventListener('touchstart', function(event) {
-	  console.log('start');
-	});
+	  	console.log('start');
+	  	touches = event.targetTouches;
+	  	
+	 });
 
 	
 };

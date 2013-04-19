@@ -71,19 +71,26 @@ function naviFramework_UI()
     }
 
     this.fingerToObjects = {};
+    this.fingerToCursors = {};
     this.onFingerHits = function(point, identifier)
     {
         with(this.paper)
         {
-            var hitResult = null;
-            //console.log("FINGER X: " + point.x + "- Y: " + point.y);
-            if(this.fingerToObjects[identifier] != null)
-                hitResult = this.fingerToObjects[identifier];
-            else
-            {
-                var hitPoint = new Point(point.x, point.y);
-                hitResult = fw.layers[2].hitTest(hitPoint);
-            }
+            if(this.fingerToCursors[identifier] != null)
+                return; // we're already handling this finger
+            var hitPoint = new Point(point.x, point.y);
+            //draw indicators of where we touch (interesting when testing on mbp)
+            //(could also be useful to make touch pretty :P particles?)
+            
+            var circle = new Path.Circle(hitPoint, 5);
+            circle.style = {
+                fillColor: "#99FF99",
+                strokeColor: '#4d4d4d',
+                strokeWidth: 1}; 
+            this.fingerToCursors[identifier] = circle;
+            
+            var hitResult = fw.layers[2].hitTest(hitPoint);
+            this.fingerToObjects[identifier] = hitResult;
             if(hitResult != null)
             {
                 if(hitResult.item.raw != null && hitResult.item.raw.touchable != null && hitResult.item.raw.touchable.fingerEvent != null)
@@ -93,6 +100,40 @@ function naviFramework_UI()
             }
         }   
     }
+    this.onFingerLetGo = function(identifier)
+    {   
+        this.fingerToCursors[identifier].remove();
+        this.fingerToCursors[identifier] = null;
+        this.fingerToObjects[identifier] = null;
+    }
+
+    this.onFingerMoved = function(point, identifier)
+    {   
+         with(this.paper)
+        {
+            var hitPoint = new Point(point.x, point.y);
+            //draw indicators of where we touch (interesting when testing on mbp)
+            //(could also be useful to make touch pretty :P particles?)
+            if(this.fingerToCursors[identifier] != null)
+            {
+                circle = this.fingerToCursors[identifier];
+                circle.position = hitPoint;
+            }
+            else
+            {
+                console.log("FINGER " + identifier + " moved but was not found");
+            }
+            if(this.fingerToObjects[identifier] != null)
+            {
+                var hitResult = this.fingerToObjects[identifier];
+                if(hitResult.item.raw != null && hitResult.item.raw.touchable != null && hitResult.item.raw.touchable.fingerEvent != null)
+                {
+                    hitResult.item.raw.touchable.fingerEvent(point, hitResult.item);
+                }
+            }
+        }   
+    }
+
 
     this.handleFrameItem = function(event, item)
     {
