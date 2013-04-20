@@ -30,10 +30,7 @@ function animation_Base(caller)
 						}
 	}
 
-    this.defaultAnimation = function(event, obj) 
-    {	
-    			
-    }
+    this.defaultAnimation = null; //css animation class
 }
 
 function animation_Fade(startValue, endValue, caller)

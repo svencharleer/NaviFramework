@@ -1,6 +1,6 @@
-function NCRText(layer, style, text) 
+function NCRText(layer, cssClass, text) 
 {
-	NCRenderable.call(this, layer, style);
+	NCRenderable.call(this, layer, cssClass);
 	this.text = text;
 	this.customHtml = "<div>" + text + "</div>"; 
 }

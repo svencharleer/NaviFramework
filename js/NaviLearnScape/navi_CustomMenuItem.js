@@ -6,15 +6,11 @@ function MenuItem(name, text, position, events)
 	this.y = position.y;
 
 
-	this.renderable = new NCRText(2, {
-										fillColor:'#4d4d4d',
-										fontSize:30,
-										font: 'Helvetica'
-										},
+	this.renderable = new NCRText(2, "fadingOut",
 										text
 										);
 	this.touchable = new NCTouchable(events);
-	this.animatable = new NCAnimatable([new animation_Fade(0.0, 1.0, this), new animation_Fade(1.0, 0.0, this)])
+	this.animatable = new NCAnimatable(["fadingIn", "fadingOut"])
 	
 
 	this.showText = function()

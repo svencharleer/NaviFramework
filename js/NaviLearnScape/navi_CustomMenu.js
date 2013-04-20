@@ -5,37 +5,37 @@ function Menu(name, position, menuItems)
 	this.name = name;
 	this.x = position.x;
 	this.y = position.y;
-
-	this.group = new NCGroup(2, [
-		new Tile("menuBackground",1,{x:0,y:-10},{w:200,h:fw.view.size.height+20},{fillColor: '#ffffff', strokeWidth: 0},{}),
-		new Tile("menuRedBar",2,{x:200, y:-10},{w:10, h:fw.view.size.height+20},{fillColor: '#fe5f66', strokeWidth:0},
+	this.renderable = new  NCRSquare(0, "menuHidden");
+	this.group = [
+		new Tile("menuBackground",1,{x:0,y:-10},{w:200,h:fw.view.height+20},"square",{}),
+		new Tile("menuRedBar",2,{x:200, y:-10},{w:10, h:fw.view.height+20},"square",
 			{
 				mouseDownEvent: function(event, obj)
 					{
-						obj.parent.raw.showHideMenu();
+						obj.htmlElement.parent.showHideMenu();
 					}
 			})
-		]);
+		];
 
 	this.paperObject = null;
 	
 
 
 
-	var firstMenuItemIndex = this.group.objects.length; //need this to iterate over menuitems
+	var firstMenuItemIndex = this.group.length; //need this to iterate over menuitems
 	var length = menuItems.length;
 
 	
 	for(var i = 0; i < length; i++)
 	{
-		this.group.objects.push(new MenuItem(menuItems[i].name, menuItems[i].text, {x:15,y:(50+i*50)}, menuItems[i].events));
+		this.group.push(new MenuItem(menuItems[i].name, menuItems[i].text, {x:15,y:(50+i*50)}, menuItems[i].events));
 	}
 
 	//object state
 
 	this.state = "hidden";
 
-	this.animatable = new NCAnimatable([new animation_TweenPosition({x: this.x, y:this.y}, {x: this.x +190, y:this.y}, .2, this),new animation_TweenPosition({x: this.x +190, y:this.y}, {x: this.x, y:this.y}, .2, this)]);
+	this.animatable = new NCAnimatable(["menuShown", "menuHidden"]);
 
 	//animation related
 	//-----------------

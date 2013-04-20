@@ -1,7 +1,7 @@
 function NCRSquare(layer, cssClass) 
 {
 	NCRenderable.call(this, layer, cssClass);
-	this.customHtml = "Tile";
+	this.customHtml = "Square";
 }
 
 

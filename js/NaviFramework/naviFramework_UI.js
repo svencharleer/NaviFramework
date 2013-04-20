@@ -26,6 +26,7 @@ function PaperCanvas(paper)
     {
         var element = document.createElement("canvas");
         element.id = name;
+        element.className = "transit";
         element.width = size.w;
         element.height = size.h;
         element.style.position = 'absolute';
@@ -93,6 +94,7 @@ function naviFramework_UI()
 {
     this.layers = [];
     this.scenes = [];
+    this.view = {width: $(window).width(), height: $(window).height()};
     
     this.init = function()
     {
@@ -219,13 +221,25 @@ function naviFramework_UI()
             }
         }*/
         //then animate the item
-        if(item.animatable != null && item.animatable.activeAnimations != null && item.animatable.activeAnimations.length > 0)
+        if(item.animatable != null)
         {
-            $.each(item.animatable.activeAnimations, 
-                function(i, animationObject){ 
-                    if(animationObject.animate != null) 
-                        animationObject.animate(event, item)
-                });
+            var node = $("#"+item.name);
+            var anim = item.animatable.activate.pop();
+            while(anim != null)
+            {
+                if(!node.hasClass(anim))
+                    node.addClass(anim);
+                item.animatable.active.push(anim);
+                anim = item.animatable.activate.pop();
+            }
+            var deactiveAnim = item.animatable.deactivate.pop();
+            while(deactiveAnim != null)
+            {
+                if(node.hasClass(deactiveAnim))
+                    node.removeClass(deactiveAnim);
+                deactiveAnim = item.animatable.deactivate.pop();
+            }
+
         }
     }
 
@@ -285,9 +299,20 @@ function naviFramework_UI()
             element.style.msTransform = 'translateZ(0)';
             element.style.transform = 'translateZ(0)';
             element.style.visible = "true";
-            document.body.appendChild(element);
+            
             object.bodyElement = element;
             this.layers[object.renderable.layer].objects.push(object);
+
+            if(object.group != null)
+            {
+                for(var i = 0; i < object.group.length; i++)
+                {
+                    var el = this.addObjectToDocument(object.group[i]);
+                    element.appendChild(el);
+                }
+                
+            }
+            return element;
         }
     }
 
@@ -340,7 +365,8 @@ function naviFramework_UI()
     {
         for(var i=0; i < objects.length; i++)
         {
-            this.addObjectToDocument(objects[i]);
+            var element = this.addObjectToDocument(objects[i]);
+            document.body.appendChild(element);
         }
 
     }
