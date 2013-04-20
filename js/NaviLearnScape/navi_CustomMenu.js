@@ -5,14 +5,14 @@ function Menu(name, position, menuItems)
 	this.name = name;
 	this.x = position.x;
 	this.y = position.y;
-	this.renderable = new  NCRSquare(0, "menuHidden");
+	this.renderable = new  NCRSquare(2, "menuHidden transit");
 	this.group = [
-		new Tile("menuBackground",1,{x:0,y:-10},{w:200,h:fw.view.height+20},"square",{}),
-		new Tile("menuRedBar",2,{x:200, y:-10},{w:10, h:fw.view.height+20},"square",
+		new Tile("menuBackground",2,{x:0,y:-10},{w:200,h:fw.view.height+20},"square",{}),
+		new Tile("menuRedBar",2,{x:200, y:-10},{w:40, h:fw.view.height+20},"square",
 			{
-				mouseDownEvent: function(event, obj)
+				fingerEvent: function(event, obj)
 					{
-						obj.htmlElement.parent.showHideMenu();
+						obj.parent.showHideMenu();
 					}
 			})
 		];
@@ -46,15 +46,15 @@ function Menu(name, position, menuItems)
 						if(this.state == "becoming_visible")
 						{
 						 	this.state = "visible";
-							for(var i = firstMenuItemIndex; i < this.group.objects.length;i++)
-								this.group.objects[i].showText();
+							for(var i = firstMenuItemIndex; i < this.group.length;i++)
+								this.group[i].showText();
     					
 						}
 						if(this.state == "becoming_hidden") 
 						{
 							this.state = "hidden";
-							for(var i = firstMenuItemIndex; i < this.group.objects.length;i++)
-								this.group.objects[i].hideText();
+							for(var i = firstMenuItemIndex; i < this.group.length;i++)
+								this.group[i].hideText();
     					
 						}
 						

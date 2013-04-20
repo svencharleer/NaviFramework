@@ -271,7 +271,7 @@ function naviFramework_UI()
         this.scenes.push(scene);
     }
 
-    this.addObjectToDocument = function(object)
+    this.addObjectToDocument = function(object, parent)
     {
         if(object.renderable != null)
         {
@@ -293,25 +293,40 @@ function naviFramework_UI()
             element.style.left = object.x + 'px';
             element.style.top = object.y + 'px';
 
-            element.style.WebkitTransform = 'translateZ(0)';
+            /*element.style.WebkitTransform = 'translateZ(0)';
             element.style.MozTransform = 'translateZ(0)';
             element.style.OTransform = 'translateZ(0)';
             element.style.msTransform = 'translateZ(0)';
-            element.style.transform = 'translateZ(0)';
+            element.style.transform = 'translateZ(0)';*/
             element.style.visible = "true";
             
+            //add html object to our object
             object.bodyElement = element;
+            element.naviData = object;
+            //add our trigger to animation end trigger of html object
+            if(object.afterAnimation != null)
+            {
+              
+                element.addEventListener('webkitTransitionEnd', function(){
+                    console.log("Transition ended");
+                    this.naviData.afterAnimation();
+                });
+            }
+
+
             this.layers[object.renderable.layer].objects.push(object);
 
             if(object.group != null)
             {
                 for(var i = 0; i < object.group.length; i++)
                 {
-                    var el = this.addObjectToDocument(object.group[i]);
+                    var el = this.addObjectToDocument(object.group[i], object);
                     element.appendChild(el);
                 }
                 
             }
+            if(parent != null)
+                object.parent = parent;
             return element;
         }
     }
