@@ -23,6 +23,8 @@ var genericTouchEvents =
             {
               obj.bodyElement.style.left = point.x + "px";
               obj.bodyElement.style.top = point.y + "px";
+              obj.x = point.x;
+              obj.y = point.y;
             },
  };
 
