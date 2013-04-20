@@ -77,30 +77,30 @@ function updateLetGo() {
 }
 
 function ol() {
-	var canvas = document.getElementById('testCanvas');
-	fw.init("testCanvas");
+	var body = document;
+	fw.init();
 
 	var scene;
-	var menuItems = [{name:"menuBadges", text:"Badges", events:{mouseDownEvent: function(point, obj){scene = new BadgeScene();scene.init();}}}, {name:"menuStudents", text:"Students", events:{mouseDownEvent: function(point, obj){scene.exit();}}},{name:"menuSettings", text:"Settings", events:{}}];
-	var background = new Background("background", {x:fw.view.size.width/2, y:fw.view.size.height/2}, {w:fw.view.size.width,h:fw.view.size.height},0, "background_png");
-	var objects = [new Menu("menu", {x:-200, y:0}, menuItems), tile1, tile2];
-	fw.drawBackgroundItem();
+	//var menuItems = [{name:"menuBadges", text:"Badges", events:{mouseDownEvent: function(point, obj){scene = new BadgeScene();scene.init();}}}, {name:"menuStudents", text:"Students", events:{mouseDownEvent: function(point, obj){scene.exit();}}},{name:"menuSettings", text:"Settings", events:{}}];
+	//var background = new Background("background", {x:fw.view.size.width/2, y:fw.view.size.height/2}, {w:fw.view.size.width,h:fw.view.size.height},0, "background_png");
+	var objects = [/*new Menu("menu", {x:-200, y:0}, menuItems),*/ tile1, tile2];
+	//fw.drawBackgroundItem();
 
-	fw.addObjectsToCanvas(objects);
+	fw.addObjectsToDocument(objects);
 	
 	
 	timer = setInterval(update, 15);
 
-	canvas.addEventListener('touchend', function() {
+	body.addEventListener('touchend', function() {
 		touchesLetGo = touchesLetGo.concat(event.changedTouches);	
 		
 	});
-	canvas.addEventListener('touchmove', function(event) {
+	body.addEventListener('touchmove', function(event) {
 	  	event.preventDefault();
 	  	touchesMoved = event.changedTouches;
 
 	});
-	canvas.addEventListener('touchstart', function(event) {
+	body.addEventListener('touchstart', function(event) {
 	  	console.log('start');
 	  	touches = event.targetTouches;
 	  	
@@ -114,7 +114,6 @@ function ol() {
 </head>
 <body onload="ol()">
 
-<canvas id="testCanvas" resize></canvas>
 <object id="tuio" type="application/x-tuio">Plugin FAILED to load</object>
 <div id="staticImageStore" style="display:none">
 	<img src="img/background.png" id="background_png"/>

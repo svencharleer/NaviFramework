@@ -1,41 +1,118 @@
 var fw;
 
+function PaperCanvas(paper)
+{
+    var canvas;
+    var objects = [];
+    var paper = paper;
+    this.drawCircle = function(point, radius)
+    {
+        with(paper)
+        {
+            var circle = new Path.Circle(new Point(point.x, point.y), radius);
+            circle.style = {
+            fillColor: "#99FF99",
+            strokeColor: '#4d4d4d',
+            strokeWidth: 1};
+            objects.push(circle); 
+        }
+    }
+    this.position = function(position)
+    {
+        canvas.style.left = position.x;
+        canvas.style.top = position.y;
+    }
+    this.init = function(name, position,size)
+    {
+        var element = document.createElement("canvas");
+        element.id = name;
+        element.width = size.w;
+        element.height = size.h;
+        element.style.position = 'absolute';
+        element.style.left = position.x + 'px';
+        element.style.top = position.y + 'px';
+        element.style.WebkitTransform = 'translateZ(0)';
+        element.style.MozTransform = 'translateZ(0)';
+        element.style.OTransform = 'translateZ(0)';
+        element.style.msTransform = 'translateZ(0)';
+        element.style.transform = 'translateZ(0)';
+        document.body.appendChild(element);
+        canvas = element;
+        paper = paper.setup(canvas);
+        with(paper)
+        {
+            this.tool = tool;
+            this.view = view;
+            this.layers = [new Layer()];
+//            tool.onMouseDown = this.onMouseDown;
+//            tool.onMouseUp = this.onMouseUp;
+//            tool.onMouseDrag = this.onMouseDrag;
+//            view.onFrame = this.onFrame;
+        }
+        return this;
+    }
+    this.reset = function()
+    {
+        var object = objects.pop();
+        while(object != null)
+        {
+            var child = document.getElementById(canvas.id);
+            document.body.removeChild(child);
+            object.remove();
+            object = objects.pop();
+            //test
+        }
+    }
+}
+
+
+function DocumentLayer()
+{
+    this.objects = [];
+    this.touchTest = function(point)
+    {
+        for(var i = 0; i < this.objects.length; i++)
+        {
+            if(this.objects[i].touchable != null)
+            {
+                if(point.x > this.objects[i].x 
+                    && point.y > this.objects[i].y 
+                    && point.x < this.objects[i].x + this.objects[i].width 
+                    && point.y < this.objects[i].y + this.objects[i].height)
+                {
+                    console.log("Object " + this.objects[i].name + " hit");
+                    return this.objects[i]; //maybe later return all or a max of first X? although layers might prevent its necessaty
+                    
+                }
+            }
+        }
+    }
+}
+
 function naviFramework_UI()
 {
-    this.paper;
-    this.view;
-    this.generalStyle = {
-        fillColor: '#FFFFFF',
-        strokeColor: '#4d4d4d',
-        strokeWidth: 10 
-    };
-    
-    this.bgItemSymbol = "";
-    this.layers;
-    this.tool;
-
+    this.layers = [];
     this.scenes = [];
     
-
+    this.init = function()
+    {
+        this.layers = [new DocumentLayer(), new DocumentLayer(), new DocumentLayer(), new DocumentLayer()];
+        this.paper = paper;
+    }
     
     
     //------------
     // EVENTS
     //------------
 
-    this.onMouseDown = function(event)
+    /*this.onMouseDown = function(event)
     {
-        with(fw.paper)
+        var hitResult = fw.layers[2].touchTest(event.point);
+        if(hitResult != null)
         {
-            //console.log("CLICK X: " + event.point.x + "- Y: " + event.point.y);
-            
-            var hitResult = fw.layers[2].hitTest(event.point);
-            if(hitResult != null)
+            if(hitResult.item.raw != null && hitResult.item.raw.touchable != null && hitResult.item.raw.touchable.mouseDownEvent != null)
             {
-                if(hitResult.item.raw != null && hitResult.item.raw.touchable != null && hitResult.item.raw.touchable.mouseDownEvent != null)
-                {
-                    hitResult.item.raw.touchable.mouseDownEvent(event, hitResult.item);
-                }
+                hitResult.item.raw.touchable.mouseDownEvent(event, hitResult.item);
             }
         }
     }
@@ -68,70 +145,63 @@ function naviFramework_UI()
                 }
             }
         }
-    }
+    }*/
 
     this.fingerToObjects = {};
     this.fingerToCursors = {};
-    this.onFingerHits = function(point, identifier)
+    this.onFingerHits = function(hitPoint, identifier)
     {
-        with(this.paper)
+        if(this.fingerToCursors[identifier] != null)
+            return; // we're already handling this finger
+        //draw indicators of where we touch (interesting when testing on mbp)
+        //(could also be useful to make touch pretty :P particles?)
+        var canvas = new PaperCanvas(this.paper);
+        canvas.init(identifier, hitPoint, {w:50, h:50});
+        canvas.drawCircle({x: 25, y:25}, 10 );
+        this.fingerToCursors[identifier] = canvas;
+        
+        var hitResult = fw.layers[2].touchTest(hitPoint);
+        
+        if(hitResult != null)
         {
-            if(this.fingerToCursors[identifier] != null)
-                return; // we're already handling this finger
-            var hitPoint = new Point(point.x, point.y);
-            //draw indicators of where we touch (interesting when testing on mbp)
-            //(could also be useful to make touch pretty :P particles?)
-            this.layers[0].activate();
-            var circle = new Path.Circle(hitPoint, 5);
-            circle.style = {
-                fillColor: "#99FF99",
-                strokeColor: '#4d4d4d',
-                strokeWidth: 1}; 
-            this.fingerToCursors[identifier] = circle;
-            
-            var hitResult = fw.layers[2].hitTest(hitPoint);
             this.fingerToObjects[identifier] = hitResult;
-            if(hitResult != null)
+            if(hitResult.touchable.fingerEvent != null)
             {
-                if(hitResult.item.raw != null && hitResult.item.raw.touchable != null && hitResult.item.raw.touchable.fingerEvent != null)
-                {
-                    hitResult.item.raw.touchable.fingerEvent(point, hitResult.item);
-                }
+                hitResult.touchable.fingerEvent(hitPoint, hitResult);
             }
-        }   
+        } 
     }
     this.onFingerLetGo = function(identifier)
     {   
         if(this.fingerToCursors[identifier] != null)
-        {    this.fingerToCursors[identifier].remove();
+        {   
+            //hm we have to find a way to get rid of this
+            //this.fingerToCursors[identifier].remove();
+            this.fingerToCursors[identifier].reset(); //doesn't get rid of the object though
             this.fingerToCursors[identifier] = null;
         }
         this.fingerToObjects[identifier] = null;
     }
 
-    this.onFingerMoved = function(point, identifier)
+    this.onFingerMoved = function(hitPoint, identifier) 
     {   
-         with(this.paper)
+        //draw indicators of where we touch (interesting when testing on mbp)
+        //(could also be useful to make touch pretty :P particles?)
+        if(this.fingerToCursors[identifier] != null)
         {
-            var hitPoint = new Point(point.x, point.y);
-            //draw indicators of where we touch (interesting when testing on mbp)
-            //(could also be useful to make touch pretty :P particles?)
-            if(this.fingerToCursors[identifier] != null)
+            canvas = this.fingerToCursors[identifier];
+            canvas.position(hitPoint);
+        }
+        else
+        {
+            console.log("FINGER " + identifier + " moved but was not found");
+        }
+        if(this.fingerToObjects[identifier] != null)
+        {
+            var hitResult = this.fingerToObjects[identifier];
+            if(hitResult.touchable.fingerEvent != null)
             {
-                circle = this.fingerToCursors[identifier];
-                circle.position = hitPoint;
-            }
-            else
-            {
-                console.log("FINGER " + identifier + " moved but was not found");
-            }
-            if(this.fingerToObjects[identifier] != null)
-            {
-                var hitResult = this.fingerToObjects[identifier];
-                if(hitResult.item.raw != null && hitResult.item.raw.touchable != null && hitResult.item.raw.touchable.fingerEvent != null)
-                {
-                    hitResult.item.raw.touchable.fingerEvent(point, hitResult.item);
-                }
+                hitResult.touchable.fingerEvent(hitPoint, hitResult);
             }
         }   
     }
@@ -140,19 +210,18 @@ function naviFramework_UI()
     this.handleFrameItem = function(event, item)
     {
         //check children first
-        if(item.hasChildren())
+        /*if(item.hasChildren())
         {
             var children = item.children;
             for(var i=0;i < children.length; i++)
             {
                 this.handleFrameItem(event, children[i]);
             }
-        }
+        }*/
         //then animate the item
-        if(item.raw != null && item.raw.animatable != null && item.raw.animatable.activeAnimations != null && item.raw.animatable.activeAnimations.length > 0)
+        if(item.animatable != null && item.animatable.activeAnimations != null && item.animatable.activeAnimations.length > 0)
         {
-
-            $.each(item.raw.animatable.activeAnimations, 
+            $.each(item.animatable.activeAnimations, 
                 function(i, animationObject){ 
                     if(animationObject.animate != null) 
                         animationObject.animate(event, item)
@@ -163,15 +232,11 @@ function naviFramework_UI()
     this.onFrame = function(event)
     {
         //take care of animations
-        with(paper)
+        var children = fw.layers[2].objects;
+        for(var i=0;i < children.length; i++)
         {
-            var children = fw.layers[2].children;
-            for(var i=0;i < children.length; i++)
-            {
-                fw.handleFrameItem(event, children[i]);
-            }
+            fw.handleFrameItem(event, children[i]);
         }
-        //run updates on top scene
         if(fw.scenes != null && fw.scenes.length > 0)
         {
             fw.scenes[fw.scenes.length-1].update.call(fw.scenes[fw.scenes.length-1]);
@@ -180,21 +245,7 @@ function naviFramework_UI()
     }
 
 
-    this.init = function(canvas)
-    {
-        this.paper = paper.setup(canvas);
-        with(this.paper)
-        {
-            this.tool = tool;
-            this.view = view;
-            this.layers = [new Layer(), new Layer(), new Layer(), new Layer()];
-            tool.onMouseDown = this.onMouseDown;
-            tool.onMouseUp = this.onMouseUp;
-            tool.onMouseDrag = this.onMouseDrag;
-            view.onFrame = this.onFrame;
-        }
-        return this;
-    }
+ 
 
     //------------
     // DRAW FUNCTIONS
@@ -206,10 +257,42 @@ function naviFramework_UI()
         this.scenes.push(scene);
     }
 
-    this.addObjectToCanvas = function(object)
+    this.addObjectToDocument = function(object)
     {
-        with(this.paper)
+        if(object.renderable != null)
         {
+            var element;
+            if(object.renderable.htmlId != null)
+                element = document.appendChild(document.getElementById(object.renderable.htmlId).cloneNode(true));
+            else
+            {
+                element = document.createElement("div");
+                element.innerHTML = object.renderable.customHtml;
+            }
+            
+            element.id = object.name;
+            element.className = object.renderable.cssClass
+            element.style.width = object.width;
+            element.style.height = object.height;
+            
+            element.style.position = 'absolute';
+            element.style.left = object.x + 'px';
+            element.style.top = object.y + 'px';
+
+            element.style.WebkitTransform = 'translateZ(0)';
+            element.style.MozTransform = 'translateZ(0)';
+            element.style.OTransform = 'translateZ(0)';
+            element.style.msTransform = 'translateZ(0)';
+            element.style.transform = 'translateZ(0)';
+            element.style.visible = "true";
+            document.body.appendChild(element);
+            object.bodyElement = element;
+            this.layers[object.renderable.layer].objects.push(object);
+        }
+    }
+
+   /* this.addObjectToCanvas = function(object)
+    {
             if(object.group != null)
             {
                 this.layers[object.group.layer].activate();
@@ -235,8 +318,6 @@ function naviFramework_UI()
                 else if(object.renderable.type == "text")
                     return this.addText(object);
             }
-        }
-
     }
 
     this.removeObjectFromCanvas = function(object)
@@ -251,28 +332,33 @@ function naviFramework_UI()
             this.layers[layer].children[object.name].remove();
         }
 
-    }
+    } */
 
-    this.addObjectsToCanvas = function(objects)
+
+
+    this.addObjectsToDocument = function(objects)
     {
-        //if there's a parent, add the children to a group and attach them to the parent
-
         for(var i=0; i < objects.length; i++)
         {
-            this.addObjectToCanvas(objects[i]);
+            this.addObjectToDocument(objects[i]);
         }
 
     }
 
-    this.removeObjectsFromCanvas = function(objects)
+    this.removeObjectFromDocument = function(object)
+    {
+        document.removeChild(object.name); //doesn't really delete it it seems :/
+    }
+
+    this.removeObjectsFromDocument = function(objects)
     {
         for(var i=0; i < objects.length; i++)
         {
-            this.removeObjectFromCanvas(objects[i]);
+            this.removeObjectFromDocument(objects[i]);
         }
     }
 
-    this.addSquare = function(square)
+ /*   this.addSquare = function(square)
     {
         with(this.paper)
         {
@@ -340,7 +426,7 @@ function naviFramework_UI()
             
         }
 
-    }
+    } */
 
 }
 

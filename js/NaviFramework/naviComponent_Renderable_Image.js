@@ -1,8 +1,8 @@
 function NCRImage(layer, style, filename) 
 {
 	NCRenderable.call(this, layer, style);
-	this.type = "image";
 	this.filename = filename;
+	this.customHtml = "<img src='" + filename + "'/>";
 }
 
 

@@ -21,7 +21,8 @@ var genericTouchEvents =
    	},
      fingerEvent: function(point, obj)
             {
-              obj.position = point;
+              obj.bodyElement.style.left = point.x + "px";
+              obj.bodyElement.style.top = point.y + "px";
             },
  };
 

@@ -3,3 +3,8 @@ body
 	margin:0;
 	padding:0;
 }
+
+.square
+{
+	border: solid 1px #4d4d4d; background-color: #FFFFFF;
+}
