@@ -76,10 +76,12 @@ function DocumentLayer()
         {
             if(this.objects[i].touchable != null)
             {
-                if(point.x > this.objects[i].x 
-                    && point.y > this.objects[i].y 
-                    && point.x < this.objects[i].x + this.objects[i].width 
-                    && point.y < this.objects[i].y + this.objects[i].height)
+                var position = this.objects[i].getPosition();
+                var size = this.objects[i].getSize();
+                if(point.x > position.x 
+                    && point.y > position.y 
+                    && point.x < position.x + size.width 
+                    && point.y < position.y + size.height)
                 {
                     console.log("Object " + this.objects[i].name + " hit");
                     return this.objects[i]; //maybe later return all or a max of first X? although layers might prevent its necessaty
@@ -223,7 +225,7 @@ function naviFramework_UI()
         //then animate the item
         if(item.animatable != null)
         {
-            var node = $("#"+item.name);
+            var node = $("#"+item.element.id);
             var anim = item.animatable.activate.pop();
             while(anim != null)
             {
@@ -241,6 +243,7 @@ function naviFramework_UI()
             }
 
         }
+        //do stte things here as well
     }
 
     this.onFrame = function(event)
@@ -271,65 +274,7 @@ function naviFramework_UI()
         this.scenes.push(scene);
     }
 
-    this.addObjectToDocument = function(object, parent)
-    {
-        if(object.renderable != null)
-        {
-            var element;
-            if(object.renderable.htmlId != null)
-                element = document.appendChild(document.getElementById(object.renderable.htmlId).cloneNode(true));
-            else
-            {
-                element = document.createElement("div");
-                element.innerHTML = object.renderable.customHtml;
-            }
-            
-            element.id = object.name;
-            element.className = object.renderable.cssClass
-            element.style.width = object.width;
-            element.style.height = object.height;
-            
-            element.style.position = 'absolute';
-            element.style.left = object.x + 'px';
-            element.style.top = object.y + 'px';
-
-            /*element.style.WebkitTransform = 'translateZ(0)';
-            element.style.MozTransform = 'translateZ(0)';
-            element.style.OTransform = 'translateZ(0)';
-            element.style.msTransform = 'translateZ(0)';
-            element.style.transform = 'translateZ(0)';*/
-            element.style.visible = "true";
-            
-            //add html object to our object
-            object.bodyElement = element;
-            element.naviData = object;
-            //add our trigger to animation end trigger of html object
-            if(object.afterAnimation != null)
-            {
-              
-                element.addEventListener('webkitTransitionEnd', function(){
-                    console.log("Transition ended");
-                    this.naviData.afterAnimation();
-                });
-            }
-
-
-            this.layers[object.renderable.layer].objects.push(object);
-
-            if(object.group != null)
-            {
-                for(var i = 0; i < object.group.length; i++)
-                {
-                    var el = this.addObjectToDocument(object.group[i], object);
-                    element.appendChild(el);
-                }
-                
-            }
-            if(parent != null)
-                object.parent = parent;
-            return element;
-        }
-    }
+   
 
    /* this.addObjectToCanvas = function(object)
     {
@@ -380,8 +325,8 @@ function naviFramework_UI()
     {
         for(var i=0; i < objects.length; i++)
         {
-            var element = this.addObjectToDocument(objects[i]);
-            document.body.appendChild(element);
+            this.layers[objects[i].layer].objects.push(objects[i]);
+            document.body.appendChild(objects[i].element);
         }
 
     }

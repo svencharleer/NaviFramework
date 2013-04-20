@@ -18,6 +18,8 @@
 	<script type="text/javascript" src="js/NaviFramework/naviComponent_Renderable_Text.js"></script>
 	<script type="text/javascript" src="js/NaviFramework/naviComponent_Touchable.js"></script>
 	<script type="text/javascript" src="js/NaviFramework/naviObject_Scene.js"></script>
+	<script type="text/javascript" src="js/NaviFramework/naviComponent_State.js"></script>
+	<script type="text/javascript" src="js/NaviFramework/naviObject.js"></script>
 	<script type="text/javascript" src="js/NaviLearnScape/navi_CustomBadge.js"></script>
 	<script type="text/javascript" src="js/NaviLearnScape/navi_CustomMenuItem.js"></script>
 	<script type="text/javascript" src="js/NaviLearnScape/navi_CustomMenu.js"></script>
@@ -82,9 +84,9 @@ function ol() {
 	fw.init();
 
 	var scene;
-	var menuItems = [{name:"menuBadges", text:"Badges", events:{mouseDownEvent: function(point, obj){scene = new BadgeScene();scene.init();}}}, {name:"menuStudents", text:"Students", events:{mouseDownEvent: function(point, obj){scene.exit();}}},{name:"menuSettings", text:"Settings", events:{}}];
+	//var menuItems = [{name:"menuBadges", text:"Badges", events:{mouseDownEvent: function(point, obj){scene = new BadgeScene();scene.init();}}}, {name:"menuStudents", text:"Students", events:{mouseDownEvent: function(point, obj){scene.exit();}}},{name:"menuSettings", text:"Settings", events:{}}];
 	//var background = new Background("background", {x:fw.view.size.width/2, y:fw.view.size.height/2}, {w:fw.view.size.width,h:fw.view.size.height},0, "background_png");
-	var objects = [new Menu("menu", {x:0, y:0}, menuItems), tile1, tile2,new MenuItem("menuTest", "Test Menu Item", {x:15,y:50}, {})];
+	var objects = [/*new Menu("menu", {x:0, y:0}, menuItems),*/ tile1, tile2, new MenuItem("menuTest", "Test Menu Item", {x:15,y:50}, {})];
 	//fw.drawBackgroundItem();
 
 	fw.addObjectsToDocument(objects);

@@ -1,17 +1,13 @@
+
+
+
 function MenuItem(name, text, position, events) 
 {
-	//general
-	this.name = name;
-	this.x = position.x;
-	this.y = position.y;
-
-
-	this.renderable = new NCRText(2, "fadingOut",
-										text
-										);
-	this.touchable = new NCTouchable(events);
-	this.animatable = new NCAnimatable(["fadingIn", "fadingOut"])
+	var states = [];
+	var animations = ["fadingIn", "fadingOut"];
+	NObject.call(this, name, 2, position, {width:30, height:30}, "square", "div", text, events, animations, states,[]);
 	
+
 
 	this.showText = function()
 	{
@@ -29,3 +25,7 @@ function MenuItem(name, text, position, events)
 	}
 
 }
+
+MenuItem.prototype = Object.create(NObject.prototype);
+
+

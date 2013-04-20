@@ -1,6 +1,6 @@
-function NCTouchable(events)
+function NCTouchable(owner,events)
 {
-	this.type = "touchable";
+	this.owner = owner;
 	this.mouseDownEvent = events.mouseDownEvent;
 	this.mouseUpEvent = events.mouseUpEvent;
 	this.mouseDragEvent = events.mouseDragEvent;

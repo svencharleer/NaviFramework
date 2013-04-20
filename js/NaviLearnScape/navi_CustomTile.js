@@ -1,16 +1,12 @@
 function Tile(name, layer, position, size, cssClass, events)
 {
-	this.name = name;
-	this.x = position.x;
-	this.y = position.y;
-	this.width = size.w;
-	this.height = size.h;
-	this.renderable = new NCRSquare(layer, cssClass);
-	this.touchable = null;
-	if(events != null) this.touchable = new NCTouchable(events);
-	this.animatable = null;
+	var states = [];
+	var animations = ["rotatingtile"];
+	
+	NObject.call(this, name, layer, position, size, "square", "div", "Tile", events, animations, states,[]);
+	this.animatable.switchToAnimation(0);
 }
 
-
+Tile.prototype = Object.create(NObject.prototype);
 
 

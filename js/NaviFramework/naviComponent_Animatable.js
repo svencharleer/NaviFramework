@@ -1,10 +1,20 @@
-function NCAnimatable(animations)
+function NCAnimatable(owner, animations)
 {
-	this.updateMe = false;
+	this.owner = owner;
 	this.activate = []
 	this.active = [];
 	this.deactivate = [];
 	this.animations = animations; //css classes
+
+ 	//add our trigger to animation end trigger of html object
+    if(this.owner.afterAnimation != null)
+    {
+        this.owner.element.addEventListener('webkitAnimationEnd', function(){
+            console.log("Animation ended");
+            this.naviData.afterAnimation();
+        });
+    }
+
 
 	this.switchToAnimation = function(animationNumber)
 	{
@@ -12,13 +22,12 @@ function NCAnimatable(animations)
 		{
 			this.activate.push(this.animations[animationNumber]);
 		}
-		this.updateMe = true;
 	};
 	this.idle = function()
 	{
 		this.deactivate = this.active; //maybe we want to select what anim to stop in case we have multiple anims..
 		this.active = [];
-		this.updateMe = true;
+
 	};
 	
 }
