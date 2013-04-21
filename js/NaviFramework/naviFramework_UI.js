@@ -69,8 +69,11 @@ function PaperCanvas(paper)
 
 TouchTest = function(point, objects)
 {
+    var touchedObjects = [];
     for(var i = 0; i < objects.length; i++)
     {
+        if(objects[i].touchable)
+        {
             var position = objects[i].getPosition();
             var size = objects[i].getSize();
             if(point.x > position.x 
@@ -79,15 +82,12 @@ TouchTest = function(point, objects)
                 && point.y < position.y + size.height)
             {
                 console.log("Object " + objects[i].element.id + " hit");
-                if(objects[i].touchable)
-                    return objects[i]; //maybe later return all or a max of first X? although layers might prevent its necessaty
-                else if(objects[i].group != null)
-                {
-                    return touchTest(point, this.objects[i].group)
-                }
+                
+                touchedObjects.push(objects[i]);
             }
+        }
     }
-    return null;
+    return touchedObjects;
 }
 
 function DocumentLayer()
@@ -167,14 +167,17 @@ function naviFramework_UI()
         canvas.drawCircle({x: 25, y:25}, 10 );
         this.fingerToCursors[identifier] = canvas;
         
-        var hitResult = TouchTest(hitPoint,fw.layers[2].objects);
-        
-        if(hitResult != null)
+        var hitResults = TouchTest(hitPoint,fw.layers[2].objects);
+        while(hitResults.length > 0)
         {
-            this.fingerToObjects[identifier] = hitResult;
-            if(hitResult.touchable.fingerEvent != null)
+            var hitResult = hitResults.pop();
+            if(hitResult != null)
             {
-                hitResult.touchable.fingerEvent(hitPoint, hitResult);
+                this.fingerToObjects[identifier] = hitResult;
+                if(hitResult.touchable.fingerEvent != null)
+                {
+                    hitResult.touchable.fingerEvent(hitPoint, hitResult);
+                }
             }
         } 
     }

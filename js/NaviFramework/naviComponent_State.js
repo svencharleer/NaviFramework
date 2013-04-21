@@ -1,6 +1,11 @@
+
+
+//state {type, value}
+
 function NCState(owner, states)
 {
 	this.owner = owner;
+
 	this.states = states;
 	if(states != null)
 		this.activeState = states[0];

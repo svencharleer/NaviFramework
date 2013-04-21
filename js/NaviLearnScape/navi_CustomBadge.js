@@ -1,15 +1,11 @@
-function Badge(name, position, size, layer, style, filename)
+function Badge(name, layer, position, size, cssClass, events, filename)
 {
-	this.name = name;
-	this.x = position.x;
-	this.y = position.y;
-	this.width = size.w;
-	this.height = size.h;
-	this.renderable = new NCRImage(layer, style, filename);
-	this.touchable = new NCTouchable({fingerEvent: genericTouchEvents.fingerEvent});
-	this.animatable = null;
+	var states = [];
+	var animations = [];
+	
+	NObject.call(this, name, layer, position, size, cssClass, "img", "", events, animations, states,[]);
+	this.element.setAttribute("src", filename);
 }
 
-
-
+Badge.prototype = Object.create(NObject.prototype);
 

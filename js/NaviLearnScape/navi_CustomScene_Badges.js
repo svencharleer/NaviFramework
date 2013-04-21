@@ -1,46 +1,50 @@
-function BadgeScene()
+function BadgeScene() 
 {
-	NOScene.call(this,"BadgeScene", 2, {x:200, y:100});
+	var events = [];
+	var states = [];
+	var animations = [];
+	this.group = [];
+	
+	this.addObject = function(object)
+	{
+		this.group.push(object);
+		this.element.appendChild(object.element);
+	}
+
+	//required callback method if animatable
+	this.afterAnimation = null;
+	this.afterTransition = null;
+	this.loadingDone = function()
+	{
+		for(var i = 0; i < this.group.length; i++)
+		{
+			this.group[i].setPosition({x: (i % 10) * 50, y : (i / 10) * 60});
+		}
+	}
+
 	this.callBack = function(json)
-	{	 
-		alert("Loaded!");
+	{	
+		
+		
 		for(var i = 0; i < json.length; i++)
 		{
-			$("#imageStore").append("<img src='"+ json[i].imageUrl +"' id='"+ json[i].GUID +"'' />");
+
+			document.getElementById("BadgeScene").naviData.addObject(new Badge(json[i].GUID, 2, null, {width:50,height:50}, "transit", events, json[i].imageUrl));
 		};
-		$("#imageStore").attr("loaded", "true");
-
-	};
-	this.init = function()
-	{
-		fw.pushScene(this);
+		setTimeout(function(){document.getElementById("BadgeScene").naviData.loadingDone();},1000);
 		
-		$("#imageStore").attr("loaded", "false");
-		$.getJSON('http://localhost:8888/REST/getBadges?callback=', this.callBack, "json");
 
 	};
-	this.update = function()
-	{
-		//loading state
-		if($("#imageStore").attr("loaded") == "true")
-		{
-			var imageStore = $("#imageStore")[0];
-			var children = imageStore.childNodes;
-			for(var i = 0; i < children.length; i ++)
-			{
-				this.group.objects.push(new Badge(children[i].id, {x: (i % 10) * 50, y : (i / 10) * 60}, {w:50,h:50},2, {},children[i].id));
-			}
-			$("#imageStore").attr("loaded","false");
-			this.status = "entering";
-			this.entering();
-		}
-		else
-		{
+	
 
-		}
+	NObject.call(this, "BadgeScene", 2, {x:300, y:0}, null, "square transit", "div", "", events, animations, states, this.group);
+	//init
+	{
+		$.getJSON('http://localhost:8888/REST/getBadges?callback=', this.callBack, "json");
 	}
 }
 
-BadgeScene.prototype = Object.create(NOScene.prototype);
+MenuItem.prototype = Object.create(NObject.prototype);
+
 
 
