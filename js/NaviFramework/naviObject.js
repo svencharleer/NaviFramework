@@ -6,7 +6,6 @@ function NObject(name, layer, position, size, cssClass, tag, innerHTML, events, 
 	var _x, _y;
 	this.setPosition = function(point)
 	{
-		this.element.style.position = 'absolute';
 		this.element.style.left = point.x + 'px';
     	this.element.style.top = point.y + 'px';
     	_x = point.x;
@@ -14,7 +13,8 @@ function NObject(name, layer, position, size, cssClass, tag, innerHTML, events, 
 	}
 	this.getPosition = function()
 	{
-		return {x:_x, y:_y};
+		var jelement = $("#"+this.element.id);
+		return {x:jelement.offset().left, y:jelement.offset().top};
 	}
 	//SIZE
 	var _width, _height;
@@ -27,15 +27,11 @@ function NObject(name, layer, position, size, cssClass, tag, innerHTML, events, 
 	}
 	this.getSize = function()
 	{
-		return {width:_width, height:_height};
+		var jelement = $("#"+this.element.id);
+		return {width:jelement.width(), height:jelement.height()};
 	}
 	this.layer = layer;
-	//COMPONENTS
-	this.afterAnimation = null;
-	this.afterTransition = null;
-	this.touchable = new NCTouchable(this, events);
-	this.animatable = new NCAnimatable(this, animations);
-	this.state = new NCState(this, states);
+	
 	//TELLS ENGINE SOMETHING CHANGED
 	this.updateMe = false;
 
@@ -45,8 +41,11 @@ function NObject(name, layer, position, size, cssClass, tag, innerHTML, events, 
 	    this.element.innerHTML = innerHTML;
 	    this.element.id = name;
 	    this.element.className = cssClass;
-	    this.setSize(size);
-	    this.setPosition(position);
+	    if(size != null)
+	    	this.setSize(size);
+	    this.element.style.position = 'absolute';
+	    if(position != null)
+	    	this.setPosition(position);
 	    this.element.naviData = this;
 	   
 	    
@@ -58,6 +57,19 @@ function NObject(name, layer, position, size, cssClass, tag, innerHTML, events, 
 	        }
 	        
 	    }
+	}
+
+	//COMPONENTS
+	//this.afterAnimation = null;
+	//this.afterTransition = null;
+	this.touchable = new NCTouchable(this, events);
+	this.animatable = new NCAnimatable(this, animations);
+	this.state = new NCState(this, states);
+
+	//ACTIVATE object
+	this.activate = function()
+	{
+		this.state.switchToState(0);
 	}
       
 	

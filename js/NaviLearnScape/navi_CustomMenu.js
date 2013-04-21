@@ -1,26 +1,21 @@
 function Menu(name, position, menuItems)
 {
-	//general
-	
-	this.name = name;
-	this.x = position.x;
-	this.y = position.y;
-	this.renderable = new  NCRSquare(2, "menuHidden transit");
+	var states = ["menuHidden", "menuShown"];
+	var animations = [];
+	var events = [];
 	this.group = [
-		new Tile("menuBackground",2,{x:0,y:-10},{w:200,h:fw.view.height+20},"square",{}),
-		new Tile("menuRedBar",2,{x:200, y:-10},{w:40, h:fw.view.height+20},"square",
+		new Tile("menuBackground",2,{x:0,y:-10},{width:200,height:fw.view.height+20},"square",{}),
+		new Tile("menuRedBar",2,{x:200, y:-10},{width:40, height:fw.view.height+20},"square",
 			{
 				fingerEvent: function(event, obj)
 					{
-						obj.parent.showHideMenu();
+						obj.element.parentElement.naviData.showHideMenu();
 					}
 			})
 		];
 
-	this.paperObject = null;
 	
-
-
+	
 
 	var firstMenuItemIndex = this.group.length; //need this to iterate over menuitems
 	var length = menuItems.length;
@@ -31,50 +26,50 @@ function Menu(name, position, menuItems)
 		this.group.push(new MenuItem(menuItems[i].name, menuItems[i].text, {x:15,y:(50+i*50)}, menuItems[i].events));
 	}
 
-	//object state
 
-	this.state = "hidden";
-
-	this.animatable = new NCAnimatable(["menuShown", "menuHidden"]);
 
 	//animation related
 	//-----------------
 
 
-	this.afterAnimation = function()
+	this.afterTransition = function()
 					{
-						if(this.state == "becoming_visible")
-						{
-						 	this.state = "visible";
+						if(this.state.activeState == "menuHidden")
+							for(var i = firstMenuItemIndex; i < this.group.length;i++)
+								this.group[i].hideText();
+						else if(this.state.activeState == "menuShown")
 							for(var i = firstMenuItemIndex; i < this.group.length;i++)
 								this.group[i].showText();
     					
-						}
+						/*}
 						if(this.state == "becoming_hidden") 
 						{
 							this.state = "hidden";
 							for(var i = firstMenuItemIndex; i < this.group.length;i++)
 								this.group[i].hideText();
     					
-						}
+						}*/
 						
 						
 					},
 	//methods
 	this.showHideMenu = function()
 					{
-						if(this.state == "hidden")
+						if(this.state.activeState == "menuHidden")
 						{
-							this.animatable.switchToAnimation(0);
-							this.state = "becoming_visible";
+							this.state.switchToState(1);
+							//this.state = "becoming_visible";
 						}
-						else if(this.state == "visible")
+						else if(this.state.activeState == "menuShown")
 						{
-							this.animatable.switchToAnimation(1);
-							this.state = "becoming_hidden";
+							this.state.switchToState(0);
+							//this.state = "becoming_hidden";
 						}
 						
 					}
+
+	NObject.call(this, name, 2, null, null, "square transit", "div", "", events, animations, states, this.group);
+
 }
 
 

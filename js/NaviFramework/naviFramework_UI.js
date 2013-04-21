@@ -67,29 +67,32 @@ function PaperCanvas(paper)
 }
 
 
+TouchTest = function(point, objects)
+{
+    for(var i = 0; i < objects.length; i++)
+    {
+            var position = objects[i].getPosition();
+            var size = objects[i].getSize();
+            if(point.x > position.x 
+                && point.y > position.y 
+                && point.x < position.x + size.width 
+                && point.y < position.y + size.height)
+            {
+                console.log("Object " + objects[i].element.id + " hit");
+                if(objects[i].touchable)
+                    return objects[i]; //maybe later return all or a max of first X? although layers might prevent its necessaty
+                else if(objects[i].group != null)
+                {
+                    return touchTest(point, this.objects[i].group)
+                }
+            }
+    }
+    return null;
+}
+
 function DocumentLayer()
 {
     this.objects = [];
-    this.touchTest = function(point)
-    {
-        for(var i = 0; i < this.objects.length; i++)
-        {
-            if(this.objects[i].touchable != null)
-            {
-                var position = this.objects[i].getPosition();
-                var size = this.objects[i].getSize();
-                if(point.x > position.x 
-                    && point.y > position.y 
-                    && point.x < position.x + size.width 
-                    && point.y < position.y + size.height)
-                {
-                    console.log("Object " + this.objects[i].name + " hit");
-                    return this.objects[i]; //maybe later return all or a max of first X? although layers might prevent its necessaty
-                    
-                }
-            }
-        }
-    }
 }
 
 function naviFramework_UI()
@@ -164,7 +167,7 @@ function naviFramework_UI()
         canvas.drawCircle({x: 25, y:25}, 10 );
         this.fingerToCursors[identifier] = canvas;
         
-        var hitResult = fw.layers[2].touchTest(hitPoint);
+        var hitResult = TouchTest(hitPoint,fw.layers[2].objects);
         
         if(hitResult != null)
         {
@@ -319,14 +322,26 @@ function naviFramework_UI()
 
     } */
 
-
+    this.addObjectToDocument = function(object)
+    {
+        this.layers[object.layer].objects.push(object);
+        object.activate();
+        if(object.group != null)
+        {
+            for(var i=0; i < object.group.length; i++)
+            {
+                this.addObjectToDocument(object.group[i]);
+            }
+        }
+    }
 
     this.addObjectsToDocument = function(objects)
     {
         for(var i=0; i < objects.length; i++)
         {
-            this.layers[objects[i].layer].objects.push(objects[i]);
             document.body.appendChild(objects[i].element);
+            this.addObjectToDocument(objects[i]);
+            
         }
 
     }
