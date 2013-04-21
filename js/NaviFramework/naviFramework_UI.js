@@ -225,38 +225,17 @@ function naviFramework_UI()
                 this.handleFrameItem(event, children[i]);
             }
         }*/
-        //then animate the item
-        if(item.animatable != null)
-        {
-            var node = $("#"+item.element.id);
-            var anim = item.animatable.activate.pop();
-            while(anim != null)
-            {
-                if(!node.hasClass(anim))
-                    node.addClass(anim);
-                item.animatable.active.push(anim);
-                anim = item.animatable.activate.pop();
-            }
-            var deactiveAnim = item.animatable.deactivate.pop();
-            while(deactiveAnim != null)
-            {
-                if(node.hasClass(deactiveAnim))
-                    node.removeClass(deactiveAnim);
-                deactiveAnim = item.animatable.deactivate.pop();
-            }
-
-        }
-        //do stte things here as well
+        //think this might become physics loop
     }
 
     this.onFrame = function(event)
     {
         //take care of animations
-        var children = fw.layers[2].objects;
+        /*var children = fw.layers[2].objects;
         for(var i=0;i < children.length; i++)
         {
             fw.handleFrameItem(event, children[i]);
-        }
+        }*/
         if(fw.scenes != null && fw.scenes.length > 0)
         {
             fw.scenes[fw.scenes.length-1].update.call(fw.scenes[fw.scenes.length-1]);
@@ -277,50 +256,6 @@ function naviFramework_UI()
         this.scenes.push(scene);
     }
 
-   
-
-   /* this.addObjectToCanvas = function(object)
-    {
-            if(object.group != null)
-            {
-                this.layers[object.group.layer].activate();
-                var group = new Group();
-                group.name = object.name;
-                group.position = new Point(object.x, object.y);
-                group.raw = object;
-                
-                object.paperObject = group;
-                //don't draw, just add to group
-                for(var j=0; j < object.group.objects.length;j++)
-                {
-                    var child = this.addObjectToCanvas(object.group.objects[j]);
-                    group.addChild(child);
-                }
-            }
-            if(object.renderable != null)
-            {
-                if(object.renderable.type == "square")
-                    return this.addSquare(object);
-                else if(object.renderable.type == "image")
-                    return this.addImage(object);
-                else if(object.renderable.type == "text")
-                    return this.addText(object);
-            }
-    }
-
-    this.removeObjectFromCanvas = function(object)
-    {
-        with(this.paper)
-        {
-            var layer = 0;
-            if(object.renderable != null)
-                layer = object.renderable.layer;
-            if(object.group != null)
-                layer = object.group.layer;
-            this.layers[layer].children[object.name].remove();
-        }
-
-    } */
 
     this.addObjectToDocument = function(object)
     {
@@ -359,75 +294,7 @@ function naviFramework_UI()
         }
     }
 
- /*   this.addSquare = function(square)
-    {
-        with(this.paper)
-        {
-            this.layers[square.renderable.layer].activate();
-            var rect = new Rectangle(new Point(square.x,square.y), new Size(square.width,square.height));
-            var rectangle = new Path.Rectangle(rect);
-                rectangle.style = square.renderable.style;
-            rectangle.name = square.name; 
-            rectangle.raw = square;
-            return rectangle; 
-        }
-    }
-
-    this.addImage = function(image)
-    {
-        with(this.paper)
-        {
-            this.layers[image.renderable.layer].activate();
-            var raster = new Raster(image.renderable.filename);
-            raster.position = new Point(image.x,image.y);
-            raster.scale(image.width/raster.size.width,image.height/raster.size.height);
-    
-            raster.name = image.name; 
-            raster.raw = image;
-            return raster; 
-        }
-    }
-
-    this.addText = function(text)
-    {
-        with(this.paper)
-        {
-            this.layers[text.renderable.layer].activate();
-            var textD = new PointText(new Point(text.x, text.y));
-            textD.content = text.renderable.text;
-            textD.characterStyle = text.renderable.style;
-            textD.raw = text;
-            textD.name = text.name;
-            return textD;
-        }
-    }
-
-    this.drawBackgroundItem = function()
-    {
-        with(this.paper)
-        {
-            //create symbol in case it hasn't been created yet
-            //moet prolly null zijn
-            if(this.bgItemSymbol == "")
-            {
-                var circle = new Path.Circle(new Point(0,0),10);
-                circle.style = this.generalStyle;
-                this.bgItemSymbol = new Symbol(circle);
-            }
-            this.layers[0].activate();
-            
-            var count = 10;
-            for (var i = 0; i < count; i++) {
-                // The center position is a random point in the view:
-                var center = Point.random().multiply([view.size.width, view.size.height]);
-                var placedSymbol = this.bgItemSymbol.place(center);
-                placedSymbol.scale(i / count);
-            }
-
-            
-        }
-
-    } */
+ 
 
 }
 

@@ -69,7 +69,10 @@ function NObject(name, layer, position, size, cssClass, tag, innerHTML, events, 
 	//ACTIVATE object
 	this.activate = function()
 	{
-		this.state.switchToState(0);
+		if(this.state != null)
+			this.state.switchToState(0);
+		if(this.animatable != null)
+			this.animatable.switchToAnimation(0);
 	}
       
 	

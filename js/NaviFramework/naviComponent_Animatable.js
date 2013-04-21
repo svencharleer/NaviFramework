@@ -1,9 +1,7 @@
 function NCAnimatable(owner, animations)
 {
 	this.owner = owner;
-	this.activate = []
-	this.active = [];
-	this.deactivate = [];
+	this.activeAnimation = [];
 	this.animations = animations; //css classes
 
  	//add our trigger to animation end trigger of html object
@@ -15,23 +13,26 @@ function NCAnimatable(owner, animations)
         });
     }
 
-
-	this.switchToAnimation = function(animationNumber)
+	this.switchToAnimation = function(animationID)
 	{
-		if(this.animations != null && this.animations.length >= animationNumber)
+		if(this.animations != null && this.animations.length >= animationID)
 		{
-			this.activate.push(this.animations[animationNumber]);
+			var el = $("#" + this.owner.element.id);
+			if(this.activeAnimation != null && el.hasClass(this.activeAnimation))
+                    el.removeClass(this.activeAnimation);
+			this.activeAnimation = this.animations[animationID];
+			el.addClass(this.activeAnimation);
 		}
 	};
 	this.idle = function()
 	{
-		this.deactivate = this.active; //maybe we want to select what anim to stop in case we have multiple anims..
-		this.active = [];
+		var el = $("#" + this.owner.element.id);
+			if(this.activeAnimation != null && el.hasClass(this.activeAnimation))
+                    el.removeClass(this.activeAnimation);
 
 	};
 	
 }
-
 
 
 
