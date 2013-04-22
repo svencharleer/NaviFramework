@@ -112,47 +112,20 @@ function naviFramework_UI()
     // EVENTS
     //------------
 
-    /*this.onMouseDown = function(event)
+    this.onMouseDown = function(hitPoint, identifier)
     {
-        var hitResult = fw.layers[2].touchTest(event.point);
-        if(hitResult != null)
-        {
-            if(hitResult.item.raw != null && hitResult.item.raw.touchable != null && hitResult.item.raw.touchable.mouseDownEvent != null)
-            {
-                hitResult.item.raw.touchable.mouseDownEvent(event, hitResult.item);
-            }
-        }
+        this.onFingerHits(hitPoint, identifier);
     }
 
-    this.onMouseDrag = function(event)
+    this.onMouseDrag = function(hitPoint, identifier)
     {
-        with(fw.paper)
-        {
-            var hitResult = fw.layers[2].hitTest(event.point);
-            if(hitResult != null)
-            {
-                if(hitResult.item.raw != null && hitResult.item.raw.touchable != null && hitResult.item.raw.touchable.mouseDragEvent != null)
-                {
-                    hitResult.item.raw.touchable.mouseDragEvent(event, hitResult.item);
-                }
-            }
-        }
+       this.onFingerMoved(hitPoint, identifier);
     }
 
-    this.onMouseUp = function(event)
+    this.onMouseUp = function(hitPoint)
     {
-        with(fw.paper)
-        {
-            var hitResult = fw.layers[2].hitTest(event.point);
-            if(hitResult != null)
-            {
-                if(hitResult.item.raw != null && hitResult.item.raw.touchable != null && hitResult.item.raw.touchable.mouseUpEvent != null)
-                {
-                    hitResult.item.raw.touchable.mouseUpEvent(event, hitResult.item);
-                }
-            }
-        }
-    }*/
+       this.onFingerLetGo(hitPoint);
+    }
 
     this.fingerToObjects = {};
     this.fingerToCursors = {};
@@ -300,5 +273,85 @@ function naviFramework_UI()
  
 
 }
+
+//touch handler
+var TouchLoop =
+{
+    timer:0,
+    updateStarted: false,
+    updateLetGoStarted: false,
+    updateMovedStarted:false,
+    touches: [],
+    touchesLetGo: [],
+    touchesMoved: [],
+
+    update: function() {
+        if (TouchLoop.updateStarted) return;
+        TouchLoop.updateStarted = true;
+        var i, len = TouchLoop.touches.length;
+        for (i=0; i<len; i++) {
+            fw.onFingerHits({x:TouchLoop.touches[i].pageX, y:TouchLoop.touches[i].pageY}, TouchLoop.touches[i].identifier);
+        }
+        TouchLoop.updateMoved();
+        TouchLoop.updateLetGo();
+        TouchLoop.touches = [];
+        TouchLoop.updateStarted = false;
+        fw.onFrame();
+    },
+
+    updateMoved: function() {
+        if(TouchLoop.updateMovedStarted) return;
+        TouchLoop.updateMovedStarted = true;
+        var finger = TouchLoop.touchesMoved.shift();
+        while(finger != null)
+        {
+
+                fw.onFingerMoved({x:finger.pageX, y:finger.pageY}, finger.identifier);
+                finger = TouchLoop.touchesMoved.shift();
+        }
+        TouchLoop.updateMovedStarted = false;
+    },
+
+    updateLetGo: function() {
+        if(TouchLoop.updateLetGoStarted) return;
+        TouchLoop.updateLetGoStarted = true;
+        var finger = TouchLoop.touchesLetGo.shift();
+        while(finger != null)
+        {
+                fw.onFingerLetGo(finger.identifier);
+                finger = TouchLoop.touchesLetGo.shift();
+        }
+        TouchLoop.updateLetGoStarted = false;
+    },
+
+    init: function() {
+        this.timer = setInterval(this.update, 15);
+
+        document.addEventListener('touchend', function() {
+            this.touchesLetGo = this.touchesLetGo.concat(event.changedTouches);   
+            
+        });
+        document.addEventListener('touchmove', function(event) {
+            event.preventDefault();
+            this.touchesMoved = event.changedTouches;
+
+        });
+        document.addEventListener('touchstart', function(event) {
+            console.log('start');
+            this.touches = event.targetTouches;
+            
+         });
+        document.addEventListener('mousedown', function(event) {
+            console.log('mouse touchy');
+            fw.onMouseDown({x:event.pageX, y:event.pageY}, "mouse");
+         });
+        document.addEventListener('mousemove', function(event) {
+            fw.onMouseDrag({x:event.pageX, y:event.pageY}, "mouse");
+         });
+        document.addEventListener('mouseup', function(event) {
+            fw.onMouseUp("mouse");
+     });
+    }
+};
 
 fw = new naviFramework_UI();

@@ -28,55 +28,10 @@
 	<script type="text/javascript">
 
 
-var timer;
-var updateStarted = false;
-var updateLetGoStarted = false;
-var updateMovedStarted = false;
-var touches = [];
-var touchesLetGo = [];
-var touchesMoved = [];
 
-function update() {
-	if (updateStarted) return;
-	updateStarted = true;
-	var i, len = touches.length;
-	for (i=0; i<len; i++) {
-		fw.onFingerHits({x:touches[i].pageX, y:touches[i].pageY}, touches[i].identifier);
-	}
-	updateMoved();
-	updateLetGo();
-	touches = [];
-	updateStarted = false;
-	fw.onFrame();
-}
-
-function updateMoved() {
-	if(updateMovedStarted) return;
-	updateMovedStarted = true;
-	var finger = touchesMoved.shift();
-	while(finger != null)
-	{
-
-			fw.onFingerMoved({x:finger.pageX, y:finger.pageY}, finger.identifier);
-			finger = touchesMoved.shift();
-	}
-	updateMovedStarted = false;
-}
-
-function updateLetGo() {
-	if(updateLetGoStarted) return;
-	updateLetGoStarted = true;
-	var finger = touchesLetGo.shift();
-	while(finger != null)
-	{
-			fw.onFingerLetGo(finger.identifier);
-			finger = touchesLetGo.shift();
-	}
-	updateLetGoStarted = false;
-}
 
 function ol() {
-	var body = document;
+	
 	fw.init();
 
 	var scene;
@@ -87,23 +42,9 @@ function ol() {
 
 	fw.addObjectsToDocument(objects);
 	
+	TouchLoop.init();
 	
-	timer = setInterval(update, 15);
 
-	body.addEventListener('touchend', function() {
-		touchesLetGo = touchesLetGo.concat(event.changedTouches);	
-		
-	});
-	body.addEventListener('touchmove', function(event) {
-	  	event.preventDefault();
-	  	touchesMoved = event.changedTouches;
-
-	});
-	body.addEventListener('touchstart', function(event) {
-	  	console.log('start');
-	  	touches = event.targetTouches;
-	  	
-	 });
 
 	
 };

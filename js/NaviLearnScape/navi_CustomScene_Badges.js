@@ -39,7 +39,7 @@ function BadgeScene()
 
 	NObject.call(this, "BadgeScene", 2, {x:300, y:0}, null, "square transit", "div", "", events, animations, states, this.group);
 	//init
-	{
+	{	console.log("loading badges")
 		$.getJSON('http://localhost:8888/REST/getBadges?callback=', this.callBack, "json");
 	}
 }
