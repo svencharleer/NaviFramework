@@ -286,7 +286,7 @@ function naviFramework_UI()
 
     this.removeObjectFromDocument = function(object)
     {
-        document.removeChild(object.name); //doesn't really delete it it seems :/
+        $("#" +object.element.id).remove(); //doesn't really delete it it seems :/
     }
 
     this.removeObjectsFromDocument = function(objects)
