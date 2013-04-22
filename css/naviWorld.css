@@ -1,0 +1,70 @@
+body
+{
+	margin:0;
+	padding:0;
+	background: url("../img/background.png") no-repeat center center fixed;
+	background-size: cover;
+}
+
+/* MENU */
+
+/* menu animations */
+@-webkit-keyframes flicker {
+    0% {opacity: 0}
+    10% {opacity: 1}
+    20% {opacity: 0}
+    50% {opacity: 1}
+    60% {opacity: 0}
+    70% {opacity: 1}
+    80% {opacity: 0}
+    100% {opacity: 1}  
+} 
+
+
+/* menu design */
+#nwMenu
+{
+	width: 20%;
+	height:10%;
+	
+	border:solid 10px #f35b00;
+	border-bottom:none;
+	border-radius: 10px;
+
+	background-color:#000000;
+}
+
+#nwMenu ul
+{
+	margin:0;
+	padding:0;
+	width:100%;
+	margin-left:auto;
+	margin-right:auto;
+	display:inline-block;
+	
+	list-style-type: none;
+}
+
+#nwMenu ul li
+{
+	margin:auto;
+	display: inline-block;
+	width:18%;
+}
+.nwMenu_Item
+{
+	width:100%;
+}
+
+.flicker
+{
+    -webkit-animation-name: flicker;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-iteration-count: 1;       
+}
+
+#nwMenu_Person
+{
+
+}

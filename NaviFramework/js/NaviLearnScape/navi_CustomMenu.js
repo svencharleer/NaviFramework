@@ -27,11 +27,6 @@ function Menu(name, position, menuItems)
 	}
 
 
-
-	//animation related
-	//-----------------
-
-
 	this.afterTransition = function()
 					{
 						if(this.state.activeState == "menuHidden")
@@ -40,15 +35,6 @@ function Menu(name, position, menuItems)
 						else if(this.state.activeState == "menuShown")
 							for(var i = firstMenuItemIndex; i < this.group.length;i++)
 								this.group[i].showText();
-    					
-						/*}
-						if(this.state == "becoming_hidden") 
-						{
-							this.state = "hidden";
-							for(var i = firstMenuItemIndex; i < this.group.length;i++)
-								this.group[i].hideText();
-    					
-						}*/
 						
 						
 					},

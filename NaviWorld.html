@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>NaviWorld</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <link rel="stylesheet" href="NaviFramework/css/naviFramework.css">
+	<script type="text/javascript" src="NaviFramework/js/3rdParty/paper.js"></script>
+	<script type="text/javascript" src="NaviFramework/js/3rdParty/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="NaviFramework/js/magictouch.js"></script>
+	
+	<script type="text/javascript" src="NaviFramework/js/NaviFramework/naviFramework_UI.js"></script>
+	<script type="text/javascript" src="NaviFramework/js/NaviFramework/naviFramework_Events.js"></script>
+	<script type="text/javascript" src="NaviFramework/js/NaviFramework/naviFramework_Animations.js"></script>
+	<script type="text/javascript" src="NaviFramework/js/NaviFramework/naviComponent_Animatable.js"></script>
+	<script type="text/javascript" src="NaviFramework/js/NaviFramework/naviComponent_Group.js"></script>
+	<script type="text/javascript" src="NaviFramework/js/NaviFramework/naviComponent_Touchable.js"></script>
+	<script type="text/javascript" src="NaviFramework/js/NaviFramework/naviObject_Scene.js"></script>
+	<script type="text/javascript" src="NaviFramework/js/NaviFramework/naviComponent_State.js"></script>
+	<script type="text/javascript" src="NaviFramework/js/NaviFramework/naviObject.js"></script>
+
+
+
+	<link rel="stylesheet" href="css/naviWorld.css">
+	<script type="text/javascript" src="js/nwMenu.js"></script>
+	<script type="text/javascript">
+
+
+function loadMenu(){
+	//load objects
+	var objects = [new nwMenu({x:0, y:0}, {width:200, height:200})];
+	fw.addObjectsToDocument(objects);
+}
+
+function loadNaviWorld() {
+	
+	//init framework
+	fw.init();
+	loadMenu();
+	//activate touch event registering
+	TouchLoop.init();
+	
+};
+
+</script>
+
+</head>
+<body onload="loadNaviWorld()">
+<!-- tuio, only needed for tabletop deployments -->
+<object id="tuio" type="application/x-tuio">Plugin FAILED to load</object>
+
+
+<!-- create temp objects here to test layout -->
+<div id="nwMenu" style="display:none">
+<ul>
+	<li><img class="nwMenu_Item flicker" src="img/naviworld_menu_badge.png"/></li>
+	<li><img class="nwMenu_Item flicker" src="img/naviworld_menu_person.png"/></li>
+</ul>
+</div>
+
+</body>
+</html>

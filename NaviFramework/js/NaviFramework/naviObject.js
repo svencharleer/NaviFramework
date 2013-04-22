@@ -1,4 +1,4 @@
-function NObject(name, layer, position, size, cssClass, tag, innerHTML, events, animations, states, objects) 
+function NObject(name, layer, position, size, cssClass, tag, innerHTML, events, animations, states, objects, objectExists) 
 {
 	//HTML NODE
 	this.element = null;
@@ -37,10 +37,17 @@ function NObject(name, layer, position, size, cssClass, tag, innerHTML, events, 
 
 	//INIT
 	{
-		this.element = document.createElement(tag);
-	    this.element.innerHTML = innerHTML;
-	    this.element.id = name;
-	    this.element.className = cssClass;
+		if(!objectExists)
+		{
+			this.element = document.createElement(tag);
+		    this.element.innerHTML = innerHTML;
+		    this.element.id = name;
+		    this.element.className = cssClass;
+	    }
+	    else
+	    {
+	    	this.element = document.getElementById(name);
+	    }
 	    if(size != null)
 	    	this.setSize(size);
 	    this.element.style.position = 'absolute';
@@ -79,3 +86,9 @@ function NObject(name, layer, position, size, cssClass, tag, innerHTML, events, 
 
 	
 }
+
+
+
+
+
+
