@@ -1,7 +1,10 @@
-function NObject(name, layer, position, size, cssClass, tag, innerHTML, events, animations, states, objects, objectExists) 
+function NObject(name, layer, position, size, cssClass, tag, innerHTML, events, animations, states, objects, objectExists, subObjectsAlreadyContained) 
 {
 	//HTML NODE
 	this.element = null;
+
+	this.group = null;
+
 	//POSITION
 	var _x, _y;
 	this.setPosition = function(point)
@@ -50,13 +53,16 @@ function NObject(name, layer, position, size, cssClass, tag, innerHTML, events, 
 	    }
 	    if(size != null)
 	    	this.setSize(size);
-	    this.element.style.position = 'absolute';
+	    
 	    if(position != null)
+	    {
 	    	this.setPosition(position);
+	    	this.element.style.position = 'absolute';
+	    }
 	    this.element.naviData = this;
 	   
-	    
-	    if(objects != null)
+	    this.group = objects;
+	    if(objects != null && !subObjectsAlreadyContained)
 	    {
 	        for(var i = 0; i < objects.length; i++)
 	        {

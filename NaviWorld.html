@@ -21,12 +21,13 @@
 
 	<link rel="stylesheet" href="css/naviWorld.css">
 	<script type="text/javascript" src="js/nwMenu.js"></script>
+	<script type="text/javascript" src="js/nwMenuItem.js"></script>
 	<script type="text/javascript">
 
 
 function loadMenu(){
 	//load objects
-	var objects = [new nwMenu({x:0, y:0}, {width:200, height:200})];
+	var objects = [new nwMenu({x:fw.view.width/3, y:5*fw.view.height/6}, {width:fw.view.width/3, height:fw.view.height/6})];
 	fw.addObjectsToDocument(objects);
 }
 
@@ -51,8 +52,8 @@ function loadNaviWorld() {
 <!-- create temp objects here to test layout -->
 <div id="nwMenu" style="display:none">
 <ul>
-	<li><img class="nwMenu_Item flicker" src="img/naviworld_menu_badge.png"/></li>
-	<li><img class="nwMenu_Item flicker" src="img/naviworld_menu_person.png"/></li>
+	<li><img id="nwMenuItem_Badge" class="nwMenu_Item flicker" src="img/naviworld_menu_badge.png"/></li>
+	<li><img id="nwMenuItem_Person" class="nwMenu_Item flicker" src="img/naviworld_menu_person.png"/></li>
 </ul>
 </div>
 
