@@ -1,4 +1,4 @@
-function NObject(name, layer, position, size, cssClass, tag, innerHTML, events, animations, states, objects, objectExists, subObjectsAlreadyContained) 
+function NObject(name,  layer, position, size, cssClass, innerHTML, events, animations, states, objects, objectExists, subObjectsAlreadyContained) 
 {
 	//HTML NODE
 	this.element = null;
@@ -42,8 +42,9 @@ function NObject(name, layer, position, size, cssClass, tag, innerHTML, events, 
 	{
 		if(!objectExists)
 		{
-			this.element = document.createElement(tag);
+			this.element = document.createElement("div");
 		    this.element.innerHTML = innerHTML;
+		    this.element = this.element.firstChild;
 		    this.element.id = name;
 		    this.element.className = cssClass;
 	    }

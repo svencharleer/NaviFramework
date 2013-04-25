@@ -2,19 +2,20 @@ var loadingDone = function()
 {
 	for(var i = 0; i < this.group.length; i++)
 	{
-		this.group[i].setPosition({x: (i % 10) * 50, y : (i / 10) * 60});
+		this.group[i].setPosition({x: (i % 10) * 50, y : (i  / 10) * 60});
 	}
 }
 
 var callBack = function(json)
 {	
 	console.log("BADGES REQUEST: DONE");
-	
+	var objects = [];
 	for(var i = 0; i < json.length; i++)
 	{
 
-		//document.getElementById("dummybodyid").naviData.addObject(new Badge(json[i].GUID, 2, null, {width:50,height:50}, "transit", events, json[i].imageUrl));
+		objects.push(new nwBadgeIcon(json[i].GUID, {x: (i % 10) * 50, y : Math.floor(i / 10) * 60}, {width:50,height:50}, json[i].imageUrl));
 	};
+	fw.addObjectsToDocument(objects);
 	//setTimeout(function(){document.getElementById("BadgeScene").naviData.loadingDone();},1000);
 	
 
@@ -40,7 +41,7 @@ function nwMenuItem(name)
 	var events = {fingerEvent: nwMenuItem_Events.badgeTouched};
 	var layer = 2;
 
-	NObject.call(this, name, layer, null, null, "", "", "", events, animations, states,[], true, true);
+	NObject.call(this, name, layer, null, null, "", "", events, animations, states,[], true, true);
 	this.element.style.display = "";
 }
 
