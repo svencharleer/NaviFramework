@@ -1,30 +1,10 @@
-var loadingDone = function()
-{
-	for(var i = 0; i < this.group.length; i++)
-	{
-		this.group[i].setPosition({x: (i % 10) * 50, y : (i  / 10) * 60});
-	}
-}
 
-var callBack = function(json)
-{	
-	console.log("BADGES REQUEST: DONE");
-	var objects = [];
-	for(var i = 0; i < json.length; i++)
-	{
-
-		objects.push(new nwBadgeIcon(json[i].GUID, {x: (i % 10) * 50, y : Math.floor(i / 10) * 60}, {width:50,height:50}, json[i].imageUrl));
-	};
-	fw.addObjectsToDocument(objects);
-	//setTimeout(function(){document.getElementById("BadgeScene").naviData.loadingDone();},1000);
-	
-
-};
 
 
 
 var nwMenuItem_Events =
 { 
+
 	badgeTouched: function(point, obj)
 	{
 	    console.log("BADGES REQUEST: LOADING");

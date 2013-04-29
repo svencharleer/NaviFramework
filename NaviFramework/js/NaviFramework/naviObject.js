@@ -3,7 +3,11 @@ function NObject(name,  layer, position, size, cssClass, innerHTML, events, anim
 	//HTML NODE
 	this.element = null;
 
-	this.group = null;
+	this.group = [];
+	
+
+
+
 
 	//POSITION
 	var _x, _y;
@@ -46,7 +50,7 @@ function NObject(name,  layer, position, size, cssClass, innerHTML, events, anim
 		    this.element.innerHTML = innerHTML;
 		    this.element = this.element.firstChild;
 		    this.element.id = name;
-		    this.element.className = cssClass;
+		    this.element.className = this.element.className + " " + cssClass;
 	    }
 	    else
 	    {
@@ -61,15 +65,32 @@ function NObject(name,  layer, position, size, cssClass, innerHTML, events, anim
 	    	this.element.style.position = 'absolute';
 	    }
 	    this.element.naviData = this;
-	   
-	    this.group = objects;
-	    if(objects != null && !subObjectsAlreadyContained)
+	}
+
+	this.removeChildren = function()
+	{
+		if(objects != null)
+	    {
+	    	var object = this.group.pop();
+	    	while(object != null)
+	    	{
+	    		if(object.element != null)
+	    			object.element.remove();
+	    		delete object;
+	        }
+	    }
+	}
+	this.addChildren = function(objects, appendToHTML)
+	{
+		
+	    if(objects != null)
 	    {
 	        for(var i = 0; i < objects.length; i++)
 	        {
-	            this.element.appendChild(objects[i].element);
+	        	this.group.push(objects[i]);
+	            if(appendToHTML)
+	            	this.element.appendChild(objects[i].element);
 	        }
-	        
 	    }
 	}
 

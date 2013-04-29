@@ -6,8 +6,9 @@ function nwMenu(position, size)
 	var events = {};
 	var layer = 2;
 	var subObjects = [new nwMenuItem("nwMenuItem_Badge"), new nwMenuItem("nwMenuItem_Person")]
-	
+
 	NObject.call(this, name, layer, position, size, "", "", events, animations, states, subObjects, true, true);
+	this.addChildren.call(this, subObjects);
 	this.element.style.display = "";
 }
 

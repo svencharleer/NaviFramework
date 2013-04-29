@@ -69,3 +69,12 @@ body
 {
 
 }
+
+#nwBadgeContainer
+{
+	width: 40%;
+	height:40%;
+	border:solid 10px #cef300;
+	border-radius: 10px;
+	background-color:#000000;
+}

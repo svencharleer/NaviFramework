@@ -23,6 +23,8 @@
 	<script type="text/javascript" src="js/nwMenu.js"></script>
 	<script type="text/javascript" src="js/nwMenuItem.js"></script>
 	<script type="text/javascript" src="js/nwBadgeIcon.js"></script>
+	<script type="text/javascript" src="js/nwBadgeContainer.js"></script>
+	<script type="text/javascript" src="js/nwLogic.js"></script>
 	<script type="text/javascript">
 
 
@@ -58,9 +60,12 @@ function loadNaviWorld() {
 </ul>
 </div>
 
-<div id="nwBadge" >
-	<div id="nwBadgeIcon"><img id="" class="nwBadgeIcon" src=""/></div>
+<div id="nwBadge" style="display:none" >
+	<div id="nwBadgeIcon"><img id="" class="nwBadgeIcon transit" src=""/></div>
 	<span id="nwBadgeName" class="nwBadgeName">BadgeName</span>
+</div>
+<div id="nwBadgeContainer" style="display:none">
+	Badges go here
 </div>
 
 </body>
