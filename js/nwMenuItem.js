@@ -7,8 +7,9 @@ var nwMenuItem_Events =
 
 	badgeTouched: function(point, obj)
 	{
+
 	    console.log("BADGES REQUEST: LOADING");
-		$.getJSON('http://localhost:8888/REST/getBadges?callback=', callBack, "json");
+		$.getJSON('http://localhost:8888/REST/getBadges/0?callback=', badgesLoaded_callBack, "json");
 	},
 };
 

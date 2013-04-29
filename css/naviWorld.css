@@ -70,6 +70,10 @@ body
 
 }
 
+.nwBadgeIcon
+{
+	width:7%;
+}
 #nwBadgeContainer
 {
 	width: 40%;
@@ -77,4 +81,24 @@ body
 	border:solid 10px #cef300;
 	border-radius: 10px;
 	background-color:#000000;
+}
+
+#nwBadgeContainer_topBar
+{
+	position: absolute;
+	top: -3em;
+}
+
+#nwBadgeContainer_Title
+{
+	
+	color: white;
+	font-family: helvetica;
+	
+	font-size: 2em;
+}
+
+#nwBadgeContainer_ArrowLeft, #nwBadgeContainer_ArrowRight{
+	display:inline-block;
+	color: white;
 }

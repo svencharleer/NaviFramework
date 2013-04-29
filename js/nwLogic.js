@@ -1,6 +1,15 @@
-var objects = [];
-var __w = fw.view.width/45;
-var __h = __w;
+//MAIN LOGIC ... LOOP?
+
+var badgeContainer;
+
+
+
+function loadMenu(){
+	//load objects
+	var objects = [new nwMenu({x:fw.view.width/3, y:5*fw.view.height/6}, {width:fw.view.width/3, height:fw.view.height/6})];
+	fw.addObjectsToDocument(objects);
+}
+
 
 /*var loadingDone = function()
 {
@@ -10,16 +19,21 @@ var __h = __w;
 	}
 }*/
 
-var callBack = function(json)
+var badgesLoaded_callBack = function(json)
 {	
 	console.log("BADGES REQUEST: DONE");
-
+	if(badgeContainer != null)
+		badgeContainer.removeBadges();
+	var objects = [];
+	var iteration = -1;
 	for(var i = 0; i < json.length; i++)
 	{
-		objects.push(new nwBadgeIcon(json[i].GUID, /*{x: (i % 40) * __w, y : Math.floor(i / 40) * __h}*/null, {width:__w,height:__h}, json[i].imageUrl));
+		iteration = json[i].biweek;
+		objects.push(new nwBadgeIcon(json[i].GUID, /*{x: (i % 40) * __w, y : Math.floor(i / 40) * __h}*/null, null, json[i].imageUrl));
 	};
-	var badgeContainer = new nwBadgeContainer({x:0,y:0}, null);
-	badgeContainer.addBadges(objects);
-	fw.addObjectsToDocument(badgeContainer);
+	if(badgeContainer == null)
+		badgeContainer = new nwBadgeContainer({x:fw.view.width/3.4, y:fw.view.height/3}, null);
+	badgeContainer.addBadges(objects, "Iteration " + (iteration + 1));
+	fw.addObjectsToDocument([badgeContainer]);
 	//setTimeout(function(){loadingDone();},1000);
 };

@@ -67,9 +67,9 @@ function NObject(name,  layer, position, size, cssClass, innerHTML, events, anim
 	    this.element.naviData = this;
 	}
 
-	this.removeChildren = function()
+	this.removeChildren = function(objects)
 	{
-		if(objects != null)
+		if(objects == null)
 	    {
 	    	var object = this.group.pop();
 	    	while(object != null)
@@ -77,7 +77,25 @@ function NObject(name,  layer, position, size, cssClass, innerHTML, events, anim
 	    		if(object.element != null)
 	    			object.element.remove();
 	    		delete object;
+	    		object = this.group.pop();
 	        }
+	    }
+	    else
+	    {
+	    	var object = objects.pop();
+	    	while(object != null)
+	    	{
+		    	for(var i = 0; i < this.group.length; i++)
+		    	{
+		    		if(object.element.id == this.group[i].element.id)
+		    		{
+		    			object.element.remove();
+		    			delete object;
+		    			break;
+		    		}
+		    	}
+		    	object = objects.pop();
+		    }
 	    }
 	}
 	this.addChildren = function(objects, appendToHTML)

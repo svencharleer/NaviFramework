@@ -25,14 +25,11 @@
 	<script type="text/javascript" src="js/nwBadgeIcon.js"></script>
 	<script type="text/javascript" src="js/nwBadgeContainer.js"></script>
 	<script type="text/javascript" src="js/nwLogic.js"></script>
+	<script type="text/javascript" src="js/nwButton.js"></script>
 	<script type="text/javascript">
 
 
-function loadMenu(){
-	//load objects
-	var objects = [new nwMenu({x:fw.view.width/3, y:5*fw.view.height/6}, {width:fw.view.width/3, height:fw.view.height/6})];
-	fw.addObjectsToDocument(objects);
-}
+
 
 function loadNaviWorld() {
 	
@@ -65,7 +62,11 @@ function loadNaviWorld() {
 	<span id="nwBadgeName" class="nwBadgeName">BadgeName</span>
 </div>
 <div id="nwBadgeContainer" style="display:none">
-	Badges go here
+	<div id="nwBadgeContainer_topBar">
+		<span id="nwBadgeContainer_ArrowLeft"> &lt;</span>
+		<span id="nwBadgeContainer_Title">Iteration X</span>
+		<span id="nwBadgeContainer_ArrowRight">&gt;</span>
+	</div>
 </div>
 
 </body>

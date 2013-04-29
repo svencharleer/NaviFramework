@@ -8,6 +8,7 @@ function nwBadgeIcon(name, position, size, filename)
 	var innerHTML = $("#nwBadgeIcon").html();
 	NObject.call(this, name, layer, position, size, "", innerHTML, events, animations, states, [], false, false);
 	this.element.style.display = "";
+	this.element.style.className = "";
 	this.element.setAttribute("src",filename);
 }
 
