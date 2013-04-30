@@ -101,7 +101,7 @@ function naviFramework_UI()
 {
     this.layers = [];
     this.scenes = [];
-    this.containers = [];
+    this.containers = {};
     this.view = {width: $(window).width(), height: $(window).height()};
     
     this.init = function()
@@ -238,9 +238,11 @@ function naviFramework_UI()
 
     this.arrangeContainers = function()
     {
-        for(var i=0; i < this.containers.length; i++)
+        var keys = Object.keys(this.containers);
+        var l = keys.length;
+        for(var i=0; i < l; i++)
         {
-            this.containers[i].thereAreXContainer(this.containers.length);
+            this.containers[keys[i]].thereAreXContainer(l);
         }
     }
 
@@ -251,7 +253,7 @@ function naviFramework_UI()
         //if a container, add to the container list. needed for using screen estate
         if(object.type == "container")
         {
-            this.containers.push(object);
+            this.containers[object.element.id] = object;
             this.arrangeContainers();
         }
         object.activate();
@@ -278,7 +280,12 @@ function naviFramework_UI()
     this.removeObjectFromDocument = function(object)
     {
         if(!object.doNotDeletedocumentElement)
-            $("#" +object.element.id).remove(); 
+            $("#" +object.element.id).remove();
+        if(this.containers[object.element.id] != null)
+        {
+            delete this.containers[object.element.id];
+            this.arrangeContainers();
+        }
         delete this.layers[object.layer].objects[object.element.id];
         delete object;
     }
