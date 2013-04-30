@@ -9,7 +9,7 @@ function nwMenuItem(name, event)
 {
 	var name = name;
 	var states = [];
-	var animations = [];
+	var animations = ["","pulsate"];
 	var events = {fingerEvent: event};
 	var layer = 2;
 

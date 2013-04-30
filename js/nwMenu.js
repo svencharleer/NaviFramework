@@ -1,7 +1,7 @@
 var nwMenuItem_Events =
 { 
-
-	badgeTouched: function(point, obj)
+	badgeTouched_Timer: null,
+	badgeTouchedSubmit: function()
 	{
 		if(badgeContainer != null)
 		{
@@ -17,7 +17,42 @@ var nwMenuItem_Events =
 		}
 	},
 
-	studentTouched: function(point, obj)
+	badgeTouched: function(point, obj, action)
+	{
+		if(action=="hit")
+		{
+			if(nwMenuItem_Events.badgeTouched_Timer == null)
+			{
+				obj.animatable.switchToAnimation(1);
+				nwMenuItem_Events.badgeTouched_Timer = setTimeout(function()
+						{
+							nwMenuItem_Events.badgeTouchedSubmit();
+							obj.animatable.idle();
+						},
+
+						3000);
+				return;
+			}
+		}
+		if(action=="letgo")
+		{
+			obj.animatable.idle();
+			clearTimeout(nwMenuItem_Events.badgeTouched_Timer);
+			nwMenuItem_Events.badgeTouched_Timer = null;
+		}
+		//if we move out of icon, might wanna cancel timer as well...
+		/*if(action=="move" && nwMenuItem_Events.badgeTouched_Timer != 0)
+		{
+			if(nwMenuItem_Events.badgeTouched_Timer + 5000 < new Date().getTime())
+			{
+				nwMenuItem_Events.badgeTouchedSubmit();
+				nwMenuItem_Events.badgeTouched_Timer = 0;
+			}
+		}*/
+		
+	},
+
+	studentTouched: function(point, obj, action)
 	{
 		if(studentContainer != null)
 		{

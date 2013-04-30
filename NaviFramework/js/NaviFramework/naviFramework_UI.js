@@ -149,10 +149,11 @@ function naviFramework_UI()
             var hitResult = hitResults.pop();
             if(hitResult != null)
             {
-                this.fingerToObjects[identifier] = hitResult;
+                
                 if(hitResult.touchable.fingerEvent != null)
                 {
-                    hitResult.touchable.fingerEvent(hitPoint, hitResult);
+                    this.fingerToObjects[identifier] = hitResult;
+                    hitResult.touchable.fingerEvent(hitPoint, hitResult, "hit");
                 }
             }
         } 
@@ -161,10 +162,19 @@ function naviFramework_UI()
     {   
         if(this.fingerToCursors[identifier] != null)
         {   
+            
             //hm we have to find a way to get rid of this
             //this.fingerToCursors[identifier].remove();
             this.fingerToCursors[identifier].reset(); //doesn't get rid of the object though
             this.fingerToCursors[identifier] = null;
+        }
+        if(this.fingerToObjects[identifier] != null)
+        {
+            var hitResult = this.fingerToObjects[identifier];
+            if(hitResult.touchable.fingerEvent != null)
+            {
+                hitResult.touchable.fingerEvent(null, hitResult, "letgo");
+            }
         }
         this.fingerToObjects[identifier] = null;
     }
@@ -187,7 +197,7 @@ function naviFramework_UI()
             var hitResult = this.fingerToObjects[identifier];
             if(hitResult.touchable.fingerEvent != null)
             {
-                hitResult.touchable.fingerEvent(hitPoint, hitResult);
+                hitResult.touchable.fingerEvent(hitPoint, hitResult, "move");
             }
         }   
     }
