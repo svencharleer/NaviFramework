@@ -70,20 +70,22 @@ function PaperCanvas(paper)
 TouchTest = function(point, objects)
 {
     var touchedObjects = [];
-    for(var i = 0; i < objects.length; i++)
+    var keys = Object.keys(objects);
+    for(var i = 0; i < keys.length; i++)
     {
-        if(objects[i].touchable)
+        var object = objects[keys[i]];
+        if(object != null && object.touchable)
         {
-            var position = objects[i].getPosition();
-            var size = objects[i].getSize();
+            var position = object.getPosition();
+            var size = object.getSize();
             if(point.x > position.x 
                 && point.y > position.y 
                 && point.x < position.x + size.width 
                 && point.y < position.y + size.height)
             {
-                console.log("Object " + objects[i].element.id + " hit");
+                console.log("Object " + object.element.id + " hit");
                 
-                touchedObjects.push(objects[i]);
+                touchedObjects.push(object);
             }
         }
     }
@@ -92,7 +94,7 @@ TouchTest = function(point, objects)
 
 function DocumentLayer()
 {
-    this.objects = [];
+    this.objects = {};
 }
 
 function naviFramework_UI()
@@ -235,7 +237,7 @@ function naviFramework_UI()
 
     this.addObjectToDocument = function(object)
     {
-        this.layers[object.layer].objects.push(object);
+        this.layers[object.layer].objects[object.element.id] = object;
         object.activate();
         if(object.group != null)
         {
@@ -259,7 +261,9 @@ function naviFramework_UI()
 
     this.removeObjectFromDocument = function(object)
     {
-        $("#" +object.element.id).remove(); //doesn't really delete it it seems :/
+        $("#" +object.element.id).remove(); 
+        delete this.layers[object.layer].objects[object.element.id];
+        delete object;
     }
 
     this.removeObjectsFromDocument = function(objects)

@@ -12,4 +12,4 @@ function nwBadgeIcon(name, position, size, filename)
 	this.element.setAttribute("src",filename);
 }
 
-nwMenu.prototype = Object.create(NObject.prototype);
+nwBadgeIcon.prototype = Object.create(NObject.prototype);

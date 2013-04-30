@@ -71,31 +71,31 @@ function NObject(name,  layer, position, size, cssClass, innerHTML, events, anim
 	{
 		if(objects == null)
 	    {
-	    	var object = this.group.pop();
-	    	while(object != null)
-	    	{
-	    		if(object.element != null)
-	    			object.element.remove();
-	    		delete object;
-	    		object = this.group.pop();
-	        }
+	        fw.removeObjectsFromDocument(this.group);
+	        this.group = [];
 	    }
 	    else
 	    {
-	    	var object = objects.pop();
-	    	while(object != null)
-	    	{
-		    	for(var i = 0; i < this.group.length; i++)
+	    	var newGroup = [];
+	    	for(var i = 0; i < this.group.length; i++)
+		    {
+		    	var found = false;
+		    	for(var j = 0; j < objects.length; j++)
 		    	{
-		    		if(object.element.id == this.group[i].element.id)
+		    		if(objects[j].element.id == this.group[i].element.id)
 		    		{
-		    			object.element.remove();
-		    			delete object;
+		    			found = true;
+		    			this.group[i] = null;
 		    			break;
 		    		}
+		    		
 		    	}
-		    	object = objects.pop();
+		    	if(!found)
+		    		newGroup.push(this.group[i]);
 		    }
+
+		    fw.removeObjectsFromDocument(objects);
+		    this.group = newGroup;
 	    }
 	}
 	this.addChildren = function(objects, appendToHTML)
