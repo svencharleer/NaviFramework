@@ -2,24 +2,15 @@
 
 
 
-var nwMenuItem_Events =
-{ 
-
-	badgeTouched: function(point, obj)
-	{
-
-	    console.log("BADGES REQUEST: LOADING");
-		$.getJSON('http://localhost:8888/REST/getBadges/0?callback=', badgesLoaded_callBack, "json");
-	},
-};
 
 
-function nwMenuItem(name)
+
+function nwMenuItem(name, event)
 {
 	var name = name;
 	var states = [];
 	var animations = [];
-	var events = {fingerEvent: nwMenuItem_Events.badgeTouched};
+	var events = {fingerEvent: event};
 	var layer = 2;
 
 	NObject.call(this, name, layer, null, null, "", "", events, animations, states,[], true, true);

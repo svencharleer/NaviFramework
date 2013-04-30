@@ -74,31 +74,79 @@ body
 {
 	width:7%;
 }
-#nwBadgeContainer
+
+#nwContainerArea
 {
+	position:absolute;
+	padding:0;
+	margin:0;
+	-webkit-transform: translateY(100%);
+	top:0;
+	left:0;
+	width:100%;
+	height:50%;
+	border:solid 1px #ffffff;
+	text-align: center;
+
+}
+.container_1x1
+{
+	margin-top:1em;
 	width: 40%;
 	height:40%;
+	display:inline-block;
+}
+
+.container_2x1
+{
+	margin-top:1em;
+	width:20%;
+	height:40%;
+	display:inline-block;
+	vertical-align: top;
+}
+
+#nwBadgeContainer
+{
+
 	border:solid 10px #cef300;
 	border-radius: 10px;
 	background-color:#000000;
+
 }
 
-#nwBadgeContainer_topBar
+#nwStudentContainer
 {
-	position: absolute;
+	border:solid 10px #cef300;
+	border-radius: 10px;
+	background-color:#000000;
+	font-family: Helvetica;
+	color:#ffffff;
+	overflow:scroll;
+}
+
+.Container_topBar
+{
+	position:absolute;
 	top: -3em;
+	color: white;
+	font-family: helvetica;
+	font-size: 2em;
 }
 
 #nwBadgeContainer_Title
 {
 	
-	color: white;
-	font-family: helvetica;
 	
-	font-size: 2em;
 }
 
 #nwBadgeContainer_ArrowLeft, #nwBadgeContainer_ArrowRight{
 	display:inline-block;
 	color: white;
+}
+
+.Student_ListItem
+{
+	display:inline-block;
+	width:30%;
 }

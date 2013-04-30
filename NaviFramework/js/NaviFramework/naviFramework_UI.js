@@ -101,6 +101,7 @@ function naviFramework_UI()
 {
     this.layers = [];
     this.scenes = [];
+    this.containers = [];
     this.view = {width: $(window).width(), height: $(window).height()};
     
     this.init = function()
@@ -235,9 +236,24 @@ function naviFramework_UI()
     }
 
 
+    this.arrangeContainers = function()
+    {
+        for(var i=0; i < this.containers.length; i++)
+        {
+            this.containers[i].thereAreXContainer(this.containers.length);
+        }
+    }
+
     this.addObjectToDocument = function(object)
     {
+        //add all objects to their layer. currently only used for touch
         this.layers[object.layer].objects[object.element.id] = object;
+        //if a container, add to the container list. needed for using screen estate
+        if(object.type == "container")
+        {
+            this.containers.push(object);
+            this.arrangeContainers();
+        }
         object.activate();
         if(object.group != null)
         {
@@ -252,7 +268,7 @@ function naviFramework_UI()
     {
         for(var i=0; i < objects.length; i++)
         {
-            document.body.appendChild(objects[i].element);
+            //document.body.appendChild(objects[i].element);
             this.addObjectToDocument(objects[i]);
             
         }
@@ -261,7 +277,8 @@ function naviFramework_UI()
 
     this.removeObjectFromDocument = function(object)
     {
-        $("#" +object.element.id).remove(); 
+        if(!object.doNotDeletedocumentElement)
+            $("#" +object.element.id).remove(); 
         delete this.layers[object.layer].objects[object.element.id];
         delete object;
     }
@@ -332,17 +349,17 @@ var TouchLoop =
         this.timer = setInterval(this.update, 15);
 
         document.addEventListener('touchend', function() {
-            this.touchesLetGo = this.touchesLetGo.concat(event.changedTouches);   
+            TouchLoop.touchesLetGo = TouchLoop.touchesLetGo.concat(event.changedTouches);   
             
         });
         document.addEventListener('touchmove', function(event) {
             event.preventDefault();
-            this.touchesMoved = event.changedTouches;
+            TouchLoop.touchesMoved = event.changedTouches;
 
         });
         document.addEventListener('touchstart', function(event) {
             console.log('start');
-            this.touches = event.targetTouches;
+            TouchLoop.touches = event.targetTouches;
             
          });
         document.addEventListener('mousedown', function(event) {

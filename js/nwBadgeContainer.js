@@ -1,3 +1,22 @@
+var badgesLoaded_callBack = function(json)
+{	
+	console.log("BADGES REQUEST: DONE");
+	if(badgeContainer != null)
+		badgeContainer.removeBadges();
+	var objects = [];
+	var iteration = -1;
+	for(var i = 0; i < json.length; i++)
+	{
+		iteration = json[i].biweek;
+		objects.push(new nwBadgeIcon(json[i].GUID, /*{x: (i % 40) * __w, y : Math.floor(i / 40) * __h}*/null, null, json[i].imageUrl));
+	};
+	if(badgeContainer == null)
+		badgeContainer = new nwBadgeContainer({x:fw.view.width/3.4, y:fw.view.height/3}, null);
+	badgeContainer.addBadges(objects, "Iteration " + (iteration + 1));
+	fw.addObjectsToDocument([badgeContainer]);
+	//setTimeout(function(){loadingDone();},1000);
+};
+
 var	nwBadge_Arrow_Events =
 { 
 	nwBadge_Arrow_Page: 0,
@@ -17,7 +36,7 @@ var	nwBadge_Arrow_Events =
 	},
 };
 
-function nwBadgeContainer(position, size)
+function nwBadgeContainer()
 {
 	var name = "nwBadgeContainer";
 	var states = [];
@@ -25,10 +44,25 @@ function nwBadgeContainer(position, size)
 	var events = {};
 	var layer = 2;
 	var badges = [];
-
+	this.type = "container";
 	
+	//positioning, depending on different containers/platforms...
 	
-	NObject.call(this, name, layer, position, size, "", "", events, animations, states, badges, true);
+	this.thereAreXContainer = function(numberOfContainers)
+	{
+		if(numberOfContainers == 1)
+		{
+			$("#"+ this.element.id).removeClass("container_2x1");
+			$("#"+ this.element.id).addClass("container_1x1");
+		}
+		else
+		{
+			$("#"+ this.element.id).removeClass("container_1x1");
+			$("#"+ this.element.id).addClass("container_2x1");
+		}
+	}
+	
+	NObject.call(this, name, layer, null, null, "", "", events, animations, states, badges, true);
 	this.addBadges = function(_badges, title)
 	{
 		this.titleElement.innerHTML = title;
@@ -51,9 +85,19 @@ function nwBadgeContainer(position, size)
 	this.addChildren.call(this, [nwBadgeArrowLeft, nwBadgeArrowRight]);
 	//REMEMBER WE HAVE TO DELETE THESE AT SOME POINT
 	//ALSO MAYBE WE WANNA PUT THEM ALL IN THE GROUP POOL --> K WE DID THAT BUT I THINK THEY STAY IN MEMORY IN THE LAYER OF THE FRAMEWORK
+
+
+	this.delete = function()
+	{
+		this.removeBadges();
+		delete nwBadgeArrowLeft;
+		delete nwBadgeArrowRight; //we gotta make destructors per object, take into account to delete doc element or not
+		this.element.style.display = "none";
+	}
+
 }
 
 
 
-nwMenu.prototype = Object.create(NObject.prototype);
+nwBadgeContainer.prototype = Object.create(NObject.prototype);
 

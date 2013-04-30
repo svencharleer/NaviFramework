@@ -5,6 +5,7 @@ function NObject(name,  layer, position, size, cssClass, innerHTML, events, anim
 
 	this.group = [];
 	
+	this.doNotDeletedocumentElement = objectExists;
 
 
 
