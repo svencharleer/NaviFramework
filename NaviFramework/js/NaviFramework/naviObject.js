@@ -61,7 +61,7 @@ function NObject(name,  layer, position, size, cssClass, innerHTML, events, anim
 		{
 			this.element = document.createElement("div");
 		    this.element.innerHTML = innerHTML;
-		    this.element = this.element.firstChild;
+		    //this.element = this.element.firstChild;
 		    this.element.id = name;
 		    this.element.className = this.element.className + " " + cssClass;
 	    }

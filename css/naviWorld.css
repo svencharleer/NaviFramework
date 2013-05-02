@@ -91,10 +91,54 @@ body
 
 }
 
-.nwBadgeIcon
+/*small badge*/
+.nwBadge
 {
 	width:7%;
+	display:inline-block;
 }
+.nwBadgeIcon
+{
+	width:100%;
+}
+
+.nwBadgeDetails_hidden
+{
+	display:none;
+}
+
+/*detailed badge*/
+.nwBadgeIconDetailed
+{
+	position:fixed;
+	width:7%;
+}
+.nwBadgeDetails_shown
+{
+	display:block;
+	font-family: Helvetica;
+	font-size:1em;
+	color:white;
+	margin-top:30%;
+	border:solid 10px #cef300;
+	border-radius: 10px;
+	background-color:#000000;
+
+}
+.nwBadgeDetailed{
+	width:20%;
+}
+.nwBadgeDetailed h1{
+	font-size:1em;
+	color:white;
+}
+.nwBadgeDetailed p{
+	font-size:1em;
+	color:white;
+}
+
+
+
 
 #nwContainerArea
 {
