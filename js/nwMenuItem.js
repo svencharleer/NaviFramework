@@ -1,21 +1,12 @@
-
-
-
-
-
-
-
-function nwMenuItem(name, event)
+function nwMenuItem(name, buttonEvent)
 {
 	var name = name;
 	var states = [];
 	var animations = ["","pulsate"];
-	var events = {fingerEvent: event};
-	var layer = 2;
-
-	NObject.call(this, name, layer, null, null, "", "", events, animations, states,[], true, true);
+	nwButton.call(this, name, null, buttonEvent, true)
+	this.animatable = new NCAnimatable(this, ["","pulsate"]);
 	this.element.style.display = "";
 }
 
-nwMenuItem.prototype = Object.create(NObject.prototype);
+nwMenuItem.prototype = Object.create(nwButton.prototype);
 

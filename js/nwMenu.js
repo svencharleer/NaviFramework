@@ -1,7 +1,6 @@
 var nwMenuItem_Events =
 { 
-	badgeTouched_Timer: null,
-	badgeTouchedSubmit: function()
+	badgeTouched: function()
 	{
 		if(badgeContainer != null)
 		{
@@ -17,42 +16,7 @@ var nwMenuItem_Events =
 		}
 	},
 
-	badgeTouched: function(point, obj, action)
-	{
-		if(action=="hit")
-		{
-			if(nwMenuItem_Events.badgeTouched_Timer == null)
-			{
-				obj.animatable.switchToAnimation(1);
-				nwMenuItem_Events.badgeTouched_Timer = setTimeout(function()
-						{
-							nwMenuItem_Events.badgeTouchedSubmit();
-							obj.animatable.idle();
-						},
-
-						3000);
-				return;
-			}
-		}
-		if(action=="letgo")
-		{
-			obj.animatable.idle();
-			clearTimeout(nwMenuItem_Events.badgeTouched_Timer);
-			nwMenuItem_Events.badgeTouched_Timer = null;
-		}
-		//if we move out of icon, might wanna cancel timer as well...
-		/*if(action=="move" && nwMenuItem_Events.badgeTouched_Timer != 0)
-		{
-			if(nwMenuItem_Events.badgeTouched_Timer + 5000 < new Date().getTime())
-			{
-				nwMenuItem_Events.badgeTouchedSubmit();
-				nwMenuItem_Events.badgeTouched_Timer = 0;
-			}
-		}*/
-		
-	},
-
-	studentTouched: function(point, obj, action)
+	studentTouched: function()
 	{
 		if(studentContainer != null)
 		{
@@ -75,7 +39,7 @@ function nwMenu(position, size)
 	var name = "nwMenu";
 	var states = [];
 	var animations = [];
-	var events = {};
+	var events = null;
 	var layer = 2;
 	var subObjects = [new nwMenuItem("nwMenuItem_Badge", nwMenuItem_Events.badgeTouched), new nwMenuItem("nwMenuItem_Person", nwMenuItem_Events.studentTouched)];
 

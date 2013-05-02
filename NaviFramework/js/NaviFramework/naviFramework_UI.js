@@ -190,7 +190,7 @@ function naviFramework_UI()
         }
         else
         {
-            console.log("FINGER " + identifier + " moved but was not found");
+            //console.log("FINGER " + identifier + " moved but was not found");
         }
         if(this.fingerToObjects[identifier] != null)
         {

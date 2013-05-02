@@ -116,7 +116,8 @@ function NObject(name,  layer, position, size, cssClass, innerHTML, events, anim
 	//COMPONENTS
 	//this.afterAnimation = null;
 	//this.afterTransition = null;
-	this.touchable = new NCTouchable(this, events);
+	if(events != null)
+		this.touchable = new NCTouchable(this, events);
 	this.animatable = new NCAnimatable(this, animations);
 	this.state = new NCState(this, states);
 
