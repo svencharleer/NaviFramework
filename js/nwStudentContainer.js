@@ -24,7 +24,7 @@ function nwStudentContainer()
 	var name = "nwStudentContainer";
 	var states = [];
 	var animations = [];
-	var events = {};
+	var events = null;
 	var layer = 2;
 	var students = [];
 	this.type = "container";

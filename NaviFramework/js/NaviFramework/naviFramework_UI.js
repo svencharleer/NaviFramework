@@ -26,7 +26,7 @@ function PaperCanvas(paper)
     {
         var element = document.createElement("canvas");
         element.id = name;
-        element.className = "transit";
+        //element.className = "transit";
         element.width = size.w;
         element.height = size.h;
         element.style.position = 'absolute';
@@ -197,6 +197,7 @@ function naviFramework_UI()
             var hitResult = this.fingerToObjects[identifier];
             if(hitResult.touchable.fingerEvent != null)
             {
+                console.log(hitPoint.x + " " + hitPoint.y +" " +hitResult.element.id);
                 hitResult.touchable.fingerEvent(hitPoint, hitResult, "move");
             }
         }   

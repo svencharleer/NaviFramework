@@ -14,10 +14,22 @@ function NObject(name,  layer, position, size, cssClass, innerHTML, events, anim
 	var _x, _y;
 	this.setPosition = function(point)
 	{
-		this.element.style.left = point.x + 'px';
-    	this.element.style.top = point.y + 'px';
-    	_x = point.x;
-    	_y = point.y;
+		if(point != null)
+		{
+			this.element.style.left = point.x + 'px';
+	    	this.element.style.top = point.y + 'px';
+	    	this.element.style.position = 'fixed';
+	    	_x = point.x;
+	    	_y = point.y;
+		}
+		else
+		{
+			this.element.style.left = "";
+			this.element.style.top = "";
+			this.element.style.position = "";
+			_x = 0;
+			_y = 0;
+		}
 	}
 	this.getPosition = function()
 	{
@@ -63,7 +75,7 @@ function NObject(name,  layer, position, size, cssClass, innerHTML, events, anim
 	    if(position != null)
 	    {
 	    	this.setPosition(position);
-	    	this.element.style.position = 'absolute';
+	    	
 	    }
 	    this.element.naviData = this;
 	}

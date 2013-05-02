@@ -41,7 +41,7 @@ function nwBadgeContainer()
 	var name = "nwBadgeContainer";
 	var states = [];
 	var animations = [];
-	var events = {};
+	var events = null;
 	var layer = 2;
 	var badges = [];
 	this.type = "container";
