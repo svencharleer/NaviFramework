@@ -3,7 +3,7 @@ var studentsLoaded_callBack = function(json)
 	console.log("STUDENTS REQUEST: DONE");
 	
 	var objects = [];
-	for(var i = 0; i < /*json.length;*/10; i++)
+	for(var i = 0; i < json.length; i++)
 	{
 		objects.push(new nwStudent(json[i].replace(/[^A-Za-z]+/g, ''), null, null, json[i]));
 	};
