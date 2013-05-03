@@ -5,8 +5,9 @@ var studentContainer;
 
 
 function loadMenu(){
+	document.getElementById("mainBody").webkitRequestFullScreen();
 	//load objects
-	var objects = [new nwMenu({x:fw.view.width/3, y:5*fw.view.height/6}, {width:fw.view.width/3, height:fw.view.height/6})];
+	var objects = [new nwMenu({x:2*fw.view.width/5, y:7.3*fw.view.height/8}, {width:fw.view.width/5, height:fw.view.height/8})];
 	fw.addObjectsToDocument(objects);
 }
 

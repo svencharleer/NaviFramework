@@ -47,7 +47,7 @@ function loadNaviWorld() {
 </script>
 
 </head>
-<body onload="loadNaviWorld()">
+<body  id="mainBody" onload="loadNaviWorld()">
 <!-- tuio, only needed for tabletop deployments -->
 <object id="tuio" type="application/x-tuio" style="width:0;height:0;">Plugin FAILED to load</object>
 
@@ -69,9 +69,10 @@ function loadNaviWorld() {
 	</div>
 </div>
 
-<div id="nwStudent" style="display:none"><div class="Student_ListItem"></div></div>
+<div id="nwStudent" style="display:none"><div class="Student_ListItem">NT_STUDENT_NAME</div></div>
 <div id="nwContainerArea">
-	<div id="nwBadgeContainer" style="display:none" class="transit"><div id="nwBadgeContainer_topBar" class="Container_topBar">
+	<div id="nwBadgeContainer" style="display:none" class="transit">
+		<div id="nwBadgeContainer_topBar" class="Container_topBar">
 			<span id="nwBadgeContainer_ArrowLeft"> &lt;</span>
 			<span id="nwBadgeContainer_Title">Iteration X</span>
 			<span id="nwBadgeContainer_ArrowRight">&gt;</span>
@@ -83,5 +84,6 @@ function loadNaviWorld() {
 		</div>
 	</div>
 </div>
+<div id="NaviLogo" onClick="document.getElementById("mainBody").webkitRequestFullScreen();">N</div>
 </body>
 </html>

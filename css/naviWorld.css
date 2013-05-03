@@ -6,6 +6,10 @@ body
 	background-size: cover;
 }
 
+/*check these, it's for the long hold problem on iOS)*/
+body { -webkit-touch-callout: none !important; -webkit-user-select: none; }
+a { -webkit-user-select: none !important; }
+img { -webkit-touch-callout: none !important;}
 #playfield
 {
 	height:100%;
@@ -40,13 +44,13 @@ body
 #nwMenu
 {
 	width: 20%;
-	height:10%;
+	height:5%;
 	
-	border:solid 10px #f35b00;
+	border:solid 1px #cacaca;
 	border-bottom:none;
 	border-radius: 10px;
 
-	background-color:#000000;
+	background-color:rgba(255,255,255,.3);
 }
 
 #nwMenu ul
@@ -96,6 +100,7 @@ body
 {
 	width:7%;
 	display:inline-block;
+
 }
 .nwBadgeIcon
 {
@@ -118,11 +123,12 @@ body
 	display:block;
 	font-family: Helvetica;
 	font-size:1em;
-	color:white;
+	color:#aaa8a8;
 	margin-top:30%;
-	border:solid 10px #cef300;
+	padding:10px;
+	border:solid 1px #cacaca;
 	border-radius: 10px;
-	background-color:#000000;
+	background-color:rgba(255,255,255,.3);
 
 }
 .nwBadgeDetailed{
@@ -130,11 +136,13 @@ body
 }
 .nwBadgeDetailed h1{
 	font-size:1em;
-	color:white;
+	color:#aaa8a8;
+	
 }
 .nwBadgeDetailed p{
 	font-size:1em;
-	color:white;
+	color:#cacaca;
+	
 }
 
 
@@ -150,23 +158,23 @@ body
 	left:0;
 	width:100%;
 	height:50%;
-	border:solid 1px #ffffff;
+	border-top:dotted 1px #cacaca;
 	text-align: center;
 
 }
 .container_1x1
 {
 	margin-top:1em;
-	width: 40%;
-	height:40%;
+	width: 70%;
+	height:70%;
 	display:inline-block;
 }
 
 .container_2x1
 {
 	margin-top:1em;
-	width:20%;
-	height:40%;
+	width:40%;
+	height:70%;
 	display:inline-block;
 	vertical-align: top;
 }
@@ -174,44 +182,78 @@ body
 #nwBadgeContainer
 {
 
-	border:solid 10px #cef300;
+	border:solid 1px #cacaca;
 	border-radius: 10px;
-	background-color:#000000;
+	background-color:rgba(255,255,255,.3);
+	padding:5px;
+
 
 }
 
 #nwStudentContainer
 {
-	border:solid 10px #cef300;
+	border:solid 1px #cacaca;
 	border-radius: 10px;
-	background-color:#000000;
+	background-color:rgba(255,255,255,.3);
+
 	font-family: Helvetica;
-	color:#ffffff;
+	color:#cacaca;
 	overflow:scroll;
+	padding:5px;
+
 }
 
 .Container_topBar
 {
-	position:absolute;
-	top: -3em;
-	color: white;
-	font-family: helvetica;
-	font-size: 2em;
+	
+	color: #cacaca;
+	font-family: Helvetica;
+	font-size: 1.1em;
+	border-bottom:solid 1px #e3e3e2;
+
 }
 
-#nwBadgeContainer_Title
-{
-	
-	
-}
 
 #nwBadgeContainer_ArrowLeft, #nwBadgeContainer_ArrowRight{
 	display:inline-block;
-	color: white;
+	color: #aaa8a8;
 }
 
-.Student_ListItem
+.nwStudent
 {
 	display:inline-block;
 	width:30%;
+	color: #aaa8a8;
+	font-family: Helvetica;
+}
+
+/* logo */
+
+@-webkit-keyframes rotateLogo {
+    0% {-webkit-transform: rotateY(0deg);}
+    50% {-webkit-transform: rotateY(180deg);}
+    100% {-webkit-transform: rotateY(360deg);}
+} 
+
+#NaviLogo
+{
+	-webkit-opacity:.6;
+	color: white;
+	font-family: Helvetica;
+	font-size:1.5em;
+	font-weight: bold;
+	position:fixed;
+	display:block;
+	border:solid 2px white;
+	padding-top:2px;
+	padding-bottom:2px;
+	padding-left:4px;
+	padding-right:4px;
+	border-radius: 20px;
+	left:5px;
+	top:5px;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-name: rotateLogo;
+    -webkit-animation-duration: 4s;
+    -webkit-animation-iteration-count: infinite; 
 }
