@@ -1,4 +1,4 @@
-body
+body, :-webkit-full-screen body
 {
 	margin:0;
 	padding:0;
@@ -44,13 +44,16 @@ img { -webkit-touch-callout: none !important;}
 #nwMenu
 {
 	width: 20%;
-	height:5%;
+	height:15%;
 	
 	border:solid 1px #cacaca;
 	border-bottom:none;
 	border-radius: 10px;
 
 	background-color:rgba(255,255,255,.3);
+	position:fixed;
+	top:92%;
+	left:40%;
 }
 
 #nwMenu ul
@@ -116,7 +119,7 @@ img { -webkit-touch-callout: none !important;}
 .nwBadgeIconDetailed
 {
 	position:fixed;
-	width:7%;
+	width:5%;
 }
 .nwBadgeDetails_shown
 {
@@ -124,7 +127,7 @@ img { -webkit-touch-callout: none !important;}
 	font-family: Helvetica;
 	font-size:1em;
 	color:#aaa8a8;
-	margin-top:30%;
+	margin-top:2.4em;
 	padding:10px;
 	border:solid 1px #cacaca;
 	border-radius: 10px;
@@ -235,7 +238,7 @@ img { -webkit-touch-callout: none !important;}
     100% {-webkit-transform: rotateY(360deg);}
 } 
 
-#NaviLogo
+#nwNaviLogo
 {
 	-webkit-opacity:.6;
 	color: white;
