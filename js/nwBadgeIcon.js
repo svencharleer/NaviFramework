@@ -11,6 +11,7 @@ function nwBadgeIcon(name, position, size, filename, badgeData)
 		{
 			//obj.setPosition(point);
 			$("#" + obj.element.id).removeClass("transit");
+			obj.setTouchAnchor(point);
 		},
 		onLetGo: function(obj)
 		{
@@ -45,7 +46,8 @@ function nwBadgeIcon(name, position, size, filename, badgeData)
 		onMove: function(point, obj)
 		{
 			document.getElementById("playfield").appendChild(obj.element);
-			obj.setPosition(point, true);
+
+			obj.setPosition(point);
 		}
 	};
 	var layer = 2;

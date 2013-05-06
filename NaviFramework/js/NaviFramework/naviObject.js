@@ -22,6 +22,11 @@ function NObject(name,  layer, position, size, cssClass, innerHTML, events, anim
 				point.x = point.x - size.width/2;
 				point.y = point.y - size.height/2;
 			}
+			else
+			{
+				point.x = point.x - this.touchAnchor.x;
+				point.y = point.y - this.touchAnchor.y;
+			}
 			this.element.style.left = point.x + 'px';
 	    	this.element.style.top = point.y + 'px';
 	    	this.element.style.position = 'fixed';
@@ -36,6 +41,13 @@ function NObject(name,  layer, position, size, cssClass, innerHTML, events, anim
 			_x = 0;
 			_y = 0;
 		}
+	}
+	this.touchAnchor = {x:0, y:0};
+	//when we touch to move, we want the touch point to be the anchorpoint
+	this.setTouchAnchor = function(point)
+	{
+		var position = this.getPosition();
+		this.touchAnchor = {x: point.x - position.x, y: point.y - position.y};
 	}
 	this.getPosition = function()
 	{
