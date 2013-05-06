@@ -7,7 +7,7 @@ function nwNaviLogo()
 	{
 		onHit: function(point, obj)
 		{
-			document.getElementsByTagName("html")[0].webkitRequestFullScreen()
+			document.getElementsByTagName("html")[0].webkitRequestFullScreen();
 		},
 		onLetGo: function(obj)
 		{

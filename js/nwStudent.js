@@ -10,16 +10,23 @@ function nwStudent(name, position, size, studentName)
 		{
 			//obj.setPosition(point);
 			$("#" + obj.element.id).removeClass("transit");
+			$("#" + obj.element.id).removeClass("nwStudent");
+			$("#" + obj.element.id).addClass("nwStudentDragged");
+			
+			obj.element.style.border = "solid 1px red";
+			
 		},
 		onLetGo: function(obj)
 		{
 			if(obj.getPosition().y < $("#nwContainerArea").offset().top)
 			{
-						
+				obj.element.style.border = "";
 			}
 			else
 			{
-			
+				obj.element.style.border = "";
+				$("#" + obj.element.id).removeClass("nwStudentDragged");
+				$("#" + obj.element.id).addClass("nwStudent");
 				studentContainer.element.appendChild(obj.element);
 				obj.setPosition(null);
 			}
@@ -30,7 +37,10 @@ function nwStudent(name, position, size, studentName)
 		{
 			document.getElementById("playfield").appendChild(obj.element);
 			obj.setPosition(point);
-		}
+			var rotation = calculateRotation(point);
+			obj.element.style.webkitTransform = "rotate(" + rotation + "deg)";
+			obj.element.style.webkitTransformOrigin = "50% 50% 0";
+ 		}
 	};
 
 	var layer = 2;

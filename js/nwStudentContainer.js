@@ -63,6 +63,7 @@ function nwStudentContainer()
 	NObject.call(this, name, layer, null, null, "", "", events, animations, states, [], true);
 	
 	this.element.style.display = "";
+	this.element.style.visibility = "";
 
 
 	this.delete = function()

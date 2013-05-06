@@ -75,6 +75,8 @@ function nwBadgeContainer()
 		this.removeChildren.call(this, badges);
 	}
 	this.element.style.display = "";
+	
+	this.element.style.visibility = "";
 	this.titleElement = document.getElementById("nwBadgeContainer_Title");
 
 

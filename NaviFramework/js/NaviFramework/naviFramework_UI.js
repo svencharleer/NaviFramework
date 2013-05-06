@@ -104,10 +104,16 @@ function naviFramework_UI()
     this.containers = {};
     this.view = {width: $(window).width(), height: $(window).height()};
     
+    this.windowResize = function(event)
+    {
+        this.view = {width: $(window).width(), height: $(window).height()};
+    }
+
     this.init = function()
     {
         this.layers = [new DocumentLayer(), new DocumentLayer(), new DocumentLayer(), new DocumentLayer()];
         this.paper = paper;
+        
     }
     
     
@@ -389,8 +395,13 @@ var TouchLoop =
          });
         document.addEventListener('mouseup', function(event) {
             fw.onMouseUp("mouse");
+
+        
      });
     }
 };
 
 fw = new naviFramework_UI();
+document.addEventListener('webkitfullscreenchange', function(event) {
+            fw.windowResize(event);});
+window.onresize = fw.windowResize;

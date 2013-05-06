@@ -127,7 +127,7 @@ img { -webkit-touch-callout: none !important;}
 	font-family: Helvetica;
 	font-size:1em;
 	color:#aaa8a8;
-	margin-top:2.4em;
+	margin-top:2.40em;
 	padding:10px;
 	border:solid 1px #cacaca;
 	border-radius: 10px;
@@ -228,6 +228,14 @@ img { -webkit-touch-callout: none !important;}
 	width:30%;
 	color: #aaa8a8;
 	font-family: Helvetica;
+}
+
+.nwStudentDragged
+{
+	display:inline-block;
+	color: #aaa8a8;
+	font-family: Helvetica;
+	border:solid 1px #cacaca;
 }
 
 /* logo */
