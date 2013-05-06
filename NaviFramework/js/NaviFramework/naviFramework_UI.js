@@ -140,6 +140,7 @@ function naviFramework_UI()
     this.fingerToCursors = {};
     this.onFingerHits = function(hitPoint, identifier)
     {
+        console.log("finger " + identifier + " landed");
         if(this.fingerToCursors[identifier] != null)
             return; // we're already handling this finger
         //draw indicators of where we touch (interesting when testing on mbp)
@@ -183,6 +184,7 @@ function naviFramework_UI()
             }
         }
         this.fingerToObjects[identifier] = null;
+        console.log("finger " + identifier + " was let go");
     }
 
     this.onFingerMoved = function(hitPoint, identifier) 
@@ -347,12 +349,12 @@ var TouchLoop =
     updateMoved: function() {
         if(TouchLoop.updateMovedStarted) return;
         TouchLoop.updateMovedStarted = true;
-        var finger = TouchLoop.touchesMoved.shift();
+        var finger = TouchLoop.touchesMoved.pop();
         while(finger != null)
         {
 
                 fw.onFingerMoved({x:finger.pageX, y:finger.pageY}, finger.identifier);
-                finger = TouchLoop.touchesMoved.shift();
+                finger = TouchLoop.touchesMoved.pop();
         }
         TouchLoop.updateMovedStarted = false;
     },
@@ -370,7 +372,7 @@ var TouchLoop =
     },
 
     init: function() {
-        this.timer = setInterval(this.update, 15);
+        this.timer = setInterval(this.update, 30);
 
         document.addEventListener('touchend', function() {
             TouchLoop.touchesLetGo = TouchLoop.touchesLetGo.concat(event.changedTouches);   
@@ -378,7 +380,7 @@ var TouchLoop =
         });
         document.addEventListener('touchmove', function(event) {
             event.preventDefault();
-            TouchLoop.touchesMoved = event.changedTouches;
+            TouchLoop.touchesMoved = TouchLoop.touchesMoved.concat(event.changedTouches);
 
         });
         document.addEventListener('touchstart', function(event) {

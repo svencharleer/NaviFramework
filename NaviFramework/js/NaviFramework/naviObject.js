@@ -12,10 +12,16 @@ function NObject(name,  layer, position, size, cssClass, innerHTML, events, anim
 
 	//POSITION
 	var _x, _y;
-	this.setPosition = function(point)
+	this.setPosition = function(point, centered)
 	{
 		if(point != null)
 		{
+			if(centered == true)
+			{
+				var size = this.getSize();
+				point.x = point.x - size.width/2;
+				point.y = point.y - size.height/2;
+			}
 			this.element.style.left = point.x + 'px';
 	    	this.element.style.top = point.y + 'px';
 	    	this.element.style.position = 'fixed';

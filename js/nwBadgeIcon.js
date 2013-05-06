@@ -45,7 +45,7 @@ function nwBadgeIcon(name, position, size, filename, badgeData)
 		onMove: function(point, obj)
 		{
 			document.getElementById("playfield").appendChild(obj.element);
-			obj.setPosition(point);
+			obj.setPosition(point, true);
 		}
 	};
 	var layer = 2;

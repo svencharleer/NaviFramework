@@ -12,7 +12,7 @@ function nwStudent(name, position, size, studentName)
 			$("#" + obj.element.id).removeClass("transit");
 			$("#" + obj.element.id).removeClass("nwStudent");
 			$("#" + obj.element.id).addClass("nwStudentDragged");
-			
+
 			obj.element.style.border = "solid 1px red";
 			
 		},
@@ -36,7 +36,7 @@ function nwStudent(name, position, size, studentName)
 		onMove: function(point, obj)
 		{
 			document.getElementById("playfield").appendChild(obj.element);
-			obj.setPosition(point);
+			obj.setPosition(point, true);
 			var rotation = calculateRotation(point);
 			obj.element.style.webkitTransform = "rotate(" + rotation + "deg)";
 			obj.element.style.webkitTransformOrigin = "50% 50% 0";

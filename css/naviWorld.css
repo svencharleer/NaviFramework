@@ -118,8 +118,7 @@ img { -webkit-touch-callout: none !important;}
 /*detailed badge*/
 .nwBadgeIconDetailed
 {
-	position:fixed;
-	width:5%;
+	width:20%;
 }
 .nwBadgeDetails_shown
 {
@@ -127,7 +126,6 @@ img { -webkit-touch-callout: none !important;}
 	font-family: Helvetica;
 	font-size:1em;
 	color:#aaa8a8;
-	margin-top:2.40em;
 	padding:10px;
 	border:solid 1px #cacaca;
 	border-radius: 10px;
@@ -235,7 +233,10 @@ img { -webkit-touch-callout: none !important;}
 	display:inline-block;
 	color: #aaa8a8;
 	font-family: Helvetica;
-	border:solid 1px #cacaca;
+	font-size:1.5em;
+	border:solid 10px #cacaca;
+	border-radius: 20px;
+	padding:10px;
 }
 
 /* logo */
