@@ -2,8 +2,9 @@ body, :-webkit-full-screen body
 {
 	margin:0;
 	padding:0;
-	background: url("../img/background.png") no-repeat center center fixed;
-	background-size: cover;
+	/*background: url("../img/background.png") no-repeat center center fixed;
+	background-size: cover;*/
+	background-color: #3e3e3e;
 }
 
 /*check these, it's for the long hold problem on iOS)*/
@@ -242,26 +243,23 @@ img { -webkit-touch-callout: none !important;}
 /* logo */
 
 @-webkit-keyframes rotateLogo {
-    0% {-webkit-transform: rotateY(0deg);}
-    50% {-webkit-transform: rotateY(180deg);}
-    100% {-webkit-transform: rotateY(360deg);}
+    0% {-webkit-transform: rotate(0deg);}
+    50% {-webkit-transform: rotate(-180deg);}
+    100% {-webkit-transform: rotate(-360deg);}
 } 
 
 #nwNaviLogo
 {
 	-webkit-opacity:.6;
-	color: white;
-	font-family: Helvetica;
-	font-size:1.5em;
-	font-weight: bold;
+	width:30px;
 	position:fixed;
 	display:block;
-	border:solid 2px white;
+	/*border:solid 0px white;
 	padding-top:2px;
 	padding-bottom:2px;
 	padding-left:4px;
 	padding-right:4px;
-	border-radius: 20px;
+	border-radius: 20px;*/
 	left:5px;
 	top:5px;
 	-webkit-animation-timing-function: linear;
