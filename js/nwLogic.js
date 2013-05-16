@@ -65,6 +65,18 @@ function getStudentObjectsInPlayField()
 
 }
 
+function getBadgeObjectsInPlayField()
+{
+	var returnValues = [];
+	for(var i = 0; i < badgeContainer.badges.length; i++)
+	{
+		if(badgeContainer.badges[i].activated)
+			returnValues.push(badgeContainer.badges[i]);
+	}
+	return returnValues;
+
+}
+
 
 /*var loadingDone = function()
 {

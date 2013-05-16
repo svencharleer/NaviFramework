@@ -24,7 +24,9 @@ function nwBadgeIcon(name, position, size, filename, badgeData)
 				icon.removeClass("nwBadgeIcon");
 				icon.addClass("nwBadgeIconDetailed");
 				$("#" + obj.element.id).removeClass("nwBadge");		
-				$("#" + obj.element.id).addClass("nwBadgeDetailed");			
+				$("#" + obj.element.id).addClass("nwBadgeDetailed");	
+				obj.activated = true;
+				updateStudentColors();
 			}
 			else
 			{
@@ -39,6 +41,8 @@ function nwBadgeIcon(name, position, size, filename, badgeData)
 
 				badgeContainer.element.appendChild(obj.element);
 				obj.setPosition(null);
+				obj.activated = false;
+				updateStudentColors();
 			}
 			//if outside of container area, let it go ...
 			//otherwise snap back
@@ -59,6 +63,8 @@ function nwBadgeIcon(name, position, size, filename, badgeData)
 	this.element.innerHTML = this.element.innerHTML.replace("NT_IMG_SRC", filename);
 	this.element.innerHTML = this.element.innerHTML.replace("NT_BADGE_NAME", this.badgeData.name);
 	this.element.innerHTML = this.element.innerHTML.replace("NT_BADGE_DESCRIPTION", this.badgeData.description);	
+
+	this.activated = false;
 
 }
 

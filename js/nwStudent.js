@@ -26,10 +26,9 @@ function nwStudent(_name, position, size, studentName)
 				obj.activated = true;
 				//move this into more general callback function after drop, but let's put it here now
 				//time's a tickin'!
-				var students = getStudentsInPlayField();
-				var students = students.join("_");
-				console.log("BADGES REQUEST: LOADING");
-				$.getJSON('/REST/getBadges/0/' + students + '?callback=', badgesLoaded_callBack, "json");
+				//var students = getStudentsInPlayField();
+				//var students = students.join("_");
+				updateBadgeColors();
 				
 			}
 			else
@@ -40,6 +39,7 @@ function nwStudent(_name, position, size, studentName)
 				studentContainer.element.appendChild(obj.element);
 				obj.setPosition(null);
 				obj.activated = false;
+				updateBadgeColors();
 			}
 			//if outside of container area, let it go ...
 			//otherwise snap back

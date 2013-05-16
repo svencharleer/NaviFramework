@@ -22,24 +22,25 @@ var updateBadgeColors = function()
 	var students = getStudentObjectsInPlayField();
 	for(var i = 0; i < badgeContainer.badges.length;i++)
 	{
-		if(badgeContainer.badges[i].badgeData.studentNamesWithBadge.length == 0)
-			badgeContainer.badges[i].element.style["webkitFilter"]= "blur(0px)grayscale(100%)";
-		else
+		var studentsFound = false;
+		for(var j = 0; j < badgeContainer.badges[i].badgeData.awardedBadges.length; j++)
 		{
-			for(var j = 0; j < badgeContainer.badges[i].badgeData.studentNamesWithBadge.length; j++)
-			{
-				var studentName = badgeContainer.badges[i].badgeData.studentNamesWithBadge[j];
-				for(var k = 0; k < students.length;k++)
+			var awardedBadge = badgeContainer.badges[i].badgeData.awardedBadges[j];
+			for(var k = 0; k < students.length;k++)
 				{
-					if(studentName == students[k].studentName)
+					if(awardedBadge.username == students[k].studentName)
 					{
-						fw.drawConnection(badgeContainer.badges[i], students[k]);
+						studentsFound = true;
+						//fw.drawConnection(badgeContainer.badges[i], students[k]);
 					}
 				}
-			}
 		}
+		if(!studentsFound)
+			badgeContainer.badges[i].element.style["webkitFilter"]= "blur(0px)grayscale(100%)";
+		else
+			badgeContainer.badges[i].element.style["webkitFilter"]= "";
 	}
-}
+};
 
 var	nwBadge_Arrow_Events =
 { 

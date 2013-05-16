@@ -18,6 +18,32 @@ var studentsLoaded_callBack = function(json)
 	//setTimeout(function(){loadingDone();},1000);
 };
 
+var updateStudentColors = function()
+{
+	var badges = getBadgeObjectsInPlayField();
+	for(var i = 0; i < studentContainer.students.length;i++)
+	{
+		var student = studentContainer.students[i];
+		var badgesFound = false;
+		for(var j = 0; j < badges.length; j++)
+		{
+			for(var k = 0; k < badges[j].badgeData.awardedBadges.length;k++)
+			{
+				var awardedBadge = badges[j].badgeData.awardedBadges[k];
+				if(awardedBadge.username == student.studentName)
+				{
+					badgesFound = true;
+					//fw.drawConnection(badgeContainer.badges[i], students[k]);
+				}
+			}
+		}
+		if(!badgesFound)
+			student.element.style["color"]= "";
+		else
+			student.element.style["color"]= "white";
+	}
+};
+
 
 function nwStudentContainer()
 {
