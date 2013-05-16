@@ -19,7 +19,6 @@ function nwStudent(_name, position, size, studentName)
 				$("#"+obj.element.id).before("<div id='"+ obj.element.id + "_ph' class='nwBadge' style='height:1px'>&nbsp;</div>");
 				document.getElementById("playfield").appendChild(obj.element);
 			}
-			obj.element.style.border = "solid 5px red";
 			
 			obj.setPosition(point);
 			obj.setTouchAnchor(point);
@@ -37,6 +36,7 @@ function nwStudent(_name, position, size, studentName)
 				//var students = getStudentsInPlayField();
 				//var students = students.join("_");
 				updateBadgeColors(true);
+				
 				
 			}
 			else

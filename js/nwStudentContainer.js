@@ -41,9 +41,17 @@ var updateStudentColorsForBadges = function(badges,removeConnections)
 				{
 					badgesFound = true;
 					if(removeConnections)
+					{
+						$("#"+student.element.id).removeClass("selectedObject");
+						$("#"+badges[j].element.id).removeClass("selectedObject");
 						fw.removeConnection(badges[j], student);
+					}
 					else if(student.activated)
+					{
+						$("#"+student.element.id).addClass("selectedObject");
+						$("#"+badges[j].element.id).addClass("selectedObject");
 						fw.drawConnection(badges[j], student);
+					}
 				}
 			}
 		}

@@ -277,3 +277,8 @@ img { -webkit-touch-callout: none !important;}
     -webkit-animation-duration: 4s;
     -webkit-animation-iteration-count: infinite; 
 }
+
+.selectedObject
+{
+	border:solid 5px #99FF99;
+}

@@ -13,7 +13,7 @@ function PaperCanvas(paper)
             circle.style = {
             fillColor: "#99FF99",
             strokeColor: '#4d4d4d',
-            strokeWidth: 5};
+            strokeWidth: 10};
             objects.push(circle); 
         }
     }
@@ -32,7 +32,7 @@ function PaperCanvas(paper)
                 myPath.style = {
                     
                     strokeColor: '#99FF99',
-                    strokeWidth: 1};
+                    strokeWidth: 5};
             }
             else
             {
@@ -42,10 +42,10 @@ function PaperCanvas(paper)
             }
             var invert = 1;
             if(point1.x > point2.x) invert = -1;
-            myPath.segments[0].handleIn = new Point(-50 * invert, 0);
-            myPath.segments[0].handleOut = new Point(50 * invert, 0);
-            myPath.segments[1].handleIn = new Point(-50 * invert, 0);
-            myPath.segments[1].handleOut = new Point(50 * invert, 0);
+            myPath.segments[0].handleIn = new Point(-250 * invert, 0);
+            myPath.segments[0].handleOut = new Point(250 * invert, 0);
+            myPath.segments[1].handleIn = new Point(-250 * invert, 0);
+            myPath.segments[1].handleOut = new Point(250 * invert, 0);
 
             paper.view.draw();
         }

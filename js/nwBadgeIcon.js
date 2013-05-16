@@ -20,6 +20,7 @@ function nwBadgeIcon(name, position, size, filename, badgeData)
 			}
 			obj.setPosition(point);
 			updateStudentColorsForBadges([obj]);
+		
 		},
 		onLetGo: function(obj)
 		{
@@ -35,6 +36,7 @@ function nwBadgeIcon(name, position, size, filename, badgeData)
 				$("#" + obj.element.id).addClass("nwBadgeDetailed");	
 				obj.activated = true;
 				updateStudentColors(true);
+				
 			}
 			else
 			{
