@@ -51,7 +51,7 @@ img { -webkit-touch-callout: none !important;}
 	border-bottom:none;
 	border-radius: 10px;
 
-	background-color:rgba(255,255,255,.3);
+	background-color:rgb(0,0,0);
 	position:fixed;
 	top:92%;
 	left:40%;
@@ -104,11 +104,13 @@ img { -webkit-touch-callout: none !important;}
 {
 	width:7%;
 	display:inline-block;
+	z-index:10;
 
 }
 .nwBadgeIcon
 {
 	width:100%;
+	z-index:8;
 }
 
 .nwBadgeDetails_hidden
@@ -120,6 +122,7 @@ img { -webkit-touch-callout: none !important;}
 .nwBadgeIconDetailed
 {
 	width:20%;
+	z-index:10;
 }
 .nwBadgeDetails_shown
 {
@@ -130,21 +133,24 @@ img { -webkit-touch-callout: none !important;}
 	padding:10px;
 	border:solid 1px #cacaca;
 	border-radius: 10px;
-	background-color:rgba(255,255,255,.3);
+	background-color:rgb(0,0,0);
+	z-index:10;
 
 }
 .nwBadgeDetailed{
 	width:20%;
+	z-index:10;
 }
 .nwBadgeDetailed h1{
 	font-size:1em;
 	color:#aaa8a8;
+	z-index:10;
 	
 }
 .nwBadgeDetailed p{
 	font-size:1em;
 	color:#cacaca;
-	
+	z-index:10;
 }
 
 
@@ -186,7 +192,7 @@ img { -webkit-touch-callout: none !important;}
 
 	border:solid 1px #cacaca;
 	border-radius: 10px;
-	background-color:rgba(255,255,255,.3);
+	background-color:rgb(0,0,0);
 	padding:5px;
 
 
@@ -196,7 +202,7 @@ img { -webkit-touch-callout: none !important;}
 {
 	border:solid 1px #cacaca;
 	border-radius: 10px;
-	background-color:rgba(255,255,255,.3);
+	background-color:rgb(0,0,0);
 
 	font-family: Helvetica;
 	color:#cacaca;
@@ -227,6 +233,8 @@ img { -webkit-touch-callout: none !important;}
 	width:30%;
 	color: #aaa8a8;
 	font-family: Helvetica;
+	z-index:10;
+	background-color: black;
 }
 
 .nwStudentDragged
@@ -238,6 +246,8 @@ img { -webkit-touch-callout: none !important;}
 	border:solid 10px #cacaca;
 	border-radius: 20px;
 	padding:10px;
+	z-index:10;
+	background-color: black;
 }
 
 /* logo */
@@ -250,7 +260,7 @@ img { -webkit-touch-callout: none !important;}
 
 #nwNaviLogo
 {
-	-webkit-opacity:.6;
+	/*-webkit-opacity:.6;*/
 	width:30px;
 	position:fixed;
 	display:block;

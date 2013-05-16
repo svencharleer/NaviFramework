@@ -13,7 +13,7 @@ function PaperCanvas(paper)
             circle.style = {
             fillColor: "#99FF99",
             strokeColor: '#4d4d4d',
-            strokeWidth: 1};
+            strokeWidth: 5};
             objects.push(circle); 
         }
     }
@@ -29,7 +29,10 @@ function PaperCanvas(paper)
                 myPath.strokeColor = 'white';
                 myPath.add(new Point(point1.x, point1.y));
                 myPath.add(new Point(point2.x, point2.y));
-                myPath.segments[0].handleIn = new Point(point1.x - 50, point1.y);
+                myPath.style = {
+                    
+                    strokeColor: '#99FF99',
+                    strokeWidth: 1};
             }
             else
             {
@@ -37,6 +40,13 @@ function PaperCanvas(paper)
                 myPath.segments[0].point = new Point(point1.x, point1.y);
                 myPath.segments[1].point = new Point(point2.x, point2.y)
             }
+            var invert = 1;
+            if(point1.x > point2.x) invert = -1;
+            myPath.segments[0].handleIn = new Point(-50 * invert, 0);
+            myPath.segments[0].handleOut = new Point(50 * invert, 0);
+            myPath.segments[1].handleIn = new Point(-50 * invert, 0);
+            myPath.segments[1].handleOut = new Point(50 * invert, 0);
+
             paper.view.draw();
         }
     }
@@ -73,6 +83,7 @@ function PaperCanvas(paper)
         element.style.OTransform = 'translateZ(0)';
         element.style.msTransform = 'translateZ(0)';
         element.style.transform = 'translateZ(0)';
+        element.style.zIndex = '0';
         document.body.appendChild(element);
         canvas = element;
         paper = paper.setup(canvas);
@@ -286,11 +297,19 @@ function naviFramework_UI()
     // DRAW FUNCTIONS
     //------------
     //create an overlay canvas for sfx?
-    
+    this.getCenterOfObject = function(objectX)
+    {
+        var size = objectX.getSize();
+        var position = objectX.getPosition();
+        var center = {x: position.x + size.width/2, y: position.y + size.height/2};
+        return center;
+    }
+
     this.drawConnection = function(object1, object2)
     {
         var linkName = object1.getName() + "_" + object2.getName();
-        sfxCanvas.drawLine(linkName, object1.getPosition(), object2.getPosition());
+        
+        sfxCanvas.drawLine(linkName, this.getCenterOfObject(object1), this.getCenterOfObject(object2));
     }
     this.removeConnection = function(object1, object2)
     {
