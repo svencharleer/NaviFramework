@@ -16,6 +16,7 @@ function nwStudent(_name, position, size, studentName)
 
 			obj.element.style.border = "solid 5px red";
 			obj.setTouchAnchor(point);
+			updateBadgeColorsForStudent([obj]);
 			
 		},
 		onLetGo: function(obj)
@@ -28,7 +29,7 @@ function nwStudent(_name, position, size, studentName)
 				//time's a tickin'!
 				//var students = getStudentsInPlayField();
 				//var students = students.join("_");
-				updateBadgeColors();
+				updateBadgeColors(true);
 				
 			}
 			else
@@ -39,7 +40,7 @@ function nwStudent(_name, position, size, studentName)
 				studentContainer.element.appendChild(obj.element);
 				obj.setPosition(null);
 				obj.activated = false;
-				updateBadgeColors();
+				updateBadgeColors(true);
 			}
 			//if outside of container area, let it go ...
 			//otherwise snap back

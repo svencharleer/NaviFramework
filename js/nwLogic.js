@@ -44,6 +44,8 @@ function loadMenu(){
 function getStudentsInPlayField()
 {
 	var returnValues = [];
+	if(studentContainer == null || studentContainer.students == null)
+		return returnValues;
 	for(var i = 0; i < studentContainer.students.length; i++)
 	{
 		if(studentContainer.students[i].activated)
@@ -56,6 +58,8 @@ function getStudentsInPlayField()
 function getStudentObjectsInPlayField()
 {
 	var returnValues = [];
+	if(studentContainer == null || studentContainer.students == null)
+		return returnValues;
 	for(var i = 0; i < studentContainer.students.length; i++)
 	{
 		if(studentContainer.students[i].activated)
@@ -68,6 +72,8 @@ function getStudentObjectsInPlayField()
 function getBadgeObjectsInPlayField()
 {
 	var returnValues = [];
+	if(badgeContainer == null || badgeContainer.badges == null)
+		return returnValues;
 	for(var i = 0; i < badgeContainer.badges.length; i++)
 	{
 		if(badgeContainer.badges[i].activated)

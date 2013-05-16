@@ -29,6 +29,7 @@ function PaperCanvas(paper)
                 myPath.strokeColor = 'white';
                 myPath.add(new Point(point1.x, point1.y));
                 myPath.add(new Point(point2.x, point2.y));
+                myPath.segments[0].handleIn = new Point(point1.x - 50, point1.y);
             }
             else
             {
@@ -41,10 +42,14 @@ function PaperCanvas(paper)
     }
     this.removeLine = function(name)
     {
-        var children = project.activeLayer.children;
-        if(children[name] != null)
+        with(paper)
         {
-            children[name].remove();
+            var children = project.activeLayer.children;
+            if(children[name] != null)
+            {
+                children[name].remove();
+            }
+            paper.view.draw();
         }
     }
 

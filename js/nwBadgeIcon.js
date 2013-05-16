@@ -12,6 +12,7 @@ function nwBadgeIcon(name, position, size, filename, badgeData)
 			//obj.setPosition(point);
 			$("#" + obj.element.id).removeClass("transit");
 			obj.setTouchAnchor(point);
+			updateStudentColorsForBadges([obj]);
 		},
 		onLetGo: function(obj)
 		{
@@ -26,7 +27,7 @@ function nwBadgeIcon(name, position, size, filename, badgeData)
 				$("#" + obj.element.id).removeClass("nwBadge");		
 				$("#" + obj.element.id).addClass("nwBadgeDetailed");	
 				obj.activated = true;
-				updateStudentColors();
+				updateStudentColors(true);
 			}
 			else
 			{
@@ -42,7 +43,7 @@ function nwBadgeIcon(name, position, size, filename, badgeData)
 				badgeContainer.element.appendChild(obj.element);
 				obj.setPosition(null);
 				obj.activated = false;
-				updateStudentColors();
+				updateStudentColors(true);
 			}
 			//if outside of container area, let it go ...
 			//otherwise snap back

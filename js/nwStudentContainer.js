@@ -19,13 +19,15 @@ var studentsLoaded_callBack = function(json)
 };
 
 
-var updateStudentColors = function()
+var updateStudentColors = function(removeConnections)
 {
 	var badges = getBadgeObjectsInPlayField();
-	return updateStudentColorsForBadges(badges);
+	return updateStudentColorsForBadges(badges,removeConnections);
 }
-var updateStudentColorsForBadges = function(badges)
+var updateStudentColorsForBadges = function(badges,removeConnections)
 {
+	if(studentContainer == null || studentContainer.students == null)
+		return null;
 	for(var i = 0; i < studentContainer.students.length;i++)
 	{
 		var student = studentContainer.students[i];
@@ -38,7 +40,9 @@ var updateStudentColorsForBadges = function(badges)
 				if(awardedBadge.username == student.studentName)
 				{
 					badgesFound = true;
-					if(student.activated)
+					if(removeConnections)
+						fw.removeConnection(badges[j], student);
+					else if(student.activated)
 						fw.drawConnection(badges[j], student);
 				}
 			}
