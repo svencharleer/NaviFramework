@@ -10,16 +10,23 @@ function nwBadgeIcon(name, position, size, filename, badgeData)
 		onHit: function(point, obj)
 		{
 			//obj.setPosition(point);
-			$("#" + obj.element.id).removeClass("transit");
+			//$("#" + obj.element.id).removeClass("transit");
 			obj.setTouchAnchor(point);
+
 			if(!obj.activated)
 			{
 				var placeHolder = document.createElement("div");
-				$("#"+obj.element.id).before("<div id='"+ obj.element.id + "_ph' class='nwBadge' style='height:1px'>&nbsp;</div>");
+				$("#"+obj.element.id).before("<div id='"+ obj.element.id + "_ph' class='nwBadge'><img class='nwBadgeIcon emptyBadge' src='img/navi_empty_badge.png' draggable='false'/></div>");
 				document.getElementById("playfield").appendChild(obj.element);
 			}
 			obj.setPosition(point);
 			updateStudentColorsForBadges([obj]);
+			obj.activated = true;
+			var icon = $("#" + obj.element.id).find(".nwBadgeIcon");
+			icon.removeClass("nwBadgeIcon");
+			icon.addClass("nwBadgeIconDetailed");
+			$("#" + obj.element.id).removeClass("nwBadge");		
+			$("#" + obj.element.id).addClass("nwBadgeDetailed");
 		
 		},
 		onLetGo: function(obj)
@@ -29,11 +36,7 @@ function nwBadgeIcon(name, position, size, filename, badgeData)
 				var details = $("#" + obj.element.id).find(".nwBadgeDetails_hidden");
 				details.removeClass("nwBadgeDetails_hidden");
 				details.addClass("nwBadgeDetails_shown");
-				var icon = $("#" + obj.element.id).find(".nwBadgeIcon");
-				icon.removeClass("nwBadgeIcon");
-				icon.addClass("nwBadgeIconDetailed");
-				$("#" + obj.element.id).removeClass("nwBadge");		
-				$("#" + obj.element.id).addClass("nwBadgeDetailed");	
+					
 				obj.activated = true;
 				updateStudentColors(true);
 				

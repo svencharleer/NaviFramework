@@ -1,10 +1,17 @@
+@font-face
+{
+font-family: ubuntuFont;
+src: url(Ubuntu-R.ttf);
+}
+
 body, :-webkit-full-screen body
 {
 	margin:0;
 	padding:0;
 	/*background: url("../img/background.png") no-repeat center center fixed;
 	background-size: cover;*/
-	background-color: #3e3e3e;
+	background-color: #231f20;
+	font-family: ubuntuFont;
 }
 
 /*check these, it's for the long hold problem on iOS)*/
@@ -127,7 +134,7 @@ img { -webkit-touch-callout: none !important;}
 .nwBadgeDetails_shown
 {
 	display:block;
-	font-family: Helvetica;
+	
 	font-size:1em;
 	color:#aaa8a8;
 	padding:10px;
@@ -161,11 +168,11 @@ img { -webkit-touch-callout: none !important;}
 	position:absolute;
 	padding:0;
 	margin:0;
-	-webkit-transform: translateY(100%);
+	-webkit-transform: translateY(250%);
 	top:0;
 	left:0;
 	width:100%;
-	height:50%;
+	height:30%;
 	border-top:dotted 1px #cacaca;
 	text-align: center;
 
@@ -176,6 +183,9 @@ img { -webkit-touch-callout: none !important;}
 	width: 70%;
 	height:70%;
 	display:inline-block;
+	-webkit-box-shadow: 0 0 5px#888;
+	border-radius: 5px;
+	background-color:#3a3839;
 }
 
 .container_2x1
@@ -185,14 +195,15 @@ img { -webkit-touch-callout: none !important;}
 	height:70%;
 	display:inline-block;
 	vertical-align: top;
+	-webkit-box-shadow: 1px 1px 2px 0px #000010;
+	border-radius: 5px;
+	background-color:#3a3839;
 }
 
 #nwBadgeContainer
 {
 
-	border:solid 1px #cacaca;
-	border-radius: 10px;
-	background-color:rgb(0,0,0);
+	
 	padding:5px;
 
 
@@ -200,48 +211,57 @@ img { -webkit-touch-callout: none !important;}
 
 #nwStudentContainer
 {
-	border:solid 1px #cacaca;
-	border-radius: 10px;
-	background-color:rgb(0,0,0);
+	
+	
 
-	font-family: Helvetica;
-	color:#cacaca;
 	overflow:scroll;
 	padding:5px;
+	
 
 }
 
 .Container_topBar
 {
 	
-	color: #cacaca;
-	font-family: Helvetica;
+	color: #ffffff;
+
 	font-size: 1.1em;
-	border-bottom:solid 1px #e3e3e2;
+	margin-bottom:5px;
+	text-align: center;
+	margin-right:10px;
 
 }
 
 
 #nwBadgeContainer_ArrowLeft, #nwBadgeContainer_ArrowRight{
 	display:inline-block;
-	color: #aaa8a8;
+	height:.8em;
 }
-
+#nwBadgeContainer_ArrowLeft img, #nwBadgeContainer_ArrowRight img{
+	height:100%;
+}
 .nwStudent
 {
 	display:inline-block;
-	width:30%;
-	color: #aaa8a8;
-	font-family: Helvetica;
+	width:15%;
+	color: white;
+	
 	z-index:10;
-	background-color: black;
+	
+	background-color:#888888;
+	font-size:.7em;
+	margin:0;
+	padding:2px;
+	margin-right:1px;
+	margin-bottom:1px;
+	overflow:scroll;
 }
 
 .nwStudentDragged
 {
 	display:inline-block;
 	color: #aaa8a8;
-	font-family: Helvetica;
+	
 	font-size:1.5em;
 	border:solid 10px #cacaca;
 	border-radius: 20px;
@@ -280,5 +300,20 @@ img { -webkit-touch-callout: none !important;}
 
 .selectedObject
 {
-	border:solid 5px #99FF99;
+	border:solid 5px #00c6ff;
+}
+
+.highlightedStudent
+{
+	color: #00c6ff;
+}
+
+.emptyStudent
+{
+	background-color: #4c4c4c;
+}
+
+.emptyBadge
+{
+	opacity: .1;
 }

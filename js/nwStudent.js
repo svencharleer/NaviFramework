@@ -9,6 +9,7 @@ function nwStudent(_name, position, size, studentName)
 		timer: null,
 		onHit: function(point, obj)
 		{
+			obj.setTouchAnchor(point);
 			//obj.setPosition(point);
 			$("#" + obj.element.id).removeClass("transit");
 			$("#" + obj.element.id).removeClass("nwStudent");
@@ -16,12 +17,12 @@ function nwStudent(_name, position, size, studentName)
 			if(!obj.activated)
 			{
 				var placeHolder = document.createElement("div");
-				$("#"+obj.element.id).before("<div id='"+ obj.element.id + "_ph' class='nwBadge' style='height:1px'>&nbsp;</div>");
+				$("#"+obj.element.id).before("<div id='"+ obj.element.id + "_ph' class='nwStudent emptyStudent''>&nbsp;</div>");
 				document.getElementById("playfield").appendChild(obj.element);
 			}
 			
 			obj.setPosition(point);
-			obj.setTouchAnchor(point);
+			
 			updateBadgeColorsForStudent([obj]);
 			
 		},

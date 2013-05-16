@@ -35,8 +35,10 @@ function loadMenu(){
 	fw.addObjectToDocument(naviLogo);
 
 	//load objects
-	var objects = [new nwMenu(null,null)];//{x:2*fw.view.width/5, y:7.3*fw.view.height/8}, {width:fw.view.width/5, height:fw.view.height/8})];
-	fw.addObjectsToDocument(objects);
+	//var objects = [new nwMenu(null,null)];//{x:2*fw.view.width/5, y:7.3*fw.view.height/8}, {width:fw.view.width/5, height:fw.view.height/8})];
+	//fw.addObjectsToDocument(objects);
+	nwMenuItem_Events.badgeTouched();
+	nwMenuItem_Events.studentTouched();
 
 
 }
