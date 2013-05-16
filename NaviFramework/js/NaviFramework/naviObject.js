@@ -8,7 +8,10 @@ function NObject(name,  layer, position, size, cssClass, innerHTML, events, anim
 	this.doNotDeletedocumentElement = objectExists;
 
 
-
+	this.getName = function()
+	{
+		return name;
+	}
 
 	//POSITION
 	var _x, _y;

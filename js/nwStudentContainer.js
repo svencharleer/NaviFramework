@@ -18,9 +18,14 @@ var studentsLoaded_callBack = function(json)
 	//setTimeout(function(){loadingDone();},1000);
 };
 
+
 var updateStudentColors = function()
 {
 	var badges = getBadgeObjectsInPlayField();
+	return updateStudentColorsForBadges(badges);
+}
+var updateStudentColorsForBadges = function(badges)
+{
 	for(var i = 0; i < studentContainer.students.length;i++)
 	{
 		var student = studentContainer.students[i];
@@ -33,7 +38,8 @@ var updateStudentColors = function()
 				if(awardedBadge.username == student.studentName)
 				{
 					badgesFound = true;
-					//fw.drawConnection(badgeContainer.badges[i], students[k]);
+					if(student.activated)
+						fw.drawConnection(badges[j], student);
 				}
 			}
 		}

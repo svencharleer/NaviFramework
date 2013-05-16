@@ -17,15 +17,34 @@ function PaperCanvas(paper)
             objects.push(circle); 
         }
     }
-    this.drawLine = function(point1, point2)
+    this.drawLine = function(name, point1, point2)
     {
         with(paper)
         {
-            var myPath = new Path();
-            myPath.strokeColor = 'white';
-            myPath.add(new Point(point1.x, point1.y));
-            myPath.add(new Point(point2.x, point2.y));
+            var children = project.activeLayer.children;
+            if(children[name] == null)
+            {
+                var myPath = new Path();
+                myPath.name = name;
+                myPath.strokeColor = 'white';
+                myPath.add(new Point(point1.x, point1.y));
+                myPath.add(new Point(point2.x, point2.y));
+            }
+            else
+            {
+                var myPath = children[name];
+                myPath.segments[0].point = new Point(point1.x, point1.y);
+                myPath.segments[1].point = new Point(point2.x, point2.y)
+            }
             paper.view.draw();
+        }
+    }
+    this.removeLine = function(name)
+    {
+        var children = project.activeLayer.children;
+        if(children[name] != null)
+        {
+            children[name].remove();
         }
     }
 
@@ -265,7 +284,13 @@ function naviFramework_UI()
     
     this.drawConnection = function(object1, object2)
     {
-        //sfxCanvas.drawLine(point1, point2);
+        var linkName = object1.getName() + "_" + object2.getName();
+        sfxCanvas.drawLine(linkName, object1.getPosition(), object2.getPosition());
+    }
+    this.removeConnection = function(object1, object2)
+    {
+        var linkName = object1.getName() + "_" + object2.getName();
+        sfxCanvas.removeLine(linkName);
     }
 
    

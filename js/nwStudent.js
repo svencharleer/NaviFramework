@@ -49,6 +49,7 @@ function nwStudent(_name, position, size, studentName)
 			document.getElementById("playfield").appendChild(obj.element);
 			obj.setPosition(point);
 			var rotation = calculateRotation(point);
+			updateBadgeColorsForStudent([obj]);
 			//obj.element.style.webkitTransform = "rotate(" + rotation + "deg)";
 			//obj.element.style.webkitTransformOrigin = "50% 50% 0";
  		}

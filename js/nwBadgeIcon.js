@@ -52,6 +52,7 @@ function nwBadgeIcon(name, position, size, filename, badgeData)
 			document.getElementById("playfield").appendChild(obj.element);
 
 			obj.setPosition(point);
+			updateStudentColorsForBadges([obj]);
 		}
 	};
 	var layer = 2;

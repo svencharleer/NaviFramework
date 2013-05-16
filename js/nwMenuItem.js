@@ -1,6 +1,6 @@
 function nwMenuItem(name, buttonEvent)
 {
-	var name = name;
+	this.name = name;
 	var states = [];
 	var animations = ["","pulsate"];
 	nwButton.call(this, name, null, buttonEvent, true)
