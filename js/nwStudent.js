@@ -13,8 +13,15 @@ function nwStudent(_name, position, size, studentName)
 			$("#" + obj.element.id).removeClass("transit");
 			$("#" + obj.element.id).removeClass("nwStudent");
 			$("#" + obj.element.id).addClass("nwStudentDragged");
-
+			if(!obj.activated)
+			{
+				var placeHolder = document.createElement("div");
+				$("#"+obj.element.id).before("<div id='"+ obj.element.id + "_ph' class='nwBadge' style='height:1px'>&nbsp;</div>");
+				document.getElementById("playfield").appendChild(obj.element);
+			}
 			obj.element.style.border = "solid 5px red";
+			
+			obj.setPosition(point);
 			obj.setTouchAnchor(point);
 			updateBadgeColorsForStudent([obj]);
 			
@@ -39,8 +46,12 @@ function nwStudent(_name, position, size, studentName)
 				$("#" + obj.element.id).addClass("nwStudent");
 				studentContainer.element.appendChild(obj.element);
 				obj.setPosition(null);
-				obj.activated = false;
+				var jElement = $("#"+obj.element.id);
+				$("#"+obj.element.id + "_ph").before(jElement);
+				$("#"+obj.element.id + "_ph").remove();
+				
 				updateBadgeColors(true);
+				obj.activated = false;
 			}
 			//if outside of container area, let it go ...
 			//otherwise snap back

@@ -12,6 +12,13 @@ function nwBadgeIcon(name, position, size, filename, badgeData)
 			//obj.setPosition(point);
 			$("#" + obj.element.id).removeClass("transit");
 			obj.setTouchAnchor(point);
+			if(!obj.activated)
+			{
+				var placeHolder = document.createElement("div");
+				$("#"+obj.element.id).before("<div id='"+ obj.element.id + "_ph' class='nwBadge' style='height:1px'>&nbsp;</div>");
+				document.getElementById("playfield").appendChild(obj.element);
+			}
+			obj.setPosition(point);
 			updateStudentColorsForBadges([obj]);
 		},
 		onLetGo: function(obj)
@@ -39,18 +46,20 @@ function nwBadgeIcon(name, position, size, filename, badgeData)
 				icon.addClass("nwBadgeIcon");
 				$("#" + obj.element.id).removeClass("nwBadgeDetailed");		
 				$("#" + obj.element.id).addClass("nwBadge");
-
-				badgeContainer.element.appendChild(obj.element);
+				var jElement = $("#"+obj.element.id);
+				$("#"+obj.element.id + "_ph").before(jElement);
+				$("#"+obj.element.id + "_ph").remove();
 				obj.setPosition(null);
-				obj.activated = false;
+				
 				updateStudentColors(true);
+				obj.activated = false;
 			}
 			//if outside of container area, let it go ...
 			//otherwise snap back
 		},
 		onMove: function(point, obj)
 		{
-			document.getElementById("playfield").appendChild(obj.element);
+			
 
 			obj.setPosition(point);
 			updateStudentColorsForBadges([obj]);
