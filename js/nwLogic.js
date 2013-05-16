@@ -2,7 +2,8 @@
 
 var badgeContainer;
 var studentContainer;
-var naviLogo 
+var naviLogo;
+
 
 function length(point)
 {
@@ -27,6 +28,8 @@ function calculateRotation(position)
 	return returnValue;
 }
 
+
+
 function loadMenu(){
 	naviLogo = new nwNaviLogo();
 	fw.addObjectToDocument(naviLogo);
@@ -35,6 +38,30 @@ function loadMenu(){
 	var objects = [new nwMenu(null,null)];//{x:2*fw.view.width/5, y:7.3*fw.view.height/8}, {width:fw.view.width/5, height:fw.view.height/8})];
 	fw.addObjectsToDocument(objects);
 
+
+}
+
+function getStudentsInPlayField()
+{
+	var returnValues = [];
+	for(var i = 0; i < studentContainer.students.length; i++)
+	{
+		if(studentContainer.students[i].activated)
+			returnValues.push(studentContainer.students[i].studentName);
+	}
+	return returnValues;
+
+}
+
+function getStudentObjectsInPlayField()
+{
+	var returnValues = [];
+	for(var i = 0; i < studentContainer.students.length; i++)
+	{
+		if(studentContainer.students[i].activated)
+			returnValues.push(studentContainer.students[i]);
+	}
+	return returnValues;
 
 }
 

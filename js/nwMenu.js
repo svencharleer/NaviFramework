@@ -12,7 +12,7 @@ var nwMenuItem_Events =
 		else
 		{
 		    console.log("BADGES REQUEST: LOADING");
-			$.getJSON('/REST/getBadges/0?callback=', badgesLoaded_callBack, "json");
+			$.getJSON('/REST/getBadges/0/0000?callback=', badgesLoaded_callBack, "json");
 		}
 	},
 

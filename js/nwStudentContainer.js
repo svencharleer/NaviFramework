@@ -5,7 +5,7 @@ var studentsLoaded_callBack = function(json)
 	var objects = [];
 	for(var i = 0; i < json.length; i++)
 	{
-		objects.push(new nwStudent(json[i].replace(/[^A-Za-z]+/g, ''), null, null, json[i]));
+		objects.push(new nwStudent(json[i].replace(/[^A-Za-z0-9]+/g, ''), null, null, json[i]));
 	};
 	if(studentContainer == null)
 		studentContainer = new nwStudentContainer();
@@ -26,19 +26,19 @@ function nwStudentContainer()
 	var animations = [];
 	var events = null;
 	var layer = 2;
-	var students = [];
+	this.students = [];
 	this.type = "container";
 
 	this.setStudents = function(_students)
 	{
-		students = _students;
+		this.students = _students;
 		
-		this.addChildren.call(this, students, true);	
+		this.addChildren.call(this, this.students, true);	
 	}
 
 	this.resetStudents = function()
 	{
-		this.removeChildren.call(this, students);
+		this.removeChildren.call(this, this.students);
 		this.students = [];
 	}
 

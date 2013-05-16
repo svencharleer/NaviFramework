@@ -17,12 +17,24 @@ function PaperCanvas(paper)
             objects.push(circle); 
         }
     }
+    this.drawLine = function(point1, point2)
+    {
+        with(paper)
+        {
+            var myPath = new Path();
+            myPath.strokeColor = 'white';
+            myPath.add(new Point(point1.x, point1.y));
+            myPath.add(new Point(point2.x, point2.y));
+            paper.view.draw();
+        }
+    }
+
     this.position = function(position)
     {
         canvas.style.left = position.x;
         canvas.style.top = position.y;
     }
-    this.init = function(name, position,size)
+    this.init = function(name, position, size)
     {
         var element = document.createElement("canvas");
         element.id = name;
@@ -103,7 +115,8 @@ function naviFramework_UI()
     this.scenes = [];
     this.containers = {};
     this.view = {width: $(window).width(), height: $(window).height()};
-    
+    var sfxCanvas;
+
     this.windowResize = function(event)
     {
         this.view = {width: $(window).width(), height: $(window).height()};
@@ -113,7 +126,8 @@ function naviFramework_UI()
     {
         this.layers = [new DocumentLayer(), new DocumentLayer(), new DocumentLayer(), new DocumentLayer()];
         this.paper = paper;
-        
+        sfxCanvas = new PaperCanvas(this.paper);
+        sfxCanvas.init("sfxLayer", {x:0, y:0}, {w:this.view.width, h:this.view.height});
     }
     
     
@@ -145,10 +159,10 @@ function naviFramework_UI()
             return; // we're already handling this finger
         //draw indicators of where we touch (interesting when testing on mbp)
         //(could also be useful to make touch pretty :P particles?)
-        var canvas = new PaperCanvas(this.paper);
-        canvas.init(identifier, hitPoint, {w:50, h:50});
-        canvas.drawCircle({x: 25, y:25}, 10 );
-        this.fingerToCursors[identifier] = canvas;
+        //var canvas = new PaperCanvas(this.paper);
+        //canvas.init(identifier, hitPoint, {w:50, h:50});
+        //sfxCanvas.drawCircle(hitPoint, 10 );
+        //this.fingerToCursors[identifier] = canvas;
         
         var hitResults = TouchTest(hitPoint,fw.layers[2].objects);
         while(hitResults.length > 0)
@@ -172,7 +186,7 @@ function naviFramework_UI()
             
             //hm we have to find a way to get rid of this
             //this.fingerToCursors[identifier].remove();
-            this.fingerToCursors[identifier].reset(); //doesn't get rid of the object though
+            //this.fingerToCursors[identifier].reset(); //doesn't get rid of the object though
             this.fingerToCursors[identifier] = null;
         }
         if(this.fingerToObjects[identifier] != null)
@@ -193,8 +207,8 @@ function naviFramework_UI()
         //(could also be useful to make touch pretty :P particles?)
         if(this.fingerToCursors[identifier] != null)
         {
-            canvas = this.fingerToCursors[identifier];
-            canvas.position(hitPoint);
+            //sfxCanvas = this.fingerToCursors[identifier];
+            //canvas.position(hitPoint);
         }
         else
         {
@@ -247,6 +261,13 @@ function naviFramework_UI()
     //------------
     // DRAW FUNCTIONS
     //------------
+    //create an overlay canvas for sfx?
+    
+    this.drawConnection = function(object1, object2)
+    {
+        //sfxCanvas.drawLine(point1, point2);
+    }
+
    
 
     this.pushScene = function(scene)

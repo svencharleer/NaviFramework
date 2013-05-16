@@ -1,6 +1,7 @@
-function nwStudent(name, position, size, studentName)
+
+function nwStudent(_name, position, size, studentName)
 {
-	var name = "nwStudent" + name;
+	var name = "nwStudent" + _name;
 	var states = [];
 	var animations = [];
 	var eventHandler =  
@@ -22,6 +23,14 @@ function nwStudent(name, position, size, studentName)
 			if(obj.getPosition().y < $("#nwContainerArea").offset().top)
 			{
 				obj.element.style.border = "";
+				obj.activated = true;
+				//move this into more general callback function after drop, but let's put it here now
+				//time's a tickin'!
+				var students = getStudentsInPlayField();
+				var students = students.join("_");
+				console.log("BADGES REQUEST: LOADING");
+				$.getJSON('/REST/getBadges/0/' + students + '?callback=', badgesLoaded_callBack, "json");
+				
 			}
 			else
 			{
@@ -30,6 +39,7 @@ function nwStudent(name, position, size, studentName)
 				$("#" + obj.element.id).addClass("nwStudent");
 				studentContainer.element.appendChild(obj.element);
 				obj.setPosition(null);
+				obj.activated = false;
 			}
 			//if outside of container area, let it go ...
 			//otherwise snap back
@@ -39,8 +49,8 @@ function nwStudent(name, position, size, studentName)
 			document.getElementById("playfield").appendChild(obj.element);
 			obj.setPosition(point);
 			var rotation = calculateRotation(point);
-			obj.element.style.webkitTransform = "rotate(" + rotation + "deg)";
-			obj.element.style.webkitTransformOrigin = "50% 50% 0";
+			//obj.element.style.webkitTransform = "rotate(" + rotation + "deg)";
+			//obj.element.style.webkitTransformOrigin = "50% 50% 0";
  		}
 	};
 
@@ -51,6 +61,9 @@ function nwStudent(name, position, size, studentName)
 	this.element.style.display = "";
 	this.element.className = "nwStudent";
 	this.element.innerHTML = this.element.innerHTML.replace("NT_STUDENT_NAME", studentName);
+
+	this.activated = false;
+	this.studentName = _name;	
 }
 
 nwStudent.prototype = Object.create(NObject.prototype);
