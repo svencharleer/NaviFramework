@@ -115,6 +115,7 @@ function nwBadgeContainer()
 	}
 	this.removeBadges = function()
 	{
+		$("[id$=_ph]").remove();
 		this.removeChildren.call(this, this.badges);
 		this.badges.length = 0; //does this really work?
 	}
