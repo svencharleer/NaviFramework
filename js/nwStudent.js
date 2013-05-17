@@ -20,7 +20,7 @@ function nwStudent(_name, position, size, studentName)
 				$("#"+obj.element.id).before("<div id='"+ obj.element.id + "_ph' class='nwStudent emptyStudent''>&nbsp;</div>");
 				document.getElementById("playfield").appendChild(obj.element);
 			}
-			
+			obj.activated = true;
 			obj.setPosition(point);
 			
 			updateBadgeColorsForStudent([obj]);
@@ -31,7 +31,7 @@ function nwStudent(_name, position, size, studentName)
 			if(obj.getPosition().y < $("#nwContainerArea").offset().top)
 			{
 				obj.element.style.border = "";
-				obj.activated = true;
+				
 				//move this into more general callback function after drop, but let's put it here now
 				//time's a tickin'!
 				//var students = getStudentsInPlayField();

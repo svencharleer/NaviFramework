@@ -68,6 +68,15 @@ function PaperCanvas(paper)
         canvas.style.left = position.x;
         canvas.style.top = position.y;
     }
+    this.size = function(_size)
+    {
+        canvas.width = _size.w;
+        canvas.height = _size.h;
+        with(paper)
+        {
+            paper.view.setViewSize(canvas.width,canvas.height);
+        }
+    }
     this.init = function(name, position, size)
     {
         var element = document.createElement("canvas");
@@ -155,6 +164,7 @@ function naviFramework_UI()
     this.windowResize = function(event)
     {
         this.view = {width: $(window).width(), height: $(window).height()};
+        sfxCanvas.size({w:$(window).width(),h:$(window).height()})
     }
 
     this.init = function()
