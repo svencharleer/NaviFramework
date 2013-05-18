@@ -63,17 +63,21 @@ var updateBadgeColorsForStudent = function(students,removeConnections)
 var	nwBadge_Arrow_Events =
 { 
 	nwBadge_Arrow_Page: 0,
-
+	buttons: [],
 	Back_Touched: function(point, obj)
 	{
 		
 		nwBadge_Arrow_Events.nwBadge_Arrow_Page--;
+		if(nwBadge_Arrow_Events.nwBadge_Arrow_Page == 0) nwBadge_Arrow_Events.buttons[0].element.style.visibility = "hidden";
+		nwBadge_Arrow_Events.buttons[1].element.style.visibility = "";
 	    console.log("BADGES REQUEST: LOADING");
 		$.getJSON('http://localhost:8888/REST/getBadges/' + nwBadge_Arrow_Events.nwBadge_Arrow_Page + '/0000?callback=', badgesLoaded_callBack, "json");
 	},
 	Forward_Touched: function(point, obj)
 	{
 		nwBadge_Arrow_Events.nwBadge_Arrow_Page++;
+		if(nwBadge_Arrow_Events.nwBadge_Arrow_Page == 6) nwBadge_Arrow_Events.buttons[1].element.style.visibility = "hidden";
+		nwBadge_Arrow_Events.buttons[0].element.style.visibility = "";
 	    console.log("BADGES REQUEST: LOADING");
 		$.getJSON('http://localhost:8888/REST/getBadges/' + nwBadge_Arrow_Events.nwBadge_Arrow_Page + '/0000?callback=', badgesLoaded_callBack, "json");
 	},
@@ -128,11 +132,14 @@ function nwBadgeContainer()
 
 	
 	var nwBadgeArrowLeft = new nwButton("nwBadgeContainer_ArrowLeft" , null, nwBadge_Arrow_Events.Back_Touched, true );
+	nwBadge_Arrow_Events.buttons.push(nwBadgeArrowLeft);
 	var nwBadgeArrowRight = new nwButton("nwBadgeContainer_ArrowRight" , null, nwBadge_Arrow_Events.Forward_Touched, true );
+	nwBadge_Arrow_Events.buttons.push(nwBadgeArrowRight);
 	this.addChildren.call(this, [nwBadgeArrowLeft, nwBadgeArrowRight]);
 	//REMEMBER WE HAVE TO DELETE THESE AT SOME POINT
 	//ALSO MAYBE WE WANNA PUT THEM ALL IN THE GROUP POOL --> K WE DID THAT BUT I THINK THEY STAY IN MEMORY IN THE LAYER OF THE FRAMEWORK
 
+	nwBadgeArrowLeft.element.style.visibility = "hidden";
 
 	this.delete = function()
 	{
