@@ -8,6 +8,7 @@ function nwNaviLogo()
 		onHit: function(point, obj)
 		{
 			document.getElementsByTagName("html")[0].webkitRequestFullScreen();
+			naviOverlay.element.style.display = "block";
 		},
 		onLetGo: function(obj)
 		{

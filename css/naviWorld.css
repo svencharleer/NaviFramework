@@ -159,6 +159,10 @@ img { -webkit-touch-callout: none !important;}
 	font-size:.8em;
 	color:#ffffff;
 	z-index:10;
+	width:80%;
+	margin-left:20%;
+	padding-bottom:5px;
+	border-bottom:solid 1px white;
 	
 }
 .nwBadgeDetailed p{
@@ -244,6 +248,8 @@ img { -webkit-touch-callout: none !important;}
 #nwBadgeContainer_ArrowLeft, #nwBadgeContainer_ArrowRight{
 	display:inline-block;
 	height:.8em;
+	margin-left:10px;
+	margin-right:10px;
 }
 #nwBadgeContainer_ArrowLeft img, #nwBadgeContainer_ArrowRight img{
 	height:100%;
@@ -266,9 +272,14 @@ img { -webkit-touch-callout: none !important;}
 	overflow:scroll;
 }
 
+.nwStudent img
+{
+	display:none;
+}
+
 .nwStudentDragged
 {
-	display:block;
+	display:inline-block;
 	color: #ffffff;
 	
 	font-size:1.0em;
@@ -277,7 +288,18 @@ img { -webkit-touch-callout: none !important;}
 	padding:10px;
 	z-index:10;
 }
+.Student_ListItem 
+{
+	display:inline-block;
 
+}
+.nwStudentDragged img
+{
+	display:inline-block;
+	width:20px;
+	margin-left:10px;
+	float:right;
+}
 /* logo */
 
 @-webkit-keyframes rotateLogo {
@@ -337,7 +359,7 @@ img { -webkit-touch-callout: none !important;}
 	top:0;left:0;
 	width:100%;
 	height:100%;
-	background-color:#3e3e3e;
+	background-color:#231f20;
 	text-align:center;
 	vertical-align:middle;
 	z-index:101
@@ -346,5 +368,14 @@ img { -webkit-touch-callout: none !important;}
 #nwNaviOverlay img
 {
 	margin:auto;
-	margin-top:100px
+	margin-top:250px
+}
+
+#nwNaviOverlay p
+{
+	color:white;
+	font-size:.3em;
+	position:fixed;
+	top:90%;
+	left:90%;
 }
