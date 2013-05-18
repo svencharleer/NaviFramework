@@ -17,7 +17,7 @@ function nwButton(name, template, buttonEvent, alreadyInDocument)
 							obj.animatable.idle();
 						},
 
-						1500);
+						500);
 				return;
 			}
 		},

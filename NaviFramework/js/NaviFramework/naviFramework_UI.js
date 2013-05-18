@@ -268,6 +268,7 @@ function naviFramework_UI()
         this.fingerToCursors[identifier] = identifier;
         
         var hitResults = TouchTest(hitPoint,fw.layers[2].objects);
+        this.fingerToObjects[identifier] = [];
         while(hitResults.length > 0)
         {
             var hitResult = hitResults.pop();
@@ -276,7 +277,7 @@ function naviFramework_UI()
                 
                 if(hitResult.touchable.fingerEvent != null)
                 {
-                    this.fingerToObjects[identifier] = hitResult;
+                    this.fingerToObjects[identifier].push(hitResult);
                     hitResult.touchable.fingerEvent(hitPoint, hitResult, "hit");
                 }
             }
@@ -294,10 +295,15 @@ function naviFramework_UI()
         }
         if(this.fingerToObjects[identifier] != null)
         {
-            var hitResult = this.fingerToObjects[identifier];
-            if(hitResult.touchable.fingerEvent != null)
+
+            var hitResult = this.fingerToObjects[identifier].pop();
+            while(hitResult != null)
             {
-                hitResult.touchable.fingerEvent(null, hitResult, "letgo");
+                if(hitResult.touchable.fingerEvent != null)
+                {
+                    hitResult.touchable.fingerEvent(null, hitResult, "letgo");
+                }
+                hitResult = this.fingerToObjects[identifier].pop();
             }
         }
         this.fingerToObjects[identifier] = null;
@@ -319,11 +325,14 @@ function naviFramework_UI()
         }
         if(this.fingerToObjects[identifier] != null)
         {
-            var hitResult = this.fingerToObjects[identifier];
-            if(hitResult.touchable.fingerEvent != null)
+            for(var i = 0; i < this.fingerToObjects[identifier].length; i++)
             {
-                //console.log(hitPoint.x + " " + hitPoint.y +" " +hitResult.element.id);
-                hitResult.touchable.fingerEvent(hitPoint, hitResult, "move");
+                var hitResult = this.fingerToObjects[identifier][i];
+                if(hitResult.touchable.fingerEvent != null)
+                {
+                    //console.log(hitPoint.x + " " + hitPoint.y +" " +hitResult.element.id);
+                    hitResult.touchable.fingerEvent(hitPoint, hitResult, "move");
+                }
             }
         }   
     }
@@ -358,7 +367,7 @@ function naviFramework_UI()
         }
 
         //have to move this out of here but will do for now
-        if(TouchLoop.idleSince < new Date(Date.now() - 5000)) 
+        if(TouchLoop.idleSince < new Date(Date.now() - 120000)) 
         {
             naviOverlay.element.style.display = "block";
         }
