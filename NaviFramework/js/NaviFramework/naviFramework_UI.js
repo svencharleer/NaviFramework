@@ -59,8 +59,8 @@ function PaperCanvas(paper)
                 myPath.add(new Point(point2.x, point2.y));
                 myPath.style = {
                     
-                    strokeColor: '#99FF99',
-                    strokeWidth: 5};
+                    strokeColor: '#FF8100',
+                    strokeWidth: 2};
             }
             else
             {

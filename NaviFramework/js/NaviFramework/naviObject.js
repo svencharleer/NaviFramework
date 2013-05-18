@@ -69,7 +69,7 @@ function NObject(name,  layer, position, size, cssClass, innerHTML, events, anim
 	this.getSize = function()
 	{
 		var jelement = $("#"+this.element.id);
-		return {width:jelement.width(), height:jelement.height()};
+		return {width:jelement.outerWidth(), height:jelement.outerHeight()};
 	}
 	this.layer = layer;
 	

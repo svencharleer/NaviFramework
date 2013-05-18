@@ -165,6 +165,7 @@ img { -webkit-touch-callout: none !important;}
 	font-size:.7em;
 	color:#ffffff;
 	z-index:10;
+	text-align:justify;
 }
 
 
@@ -267,7 +268,7 @@ img { -webkit-touch-callout: none !important;}
 
 .nwStudentDragged
 {
-	display:inline-block;
+	display:block;
 	color: #ffffff;
 	
 	font-size:1.0em;
@@ -313,7 +314,7 @@ img { -webkit-touch-callout: none !important;}
 .selectedObject
 {
 	
-	background-color: #00c6ff;
+	background-color: #0082A6;
 	color: white;
 }
 
