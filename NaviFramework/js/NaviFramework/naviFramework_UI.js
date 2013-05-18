@@ -3,18 +3,46 @@ var fw;
 function PaperCanvas(paper)
 {
     var canvas;
-    var objects = [];
+    var animations = [];
     var paper = paper;
-    this.drawCircle = function(point, radius)
+    this.drawCircle = function(name,point)
     {
         with(paper)
         {
-            var circle = new Path.Circle(new Point(point.x, point.y), radius);
-            circle.style = {
-            fillColor: "#99FF99",
-            strokeColor: '#4d4d4d',
-            strokeWidth: 10};
-            objects.push(circle); 
+            var circle;
+            var children = project.activeLayer.children;
+            if(children[name] == null)
+            {
+                circle = new Path.Circle(new Point(point.x, point.y),20);
+                circle.name = name;
+                circle.style = {
+                //fillColor: "#99FF99",
+                strokeColor: '#99FF99',
+                strokeWidth: 4};
+                //circle.flatten(10);
+                //circle.removeSegment(0);
+                //circle.simplify();
+                circle.opacity =0.5;
+                //animate this
+                circle.customAnimation = function(obj) 
+                {
+                    obj.strokeColor.hue += 1;
+                    //obj.rotate(3);
+                    return true;
+                };
+                animations.push(circle);
+            }
+            else
+            {
+                
+                circle = children[name];
+                circle.position = new Point(point.x, point.y);
+            }
+
+            
+
+            
+            
         }
     }
     this.drawLine = function(name, point1, point2)
@@ -50,13 +78,18 @@ function PaperCanvas(paper)
             paper.view.draw();
         }
     }
-    this.removeLine = function(name)
+    this.removePath = function(name)
     {
         with(paper)
         {
             var children = project.activeLayer.children;
             if(children[name] != null)
             {
+                //end the animations. let the anim frame handler know it's done animating
+                if(children[name].customAnimation != null)
+                {
+                    children[name].customAnimation = function(obj){return false};
+                }
                 children[name].remove();
             }
             paper.view.draw();
@@ -77,6 +110,29 @@ function PaperCanvas(paper)
             paper.view.setViewSize(canvas.width,canvas.height);
         }
     }
+
+     this.onFrame =function(event) {
+        // the number of times the frame event was fired:
+        //console.log(event.count);
+
+        // The total amount of time passed since
+        // the first frame event in seconds:
+        //console.log(event.time);
+
+        // The time passed in seconds since the last frame event:
+        //console.log(event.delta);
+        var animation = animations.pop();
+        var continueAnimations = [];
+        while(animation != null)
+        {
+            var continueAnimation = animation.customAnimation(animation);
+            if(continueAnimation) continueAnimations.push(animation);
+            animation = animations.pop();
+        }
+        animations = continueAnimations;
+        paper.view.draw();
+    }
+
     this.init = function(name, position, size)
     {
         var element = document.createElement("canvas");
@@ -104,7 +160,7 @@ function PaperCanvas(paper)
 //            tool.onMouseDown = this.onMouseDown;
 //            tool.onMouseUp = this.onMouseUp;
 //            tool.onMouseDrag = this.onMouseDrag;
-//            view.onFrame = this.onFrame;
+            view.onFrame = this.onFrame;
         }
         return this;
     }
@@ -120,6 +176,8 @@ function PaperCanvas(paper)
             //test
         }
     }
+
+  
 }
 
 
@@ -199,15 +257,15 @@ function naviFramework_UI()
     this.fingerToCursors = {};
     this.onFingerHits = function(hitPoint, identifier)
     {
-        console.log("finger " + identifier + " landed");
+        identifier = "finger" + identifier;
+        //console.log("finger " + identifier + " landed");
         if(this.fingerToCursors[identifier] != null)
             return; // we're already handling this finger
         //draw indicators of where we touch (interesting when testing on mbp)
         //(could also be useful to make touch pretty :P particles?)
-        //var canvas = new PaperCanvas(this.paper);
-        //canvas.init(identifier, hitPoint, {w:50, h:50});
-        //sfxCanvas.drawCircle(hitPoint, 10 );
-        //this.fingerToCursors[identifier] = canvas;
+        
+        sfxCanvas.drawCircle(identifier, hitPoint);
+        this.fingerToCursors[identifier] = identifier;
         
         var hitResults = TouchTest(hitPoint,fw.layers[2].objects);
         while(hitResults.length > 0)
@@ -226,12 +284,12 @@ function naviFramework_UI()
     }
     this.onFingerLetGo = function(identifier)
     {   
+        identifier = "finger" + identifier;
         if(this.fingerToCursors[identifier] != null)
         {   
             
             //hm we have to find a way to get rid of this
-            //this.fingerToCursors[identifier].remove();
-            //this.fingerToCursors[identifier].reset(); //doesn't get rid of the object though
+            sfxCanvas.removePath(identifier);
             this.fingerToCursors[identifier] = null;
         }
         if(this.fingerToObjects[identifier] != null)
@@ -243,17 +301,17 @@ function naviFramework_UI()
             }
         }
         this.fingerToObjects[identifier] = null;
-        console.log("finger " + identifier + " was let go");
+        //console.log("finger " + identifier + " was let go");
     }
 
     this.onFingerMoved = function(hitPoint, identifier) 
     {   
+        identifier = "finger" + identifier;
         //draw indicators of where we touch (interesting when testing on mbp)
         //(could also be useful to make touch pretty :P particles?)
         if(this.fingerToCursors[identifier] != null)
         {
-            //sfxCanvas = this.fingerToCursors[identifier];
-            //canvas.position(hitPoint);
+            sfxCanvas.drawCircle(identifier, hitPoint);
         }
         else
         {
@@ -264,7 +322,7 @@ function naviFramework_UI()
             var hitResult = this.fingerToObjects[identifier];
             if(hitResult.touchable.fingerEvent != null)
             {
-                console.log(hitPoint.x + " " + hitPoint.y +" " +hitResult.element.id);
+                //console.log(hitPoint.x + " " + hitPoint.y +" " +hitResult.element.id);
                 hitResult.touchable.fingerEvent(hitPoint, hitResult, "move");
             }
         }   
@@ -285,6 +343,7 @@ function naviFramework_UI()
         //think this might become physics loop
     }
 
+
     this.onFrame = function(event)
     {
         //take care of animations
@@ -296,6 +355,12 @@ function naviFramework_UI()
         if(fw.scenes != null && fw.scenes.length > 0)
         {
             fw.scenes[fw.scenes.length-1].update.call(fw.scenes[fw.scenes.length-1]);
+        }
+
+        //have to move this out of here but will do for now
+        if(TouchLoop.idleSince < new Date(Date.now() - 5000)) 
+        {
+            naviOverlay.element.style.display = "block";
         }
 
     }
@@ -324,7 +389,7 @@ function naviFramework_UI()
     this.removeConnection = function(object1, object2)
     {
         var linkName = object1.getName() + "_" + object2.getName();
-        sfxCanvas.removeLine(linkName);
+        sfxCanvas.removePath(linkName);
     }
 
    
@@ -404,6 +469,7 @@ function naviFramework_UI()
 //touch handler
 var TouchLoop =
 {
+    idleSince: Date.now(),
     timer:0,
     updateStarted: false,
     updateLetGoStarted: false,
@@ -424,6 +490,7 @@ var TouchLoop =
         TouchLoop.touches = [];
         TouchLoop.updateStarted = false;
         fw.onFrame();
+
     },
 
     updateMoved: function() {
@@ -455,28 +522,34 @@ var TouchLoop =
         this.timer = setInterval(this.update, 30);
 
         document.addEventListener('touchend', function() {
-            TouchLoop.touchesLetGo = TouchLoop.touchesLetGo.concat(event.changedTouches);   
+            TouchLoop.touchesLetGo = TouchLoop.touchesLetGo.concat(event.changedTouches); 
+            TouchLoop.idleSince = Date.now();  
             
         });
         document.addEventListener('touchmove', function(event) {
             event.preventDefault();
             TouchLoop.touchesMoved = TouchLoop.touchesMoved.concat(event.changedTouches);
+            TouchLoop.idleSince = Date.now();  
 
         });
         document.addEventListener('touchstart', function(event) {
             console.log('start');
             TouchLoop.touches = event.targetTouches;
+            TouchLoop.idleSince = Date.now();  
             
          });
         document.addEventListener('mousedown', function(event) {
             console.log('mouse touchy');
             fw.onMouseDown({x:event.pageX, y:event.pageY}, "mouse");
+            TouchLoop.idleSince = Date.now();  
          });
         document.addEventListener('mousemove', function(event) {
             fw.onMouseDrag({x:event.pageX, y:event.pageY}, "mouse");
+            TouchLoop.idleSince = Date.now();  
          });
         document.addEventListener('mouseup', function(event) {
             fw.onMouseUp("mouse");
+            TouchLoop.idleSince = Date.now();  
 
         
      });

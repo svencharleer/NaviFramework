@@ -3,6 +3,7 @@
 var badgeContainer;
 var studentContainer;
 var naviLogo;
+var naviOverlay;
 
 
 function length(point)
@@ -32,8 +33,9 @@ function calculateRotation(position)
 
 function loadMenu(){
 	naviLogo = new nwNaviLogo();
+	naviOverlay = new nwNaviOverlay();
 	fw.addObjectToDocument(naviLogo);
-
+	fw.addObjectToDocument(naviOverlay);
 	//load objects
 	//var objects = [new nwMenu(null,null)];//{x:2*fw.view.width/5, y:7.3*fw.view.height/8}, {width:fw.view.width/5, height:fw.view.height/8})];
 	//fw.addObjectsToDocument(objects);
